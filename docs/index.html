@@ -28,6 +28,9 @@
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
   <script src="//unpkg.com/docsify-copy-code"></script>
+  <script crossorigin="anonymous" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh"
+    src="https://lib.baomitu.com/jquery/3.4.1/jquery.min.js"></script>
+  <script>!function(){$.get("https://api.ooopn.com/ciba/api.php",function(r){if(r.code==200){console.log(r);$("#oneyan").html("<small>"+r.date+"</small><p>"+r.ciba+"</p><p>"+r["ciba-en"]+'</p><p><img src="'+r.imgurl+'" height="480" width="330"></img></p><p></p>').css("text-indent","2em")}},"json")}();</script>
 </body>
 
 </html>
