@@ -1,5 +1,6 @@
 - **后端**
   - [java](backend/java/_sidebar.md)
+  - [mysql](backend/mysql/_sidebar.md)
 - **前端**
   - [node](/frontend/node/_sidebar.md)
 - **其他**
