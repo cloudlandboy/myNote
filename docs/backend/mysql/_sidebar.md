@@ -13,4 +13,9 @@
   - [联合查询](backend/mysql/unionquery.md)
   - [DML(数据操纵语言)](backend/mysql/dml.md)
   - [DDL(数据定义语言)](backend/mysql/ddl.md)
+  - [事务](backend/mysql/transaction.md)
+  - [视图](backend/mysql/view.md)
+  - [变量](backend/mysql/variable.md)
+  - [存储过程](backend/mysql/procedure.md)
+  - [存储函数](backend/mysql/function.md)
 
