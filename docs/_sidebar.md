@@ -4,6 +4,7 @@
   - [mysql](backend/mysql/_sidebar.md)
   - [Hibernate](backend/hibernate/_sidebar.md)
   - [WebService](backend/webservice/_sidebar.md)
+  - [Spring Boot](backend/springboot/_sidebar.md)
 - **前端**
   - [node](/frontend/node/_sidebar.md)
 - **其他**
