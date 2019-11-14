@@ -314,7 +314,7 @@ person.pet.age=10
 在设置中找到`File Encodings`，将配置文件字符集改为`UTF-8`，并勾选：
 - [x] `Transparent native-to-ascii conversion`
 
-![乱码解决](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573695616496.png)
+![乱码解决](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573695616496.png)
 
 
 
@@ -365,11 +365,11 @@ public class Person {
 
 `@ConfigurationProperties`支持校验，如果校验不通过，会抛出异常
 
-![数据校验](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573716216690.png)
+![数据校验](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716216690.png)
 
 `@value`注解不支持数据校验
 
-![数据校验](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573716427494.png)
+![数据校验](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716427494.png)
 
 
 
@@ -377,7 +377,7 @@ public class Person {
 
 `@value`注解无法注入map等对象的复杂类型，但`list、数组可以`
 
-![1573716770263](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573716770263.png)
+![1573716770263](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716770263.png)
 
 
 
@@ -387,11 +387,11 @@ public class Person {
 
 springboot默认加载的配置文件名是`application`，如果配置文件名不是这个是不会被容器加载的，所以这里Person并没有被注入任何属性值
 
-![1573718577827](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573718577827.png)
+![1573718577827](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573718577827.png)
 
 使用`@PropertySource({"classpath:person.properties"})`指定加载`person.properties`配置文件
 
-![1573718679208](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573718679208.png)
+![1573718679208](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573718679208.png)
 
 
 
@@ -401,13 +401,13 @@ springboot默认加载的配置文件名是`application`，如果配置文件名
 
 Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件，也不能自动识别；
 
-![1573719440710](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573719440710.png)
+![1573719440710](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573719440710.png)
 
 
 
 想让Spring的配置文件生效，加载进来；@**ImportResource**标注在一个配置类上
 
-![1573720006428](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573720006428.png)
+![1573720006428](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573720006428.png)
 
 !> 注意！这个注解是放在主入口函数的类上，而不是测试类上
 
@@ -471,17 +471,17 @@ ${random.int[1024,65536]}
 
 
 
-![1573721695426](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573721695426.png)
+![1573721695426](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573721695426.png)
 
 
 
 可以引用在配置文件中配置的其他属性的值，如果使用一个没有在配置文件中的属性，则会原样输出
 
-![1573722018302](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573722018302.png)
+![1573722018302](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573722018302.png)
 
 可以使用`:`指定默认值
 
-![1573722098119](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573722098119.png)
+![1573722098119](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573722098119.png)
 
 
 
@@ -496,13 +496,13 @@ Profile是Spring对不同环境提供不同配置功能的支持，可以通过�
 - application-dev.properties
 - application-prod.properties
 
-![1573723830627](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573723830627.png)
+![1573723830627](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573723830627.png)
 
 程序启动时会默认加载`application.properties`，启动的端口就是8080
 
 可以在主配置文件中指定激活哪个配置文件
 
-![1573724084979](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573724084979.png)
+![1573724084979](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724084979.png)
 
 
 
@@ -528,7 +528,7 @@ spring:
   profiles: prod
 ```
 
-![1573724588671](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573724588671.png)
+![1573724588671](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724588671.png)
 
 
 
@@ -542,7 +542,7 @@ spring:
    java -jar xxx.jar --spring.profiles.active=dev；
    ```
 
-   ![1573724952868](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573724952868.png)
+   ![1573724952868](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724952868.png)
 
 3. 虚拟机参数
 
@@ -550,7 +550,7 @@ spring:
    -Dspring.profiles.active=dev
    ```
 
-   ![1573725631649](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573725631649.png)
+   ![1573725631649](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573725631649.png)
 
 
 
@@ -576,7 +576,7 @@ file: ./config/
 
 SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
-![1573728449451](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573728449451.png)
+![1573728449451](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573728449451.png)
 
 
 
@@ -654,4 +654,4 @@ SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
 [参考官方文档](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
 
-![1573735371567](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573735371567.png)
+![1573735371567](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573735371567.png)
