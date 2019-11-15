@@ -652,6 +652,6 @@ SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
 所有支持的配置加载来源：
 
-[参考官方文档](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
+[参考官方文档](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#boot-features-external-config)
 
 ![1573735371567](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573735371567.png)

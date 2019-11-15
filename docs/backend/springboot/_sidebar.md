@@ -2,4 +2,8 @@
   - [hello world](backend/springboot/helloworld.md)
   - [Spring Initializer快速创建Spring Boot项目](backend/springboot/springInitializer.md)
   - [配置文件](backend/springboot/properties.md)
+  - [自动配置](backend/springboot/autoconfig.md)
+  - [日志](backend/springboot/log.md)
+  - [web开发](backend/springboot/helloweb.md)
+  - [thymeleaf模板引擎](backend/springboot/templateengine.md)
 
