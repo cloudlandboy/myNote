@@ -6,4 +6,6 @@
   - [日志](backend/springboot/log.md)
   - [web开发](backend/springboot/helloweb.md)
   - [thymeleaf模板引擎](backend/springboot/templateengine.md)
+  - [SpringMVC配置](backend/springboot/springmvcconfig.md)
+  - [RestfulCRUD](backend/springboot/restfulcrud.md)
 
