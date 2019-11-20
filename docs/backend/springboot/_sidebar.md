@@ -8,4 +8,6 @@
   - [thymeleaf模板引擎](backend/springboot/templateengine.md)
   - [SpringMVC配置](backend/springboot/springmvcconfig.md)
   - [RestfulCRUD](backend/springboot/restfulcrud.md)
+  - [错误处理机制](backend/springboot/errorhandler.md)
+  - [配置嵌入式Servlet容器](backend/springboot/configservletcontainer.md)
 

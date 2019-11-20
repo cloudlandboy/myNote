@@ -11,5 +11,5 @@
   - [deepin](others/deepin/_sidebar.md)
   - [IDEA](others/IDEA.md)
   - [markdown 基本语法](others/markdown基本语法.md)
-  - [简历](others/resume.md)
+  - <div style="display:none"> [简历](others/resume.md) </div>
 
