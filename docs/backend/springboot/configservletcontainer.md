@@ -173,7 +173,7 @@ public class MyServletContextListener implements ServletContextListener {
 
 SpringBoot默认使用的是Tomcat
 
-![1574170320042](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574170320042.png)
+![1574170320042](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574170320042.png)
 
 如果要换成其他的就把Tomcat的依赖排除掉，然后引入其他嵌入式Servlet容器的以来，如`Jetty`，`Undertow`
 
@@ -268,11 +268,11 @@ public interface ServletWebServerFactory {
 
 工厂实现类
 
-![1574172121748](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574172121748.png)
+![1574172121748](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574172121748.png)
 
 `WebServer`：嵌入式的web服务器实现
 
-![1574172310812](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574172310812.png)
+![1574172310812](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574172310812.png)
 
 以`TomcatServletWebServerFactory`为例，下面是TomcatServletWebServerFactory类
 
@@ -317,7 +317,7 @@ public interface ServletWebServerFactory {
 
 `ServletWebServerFactoryAutoConfiguration`在向容器中添加web容器时还添加了一个组件
 
-![1574235580031](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574235580031.png)
+![1574235580031](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574235580031.png)
 
 `BeanPostProcessorsRegistrar`：后置处理器注册器(也是给容器注入一些组件)
 
@@ -390,11 +390,11 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 1. SpringBoot应用启动运行run方法
 
-   ![1574242390909](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574242390909.png)
+   ![1574242390909](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574242390909.png)
 
 2. 153行，创建IOC容器对象，根据当前环境创建
 
-   ![1574242209298](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574242209298.png)
+   ![1574242209298](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574242209298.png)
 
 3. 156行，刷新IOC容器
 
@@ -414,7 +414,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
    98行获取嵌入式的web容器工厂
 
-   ![1574243084120](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574243084120.png)
+   ![1574243084120](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574243084120.png)
 
 5. 接下来就是上面的上面的相关配置流程，在创建web容器工厂时会出发`webServerFactoryCustomizerBeanPostProcessor`
 
@@ -467,7 +467,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 5. 在IDEA中可以这样配置
 
-   ![1574247311250](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574247311250.png)
+   ![1574247311250](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574247311250.png)
 
 6. 在创建项目时使用Spring Initializr创建选择打包方式为war，1，2，3步骤会自动配置
 
@@ -510,7 +510,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 6. WebApplicationInitializer的实现类
 
-   ![1574256076145](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1574256076145.png)
+   ![1574256076145](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574256076145.png)
 
 7. 相当于我们的SpringBootServletInitializer的类会被创建对象，并执行onStartup方法
 

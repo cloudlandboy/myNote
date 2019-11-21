@@ -941,11 +941,11 @@ spring.mvc.date-format=yyyy-MM-dd
    spring.mvc.hiddenmethod.filter.enabled=true
    ```
 
-   ![1573987255217](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573987255217.png)
+   ![1573987255217](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573987255217.png)
 
    这个好像是2.0版本以后修改的
 
-   ![1573988088629](/home/cloudlandboy/Desktop/myNote/docs/backend/springboot/assets/1573988088629.png)
+   ![1573988088629](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573988088629.png)
 
    !> 如果删除不掉，请修改`EmployeeDao`，把String转为Integer类型
 
