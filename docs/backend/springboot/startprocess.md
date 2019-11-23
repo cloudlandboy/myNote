@@ -509,7 +509,7 @@
    }
    ```
 
-   ![1574517578711](/home/cloudlandboy/Desktop/desktop/myNote/docs/backend/springboot/assets/1574517578711.png)
+   ![1574517578711](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574517578711.png)
 
    
 
