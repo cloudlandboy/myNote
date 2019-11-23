@@ -163,10 +163,11 @@ SpringBoot默认帮我们配置好了日志；
 
 ```
 
-SpringBoot修改日志的默认配置
+#### SpringBoot修改日志的默认配置
 
 ```properties
-logging.level.com.atguigu=trace
+# 也可以指定一个包路径 logging.level.com.xxx=error
+logging.level.root=error
 
 
 #logging.path=

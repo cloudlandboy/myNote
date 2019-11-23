@@ -1,7 +1,5 @@
 ## 配置嵌入式Servlet容器
 
-<button onclick="$('img').each(function(){this.src=this.src.replace('/backend/springboot/home/cloudlandboy/Desktop/myNote/docs','')})">显示图片</button>
-
 ### 如何定制和修改Servlet容器的相关配置
 
 1. 修改和server有关的配置
@@ -416,7 +414,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
    ![1574243084120](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574243084120.png)
 
-5. 接下来就是上面的上面的相关配置流程，在创建web容器工厂时会出发`webServerFactoryCustomizerBeanPostProcessor`
+5. 接下来就是上面的上面的相关配置流程，在创建web容器工厂时会触发`webServerFactoryCustomizerBeanPostProcessor`
 
 6. 然后99行**使用容器工厂获取嵌入式的Servlet容器**
 

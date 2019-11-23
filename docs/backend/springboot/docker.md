@@ -6,6 +6,8 @@ Docker支持将软件编译成一个镜像；然后在镜像中各种软件做�
 
 运行中的这个镜像称为容器，容器启动是非常快速的。
 
+
+
 ![](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180303145450.png)
 
 
