@@ -15,4 +15,5 @@
   - [整合Mybatis](backend/springboot/mybatis.md)
   - [SPringBoot整合JPA](backend/springboot/jpa.md)
   - [SpringBoot启动流程](backend/springboot/startprocess.md)
+  - [自定义Starter](backend/springboot/customizestarter.md)
 
