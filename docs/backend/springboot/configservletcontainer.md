@@ -1,6 +1,6 @@
-## 配置嵌入式Servlet容器
+# 配置嵌入式Servlet容器
 
-### 如何定制和修改Servlet容器的相关配置
+## 如何定制和修改Servlet容器的相关配置
 
 1. 修改和server有关的配置
 
@@ -41,11 +41,11 @@
 
 
 
-### 注册Servlet三大组件
+## 注册Servlet三大组件
 
 由于SpringBoot默认是以jar包的方式启动嵌入式的Servlet容器来启动SpringBoot的web应用，没有web.xml文件。
 
-#### Servlet
+### Servlet
 
 向容器中添加ServletRegistrationBean
 
@@ -92,7 +92,7 @@ public class MyServlet extends HttpServlet {
 
 
 
-#### Filter
+### Filter
 
 向容器中添加FilterRegistrationBean
 
@@ -129,7 +129,7 @@ public class MyFilter extends HttpFilter {
 
 
 
-#### Listener
+### Listener
 
 向容器中注入ServletListenerRegistrationBean
 
@@ -167,7 +167,7 @@ public class MyServletContextListener implements ServletContextListener {
 
 
 
-### 替换为其他嵌入式web服务器
+## 替换为其他嵌入式web服务器
 
 SpringBoot默认使用的是Tomcat
 
@@ -211,7 +211,7 @@ SpringBoot默认使用的是Tomcat
         </dependency>
 ```
 
-#### 原理
+### 原理
 
 **查看web容器自动配置类**
 
@@ -311,7 +311,7 @@ public interface ServletWebServerFactory {
 
 我们对嵌入式容器的配置修改是怎么生效的？
 
-#### 配置修改原理
+### 配置修改原理
 
 `ServletWebServerFactoryAutoConfiguration`在向容器中添加web容器时还添加了一个组件
 
@@ -384,7 +384,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 
 
-### 嵌入式Servlet容器启动原理
+## 嵌入式Servlet容器启动原理
 
 1. SpringBoot应用启动运行run方法
 
@@ -424,7 +424,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 
 
-### 使用外置的Servlet容器
+## 使用外置的Servlet容器
 
 1. 将项目的打包方式改为war
 
@@ -473,7 +473,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 
 
 
-#### 原理
+### 原理
 
 ?> *TODO* 2019-11-20
 

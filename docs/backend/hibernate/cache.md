@@ -1,6 +1,6 @@
-## Hibernate缓存
+# Hibernate缓存
 
-### 一级缓存
+## 一级缓存
 
 一级缓存：又称为session级别的缓存。
 
@@ -56,14 +56,14 @@ public class First_cache {
 
 ```
 
-### 清除一级缓存
+## 清除一级缓存
 
 1. `session.clear()` 清除所有缓存
 2. `session.evict(obj)` 清除指定的对象缓存
 
 
 
-### 一级缓存快照
+## 一级缓存快照
 
 快照：与一级缓存存放位置是一样，对一级缓存数据备份。
 

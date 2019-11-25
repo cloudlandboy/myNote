@@ -1,6 +1,6 @@
-## Jsp(JavaServer Pages)
+# Jsp(JavaServer Pages)
 
-### jsp脚本
+## jsp脚本
 
 `<%!java代码%>`：会被翻译成servlet的成员的内容
 
@@ -29,7 +29,7 @@
 
 
 
-### jsp注释
+## jsp注释
 
 1. html注释：`<!--注释内容-->` ---可见范围 jsp源码、翻译后的servlet、页面												显示html源码
 2. java注释：`//单行注释  /*多行注释*/` ---可见范围 jsp源码 翻译后的servlet
@@ -37,7 +37,7 @@
 
 
 
-### jsp运行原理
+## jsp运行原理
 
 jsp本质就是一个servlet
 
@@ -56,9 +56,9 @@ jsp本质就是一个servlet
 
 
 
-### jsp指令
+## jsp指令
 
-#### page指令
+### page指令
 
 ```
 <%@ page 属性名1= "属性值1" 属性名2= "属性值2" ...%>
@@ -80,7 +80,7 @@ jsp本质就是一个servlet
 | isELIgnored        | 指定是否执行EL表达式                                |
 | isScriptingEnabled | 确定脚本元素能否被使用                              |
 
-#### include指令
+### include指令
 
 页面包含（静态包含）指令，可以将一个jsp页面包含到另一个jsp页面中
 
@@ -90,7 +90,7 @@ jsp本质就是一个servlet
 
 
 
-#### taglib指令
+### taglib指令
 
 在jsp页面中引入标签库（jstl标签库、struts2标签库）
 
@@ -100,11 +100,11 @@ jsp本质就是一个servlet
 
 
 
-### JSP 动作元素（标签）
+## JSP 动作元素（标签）
 
 
 
-#### jsp:include
+### jsp:include
 
 页面包含（动态包含）
 
@@ -118,7 +118,7 @@ jsp本质就是一个servlet
 <jsp:forward page="要转发的资源" />
 ```
 
-#### jsp:forward
+### jsp:forward
 
 把请求转到另外的页面
 
@@ -126,7 +126,7 @@ jsp本质就是一个servlet
 <jsp:forward page="相对 URL 地址" />
 ```
 
-#### jsp:useBean
+### jsp:useBean
 
 加载一个将在JSP页面中使用的JavaBean。
 
@@ -134,7 +134,7 @@ jsp本质就是一个servlet
 <jsp:useBean id="name" class="package.class" />
 ```
 
-#### jsp:setProperty
+### jsp:setProperty
 
 用来设置已经实例化的Bean对象的属性，有两种用法。
 
@@ -154,7 +154,7 @@ jsp本质就是一个servlet
 </jsp:useBean>
 ```
 
-#### jsp:getProperty
+### jsp:getProperty
 
 获取指定Bean属性的值，转换成字符串，然后输出。
 
@@ -166,7 +166,7 @@ jsp本质就是一个servlet
 
 
 
-### jsp内置/隐式对象（9个）
+## jsp内置/隐式对象（9个）
 
 | **名称**    | **类型**                               | **描述**                                    |
 | ----------- | -------------------------------------- | ------------------------------------------- |

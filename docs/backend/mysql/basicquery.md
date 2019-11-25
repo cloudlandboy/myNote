@@ -1,8 +1,8 @@
-## 基本查询
+# 基本查询
 
 > [SQL文件](https://www.lanzous.com/i763iqf)
 
-### SELECT 语句
+## SELECT 语句
 
 > **SELECT** *****|{[DISTINCT] **column**|expression [alias],...}**FROM** **table**
 
@@ -44,7 +44,7 @@ SELECT id, name FROM student;
 select now();
 ```
 
-### 查询时给列的别名
+## 查询时给列的别名
 
 别名使用双引号，以便在别名中包含空格或特殊的字符
 
@@ -79,7 +79,7 @@ select now();
 
    
 
-### 查询去重
+## 查询去重
 
 ``` mysql
 select distinct 字段名 from 表名;
@@ -90,7 +90,7 @@ select distinct 字段名 from 表名;
 SELECT DISTINCT department_id FROM employees;
 ```
 
-### +号的作用
+## +号的作用
 
 `java`中的+号：
 ①运算符，两个操作数都为数值型
@@ -110,7 +110,7 @@ select 字符+数值;
 select null+值;
 ```
 
-### concat函数
+## concat函数
 
 功能：拼接字符，相当于java中的 `"1"+"23"="123"`
 
@@ -118,7 +118,7 @@ select null+值;
 select concat(字符1，字符2，字符3,...);
 ```
 
-### ifnull函数
+## ifnull函数
 
 功能：判断某字段或表达式是否为null，如果为null 返回指定的值，否则返回原本的值
 
@@ -127,6 +127,6 @@ select concat(字符1，字符2，字符3,...);
 select ifnull(commission_pct,0) from employees;
 ```
 
-### isnull函数
+## isnull函数
 
 功能：判断某字段或表达式是否为null，如果是，则返回1，否则返回0

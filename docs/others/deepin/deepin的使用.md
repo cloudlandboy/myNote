@@ -1,10 +1,10 @@
-## deepin的使用
+# deepin的使用
 
 [TOC]
 
-### wine设置
+## wine设置
 
-#### 为wine方式安装的程序创建快捷方式
+### 为wine方式安装的程序创建快捷方式
 
 ```properties
 [Desktop Entry]
@@ -24,20 +24,20 @@ X-Deepin-Vendor=user-custom
 - <mark>Name</mark>：快捷方式名称
 - <mark>Name[zh_CN]</mark>：快捷方式中文名称
 
-#### wine窗口美化
+### wine窗口美化
 
 [参考连接：https://www.lulinux.com/archives/362](https://www.lulinux.com/archives/362 "wine窗口美化")
 
-### 软件安装位置和配置文件路径
+## 软件安装位置和配置文件路径
 
 | 软件名称 |     安装路径     |       配置文件       |         其他         |
 | :------: | :--------------: | :------------------: | :------------------: |
 |  nginx   | /usr/share/nginx |      /etc/nginx      | 日志：/var/log/nginx |
 |  mysql   | /usr/share/mysql | data：/var/lib/mysql | 日志：/var/log/mysql |
 
-### 解压
+## 解压
 
-#### rar格式
+### rar格式
 
 安装rar
 
@@ -51,7 +51,7 @@ sudo apt install rar
 rar x xxx.rar
 ```
 
-### 安装ibus输入法
+## 安装ibus输入法
 
 1. 卸载自带搜狗输入法和fcitx
 

@@ -1,4 +1,4 @@
-## DDL数据库定义语言
+# DDL数据库定义语言
 
 数据定义语言：简称DDL(Data Definition Language)，用来定义数据库对象：数据库，表，列等。关键字：create，alter，drop等 
 
@@ -6,9 +6,9 @@
 - 修改： alter
 - 删除： drop
 
-### 库的管理
+## 库的管理
 
-#### 创建库
+### 创建库
 
 ```mysql
 create database 【if not exists】 库名【 character set 字符集名】;
@@ -18,19 +18,19 @@ create database 【if not exists】 库名【 character set 字符集名】;
 CREATE DATABASE IF NOT EXISTS books;
 ```
 
-#### 修改库
+### 修改库
 
 ```
 alter database 库名 character set 字符集名;
 ```
 
-##### 修改库名
+### 修改库名
 
 ``` mysql
 RENAME DATABASE books TO 新库名;
 ```
 
-##### 修改库的字符集
+### 修改库的字符集
 
 ``` mysql
 ALTER DATABASE books CHARACTER SET gbk;
@@ -38,7 +38,7 @@ ALTER DATABASE books CHARACTER SET gbk;
 
 
 
-#### 删除库
+### 删除库
 
 ```
 drop database 【if exists】 库名;
@@ -46,9 +46,9 @@ drop database 【if exists】 库名;
 
 
 
-### 表的管理
+## 表的管理
 
-#### 创建表
+### 创建表
 
 ```
 create table 表名(
@@ -90,53 +90,53 @@ CREATE TABLE IF NOT EXISTS author(
 
 [数据类型](#mysql数据类型)
 
-#### 修改表
+### 修改表
 
-##### 添加列
+### 添加列
 
 ```
 alter table 表名 add column 列名 类型 【first|after 字段名】;
 ```
 
-##### 修改列的类型或约束
+### 修改列的类型或约束
 
 ```
 alter table 表名 modify column 列名 新类型 【新约束】;
 ```
 
-##### 修改列名
+### 修改列名
 
 ```
 alter table 表名 change column 旧列名 新列名 类型;
 ```
 
-##### 删除列
+### 删除列
 
 ```
 alter table 表名 drop column 列名;
 ```
 
-##### 修改表名
+### 修改表名
 
 ```
 alter table 表名 rename 【to】 新表名;
 ```
 
-#### 删除表
+### 删除表
 
 ```
 drop table【if exists】 表名;
 ```
 
-#### 复制表
+### 复制表
 
-##### 复制表的结构
+### 复制表的结构
 
 ```
 create table 表名 like 旧表;
 ```
 
-##### 复制表的结构+数据
+### 复制表的结构+数据
 
 ```
 create table 表名 
@@ -189,7 +189,7 @@ select 查询列表 from 旧表【where 筛选】;
 
    
 
-### MYSQL数据类型
+## MYSQL数据类型
 
 | **分类**             | **类型名称**   | **说明**                                                     |
 | -------------------- | -------------- | ------------------------------------------------------------ |
@@ -218,9 +218,9 @@ select 查询列表 from 旧表【where 筛选】;
 |                      | VARBINARY(M)   | 允许长度0~M个字节的变长字节字符串                            |
 |                      | BINARY(M)      | 允许长度0~M个字节的定长字节字符串                            |
 
-#### 数值型
+### 数值型
 
-##### 整型
+### 整型
 
 tinyint、smallint、mediumint、int/integer、bigint
 
@@ -250,7 +250,7 @@ CREATE TABLE tab_int(
 
 
 
-##### 浮点型
+### 浮点型
 
 **定点数**：decimal(M,D)
 **浮点数**:
@@ -264,7 +264,7 @@ CREATE TABLE tab_int(
 3. M和D都可以省略，但对于定点数，M默认为10，D默认为0
 4. 如果精度要求较高，则优先考虑使用定点数
 
-#### 字符型
+### 字符型
 
 char、varchar、binary、varbinary、enum(用于保存枚举)、set(用于保存集合)、text、blob
 
@@ -300,7 +300,7 @@ INSERT INTO tab_set VALUES('a,c,d');
 
 
 
-#### 日期型
+### 日期型
 
 year年
 date日期
@@ -308,7 +308,7 @@ time时间
 datetime 日期+时间
 timestamp 日期+时间 ，比较容易受时区、语法模式、版本的影响，更能反映当前时区的真实时间
 
-### 常见的约束
+## 常见的约束
 
 - NOT NULL：非空，该字段的值必填
 - UNIQUE：唯一，该字段的值不可重复
@@ -331,7 +331,7 @@ timestamp 日期+时间 ，比较容易受时区、语法模式、版本的影�
 		表级约束：
 			
 			除了非空、默认，其他的都支持
-#### 主键和唯一
+### 主键和唯一
 
 **区别：**
 
@@ -351,7 +351,7 @@ timestamp 日期+时间 ，比较容易受时区、语法模式、版本的影�
 4. 插入数据时，先插入主表，再插入从表
 5. 删除数据时，先删除从表，再删除主表
 
-#### 创建表时添加约束
+### 创建表时添加约束
 
 ```
 CREATE TABLE 表名(
@@ -361,7 +361,7 @@ CREATE TABLE 表名(
 )
 ```
 
-##### 添加列级约束
+### 添加列级约束
 
 直接在字段名和类型后面追加 约束类型即可。
 
@@ -392,7 +392,7 @@ CREATE TABLE major(
 SHOW INDEX FROM stuinfo;
 ```
 
-##### 添加表级约束
+### 添加表级约束
 
 在各个字段的最下面
 
@@ -415,7 +415,7 @@ CREATE TABLE stuinfo (
 );
 ```
 
-##### 通用写法
+### 通用写法
 
 ``` mysql
 CREATE TABLE IF NOT EXISTS stuinfo (
@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS stuinfo (
 );
 ```
 
-#### 修改表时添加约束
+### 修改表时添加约束
 
 - 添加列级约束
 
@@ -510,7 +510,7 @@ CREATE TABLE stuinfo(
    ADD CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id); 
    ```
 
-#### 修改表时删除约束
+### 修改表时删除约束
 
 1. 删除非空约束
 
@@ -550,7 +550,7 @@ CREATE TABLE stuinfo(
    ALTER TABLE stuinfo DROP FOREIGN KEY fk_stuinfo_major;
    ```
 
-### 自增长列
+## 自增长列
 
 不用手动插入值，可以自动提供序列值，默认从1开始，步长为1
 
@@ -564,7 +564,7 @@ CREATE TABLE stuinfo(
 2. 自增长列只能支持数值型
 3. 自增长列必须为一个key
 
-#### 创建表时设置自增长列
+### 创建表时设置自增长列
 
 ``` 
 create table 表(
@@ -572,13 +572,13 @@ create table 表(
 )
 ```
 
-#### 修改表时设置自增长列
+### 修改表时设置自增长列
 
 ```
 alter table 表 modify column 字段名 字段类型 约束 auto_increment
 ```
 
-#### 删除自增长列
+### 删除自增长列
 
 ```
 alter table 表 modify column 字段名 字段类型 约束 

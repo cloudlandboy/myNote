@@ -1,4 +1,4 @@
-## Hibernate 实体的状态
+# Hibernate 实体的状态
 
 实体Entity有三种状态，`瞬时状态`、`持久状态`、`脱管状态`
 
@@ -10,13 +10,13 @@
 
 
 
-### 瞬时转持久
+## 瞬时转持久
 
 新创建的一个对象，经过save,或者savaOrUpdate调用后，会变成持久状态
 
 
 
-### 持久转脱管
+## 持久转脱管
 
 `load`，`get`返回的对象是持久状态的，当session关闭或者清除后，对象变成脱管状态
 
@@ -100,7 +100,7 @@ public class State {
 
 
 
-### 总结
+## 总结
 
 `get`、`load`、`createQuery`、`createCriteria` 等从数据库获得的都是持久态
 

@@ -1,8 +1,8 @@
-## 单行函数
+# 单行函数
 
-### 字符函数
+## 字符函数
 
-#### length(s)
+### length(s)
 
 获取参数值的字符个数
 
@@ -11,7 +11,7 @@ SELECT LENGTH('john');
 SELECT LENGTH('张三丰hahaha');
 ```
 
-#### CONCAT(s1,s2...sn)
+### CONCAT(s1,s2...sn)
 
  拼接字符串
 
@@ -19,7 +19,7 @@ SELECT LENGTH('张三丰hahaha');
 SELECT CONCAT(last_name,'_',first_name) 姓名 FROM employees;
 ```
 
-#### UPPER(s)
+### UPPER(s)
 
 将字符串转换为大写
 
@@ -27,7 +27,7 @@ SELECT CONCAT(last_name,'_',first_name) 姓名 FROM employees;
 SELECT UPPER('john');
 ```
 
-#### LOWER(s)
+### LOWER(s)
 
 将字符串转换为小写
 
@@ -40,7 +40,7 @@ SELECT LOWER('joHn');
 SELECT CONCAT(UPPER(last_name),LOWER(first_name))  姓名 FROM employees;
 ```
 
-#### SUBSTR(s, start, length)、SUBSTRING()
+### SUBSTR(s, start, length)、SUBSTRING()
 
 SUBSTR(s, start, length)：从字符串 s 的 start 位置截取长度为 length 的子字符串
 
@@ -69,7 +69,7 @@ FROM employees;
 
 
 
-#### INSTR(s,s)
+### INSTR(s,s)
 
 返回子串第一次出现的索引，如果找不到返回0
 
@@ -79,7 +79,7 @@ SELECT INSTR('杨不殷六侠悔爱上了殷六侠','殷八侠') AS out_put;
 
 
 
-#### TRIM(s)
+### TRIM(s)
 
 LTRIM(s)：去掉字符串 s **开始**处的空格
 
@@ -93,7 +93,7 @@ SELECT LENGTH(TRIM('    张翠山    ')) AS out_put;
 
 
 
-#### LPAD(s1,len,s2)
+### LPAD(s1,len,s2)
 
 在字符串 s1 的`开始`处填充字符串 s2，使字符串长度达到 len
 
@@ -109,7 +109,7 @@ SELECT LPAD('殷素素',2,'*') AS out_put;	--> 殷素
 
 
 
-#### RPAD(s1,len,s2)
+### RPAD(s1,len,s2)
 
  在字符串 s1 的`结尾`处添加字符串 s2，使字符串的长度达到 len
 
@@ -123,7 +123,7 @@ SELECT RPAD('殷素素',5,'*') AS out_put;	--> 殷素素**
 SELECT RPAD('殷素素',2,'*') AS out_put;	--> 殷素
 ```
 
-#### REPLACE(s,s1,s2)
+### REPLACE(s,s1,s2)
 
 用字符串 s2 替代字符串 s 中的字符串 s1
 
@@ -133,9 +133,9 @@ SELECT REPLACE('张无忌爱上了周芷若','周芷若','赵敏') AS out_put;	-
 
 
 
-### 数学函数
+## 数学函数
 
-#### ROUND(x)
+### ROUND(x)
 
 ROUND(x,d)：保留d位小数
 
@@ -149,7 +149,7 @@ SELECT ROUND(-1.55);	--> -2
 SELECT ROUND(1.567,2);	--> 1.57
 ```
 
-#### CEIL(x)
+### CEIL(x)
 
 向上取整
 
@@ -161,7 +161,7 @@ SELECT CEIL(-1.02);	--> -1
 SELECT CEIL(1.02);	--> 2
 ```
 
-#### FLOOR(x)
+### FLOOR(x)
 
 向下取整
 
@@ -173,7 +173,7 @@ SELECT FLOOR(-1.58);	--> -2
 SELECT FLOOR(1.58);	--> 1
 ```
 
-#### TRUNCATE(x,y)
+### TRUNCATE(x,y)
 
 返回数值 x 保留到小数点后 y 位的值（与 ROUND 最大的区别是`不会`进行四舍五入）
 
@@ -181,7 +181,7 @@ SELECT FLOOR(1.58);	--> 1
 SELECT TRUNCATE(1.567,2);    --> 1.56
 ```
 
-#### MOD(x,y)
+### MOD(x,y)
 
 返回 x 除以 y 以后的余数　
 
@@ -207,9 +207,9 @@ SELECT MOD(-10,-3);	--> -1
 
 
 
-### 日期函数
+## 日期函数
 
-#### NOW()
+### NOW()
 
 返回当前系统时间(注：日期+时间)
 
@@ -217,7 +217,7 @@ SELECT MOD(-10,-3);	--> -1
 SELECT NOW();	--> 2019-10-05 09:56:57
 ```
 
-#### CURDATE()
+### CURDATE()
 
 返回当前系统日期，不包含时间
 
@@ -225,13 +225,13 @@ SELECT NOW();	--> 2019-10-05 09:56:57
 SELECT CURDATE();	--> 2019-10-05
 ```
 
-#### CURTIME()
+### CURTIME()
 
 ``` mysql
 SELECT CURTIME();	-->09:56:57
 ```
 
-#### YEAR(d)
+### YEAR(d)
 
 返回年份
 
@@ -247,7 +247,7 @@ SELECT YEAR('1998-1-1');	-->1998
 SELECT  YEAR(hiredate) 入职时间 FROM employees;
 ```
 
-#### MONTH(d)
+### MONTH(d)
 
 返回日期d中的月份值，1 到 12
 
@@ -255,7 +255,7 @@ SELECT  YEAR(hiredate) 入职时间 FROM employees;
 SELECT MONTH(NOW());	--> 10
 ```
 
-#### MONTHNAME(d)
+### MONTHNAME(d)
 
  返回日期当中的月份名称，如 November
 
@@ -263,7 +263,7 @@ SELECT MONTH(NOW());	--> 10
 SELECT MONTHNAME(NOW());	--> October
 ```
 
-#### STR_TO_DATE(s, f)
+### STR_TO_DATE(s, f)
 
 将字符通过指定的格式转换成日期
 
@@ -281,7 +281,7 @@ SELECT * FROM employees WHERE hiredate = '1992-4-3';
 SELECT * FROM employees WHERE hiredate = STR_TO_DATE('4-3 1992','%c-%d %Y');
 ```
 
-#### DATE_FORMAT(d,f)
+### DATE_FORMAT(d,f)
 
 将日期通过指定的格式转换成字符
 
@@ -297,9 +297,9 @@ FROM employees
 WHERE commission_pct IS NOT NULL;
 ```
 
-### 其他函数
+## 其他函数
 
-#### VERSION()
+### VERSION()
 
 返回数据库的版本号
 
@@ -307,7 +307,7 @@ WHERE commission_pct IS NOT NULL;
 SELECT VERSION();
 ```
 
-#### DATABASE()
+### DATABASE()
 
  返回当前数据库名
 
@@ -315,7 +315,7 @@ SELECT VERSION();
 SELECT DATABASE();
 ```
 
-#### USER()
+### USER()
 
 返回当前用户
 
@@ -323,9 +323,9 @@ SELECT DATABASE();
 SELECT USER();
 ```
 
-### 流程控制函数
+## 流程控制函数
 
-#### IF(expr,v1,v2)
+### IF(expr,v1,v2)
 
 如果表达式 expr 成立，返回结果 v1；否则，返回结果 v2。
 
@@ -343,7 +343,7 @@ FROM
 	employees;
 ```
 
-#### CASE
+### CASE
 
 ```
 CASE expression

@@ -1,10 +1,10 @@
-## 模板引擎
+# 模板引擎
 
 常见的模板引擎有`JSP`、`Velocity`、`Freemarker`、`Thymeleaf`
 
 SpringBoot推荐使用Thymeleaf；
 
-### 引入thymeleaf
+## 引入thymeleaf
 
 ```xml
         <dependency>
@@ -31,7 +31,7 @@ SpringBoot推荐使用Thymeleaf；
 
 
 
-### Thymeleaf使用
+## Thymeleaf使用
 
 ```java
 package org.springframework.boot.autoconfigure.thymeleaf;
@@ -106,7 +106,7 @@ public class ThymeleafProperties {
 
    
 
-### 语法规则
+## 语法规则
 
 `th:text` --> 改变当前元素里面的文本内容；
 

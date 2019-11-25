@@ -1,8 +1,8 @@
 
 
-## hiberate查询语句
+# hiberate查询语句
 
-### HQL
+## HQL
 
 Hibernate Query Language的缩写,就是Hibernate的查询语言
 
@@ -87,7 +87,7 @@ public class HQL {
 
 
 
-### Criteria
+## Criteria
 
 hibernate提供纯面向对象查询语言，提供直接使用PO对象进行操作。
 
@@ -211,7 +211,7 @@ public class Criteria {
 
 
 
-### 原生SQL
+## 原生SQL
 
 ```java
 package club.zzrfdsnsyl.demo.d_sql;

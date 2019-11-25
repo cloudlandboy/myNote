@@ -1,4 +1,4 @@
-## SpringBoot Web开发
+# SpringBoot Web开发
 
 1. 创建SpringBoot应用，选中我们需要的模块
 
@@ -7,7 +7,7 @@
 
 
 
-### web自动配置规则
+## web自动配置规则
 
 1. WebMvcAutoConfiguration
 2. WebMvcProperties
@@ -21,7 +21,7 @@
 
 
 
-### SpringBoot对静态资源的映射规则
+## SpringBoot对静态资源的映射规则
 
 `WebMvcAutoConfiguration`类的`addResourceHandlers`方法：（添加资源映射）
 
@@ -71,7 +71,7 @@
 
 
 
-### 非webjars，自己的静态资源怎么访问
+## 非webjars，自己的静态资源怎么访问
 
 **资源配置类：** 
 
@@ -112,13 +112,13 @@ public class ResourceProperties {
 
 localhost:8080/abc 	--->	去静态资源文件夹里面找abc
 
-### 欢迎页映射
+## 欢迎页映射
 
 ![1573819949494](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573819949494.png)
 
 `location`就是静态资源路径，所以欢迎页的页面就是上面静态资源下的`index.html`，被`/**`映射，因此直接访问项目就是访问欢迎页
 
-### 网站图标映射（favicon.ico）
+## 网站图标映射（favicon.ico）
 
 所有的 favicon.ico  都是在静态资源文件下找；
 

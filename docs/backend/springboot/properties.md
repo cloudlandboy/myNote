@@ -1,4 +1,4 @@
-### 配置文件
+# 配置文件
 
 SpringBoot使用一个全局的配置文件，配置文件名`application`是固定的；
 
@@ -10,7 +10,7 @@ SpringBoot使用一个全局的配置文件，配置文件名`application`是固
 
 
 
-### YAML
+## YAML
 
 YAML（YAML Ain't Markup Language）
 
@@ -24,7 +24,7 @@ YAML（YAML Ain't Markup Language）
 
 ​	YAML：**以数据为中心**，比json、xml等更适合做配置文件；
 
-#### YAML语法：
+### YAML语法：
 
 以`空格`的缩进来控制层级关系；只要是左对齐的一列数据，都是同一个层级的
 
@@ -32,7 +32,7 @@ YAML（YAML Ain't Markup Language）
 
 冒号之后如果有值，那么冒号和值之间至少有一个空格，不能紧贴着
 
-##### 字面量：普通的值（数字，字符串，布尔）
+### 字面量：普通的值（数字，字符串，布尔）
 
 `k: v`
 
@@ -46,7 +46,7 @@ YAML（YAML Ain't Markup Language）
 
 ?> _eg：_ name:   ‘zhangsan \n lisi’：输出；zhangsan \n  lisi
 
-##### 对象、Map（属性和值）：
+### 对象、Map（属性和值）：
 
 `k: v`在下一行来写对象的属性和值的关系；注意缩进
 
@@ -65,7 +65,7 @@ YAML（YAML Ain't Markup Language）
 
 
 
-##### 数组（List、Set）
+### 数组（List、Set）
 
 1. ```
    fruits: 
@@ -82,7 +82,7 @@ YAML（YAML Ain't Markup Language）
 
 
 
-### 配置文件值注入
+## 配置文件值注入
 
 <details> 
 <summary style="font-weight:bold;color:green">JavaBean：</summary>
@@ -290,7 +290,7 @@ class HelloworldquickstartApplicationTests {
 
 
 
-### properties
+## properties
 
 上面yaml对应的properties配置文件写法
 
@@ -309,7 +309,7 @@ person.pet.age=10
 
 !> 测试，发现中文会乱码，而且char类型还会抛出Failed to bind properties under 'person.gender' to java.lang.Character异常
 
-#### 中文乱码解决方法：
+### 中文乱码解决方法：
 
 在设置中找到`File Encodings`，将配置文件字符集改为`UTF-8`，并勾选：
 - [x] `Transparent native-to-ascii conversion`
@@ -322,7 +322,7 @@ person.pet.age=10
 
 
 
-### 配置文件值注入两种方式对比
+## 配置文件值注入两种方式对比
 
 配置文件值注入有两种方式，一个是Spring Boot的`@ConfigurationProperties`注解，另一个是spring原先的`@value`注解
 
@@ -344,7 +344,7 @@ person.pet.age=10
 ##　properties配置文件
 persion.age=#{2019-1986+1}
 
-## Person类
+# Person类
 #--------------------使用@ConfigurationProperties注解，会抛出异常--------------------
 @Component
 @ConfigurationProperties(prefix = "person")
@@ -381,7 +381,7 @@ public class Person {
 
 
 
-### @PropertySource
+## @PropertySource
 
 `@PropertySource`注解的作用是加载指定的配置文件，值可以是数组，也就是可以加载多个配置文件
 
@@ -395,7 +395,7 @@ springboot默认加载的配置文件名是`application`，如果配置文件名
 
 
 
-### @ImportResource
+## @ImportResource
 
 `@ImportResource`注解用于导入Spring的配置文件，让配置文件里面的内容生效；(就是以前写的springmvc.xml、applicationContext.xml)
 
@@ -413,13 +413,13 @@ Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件
 
 
 
-### @Configuration
+## @Configuration
 
 SpringBoot推荐给容器中添加组件的方式；推荐使用全注解的方式
 
 配置类**@Configuration**  ---equals--->	Spring配置文件
 
-#### @Bean
+### @Bean
 
 使用**@Bean**给容器中添加组件
 
@@ -457,7 +457,7 @@ public class BeanConfiguration {
 
 
 
-### 配置文件占位符
+## 配置文件占位符
 
 **随机**
 
@@ -485,11 +485,11 @@ ${random.int[1024,65536]}
 
 
 
-### Profile
+## Profile
 
 Profile是Spring对不同环境提供不同配置功能的支持，可以通过激活、指定参数等方式快速切换环境
 
-#### 多profile文件形式
+### 多profile文件形式
 
 文件名格式：application-{profile}.properties/yml，例如：
 
@@ -506,7 +506,7 @@ Profile是Spring对不同环境提供不同配置功能的支持，可以通过�
 
 
 
-#### yml支持多文档块方式
+### yml支持多文档块方式
 
 每个文档块使用`---`分割
 
@@ -532,7 +532,7 @@ spring:
 
 
 
-#### 激活指定profile的三种方式
+### 激活指定profile的三种方式
 
 1. 在配置文件中指定  spring.profiles.active=dev（如上）
 
@@ -556,7 +556,7 @@ spring:
 
 
 
-### 配置文件加载位置
+## 配置文件加载位置
 
 springboot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件
 
@@ -611,7 +611,7 @@ SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
 
 
-### 外部配置加载顺序
+## 外部配置加载顺序
 
 **SpringBoot也可以从以下位置加载配置； 优先级从高到低；高优先级的配置覆盖低优先级的配置，所有的配置会形成互补配置**
 

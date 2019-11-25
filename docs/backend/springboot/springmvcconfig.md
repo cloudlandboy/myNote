@@ -1,4 +1,4 @@
-## SpringMVC自动配置
+# SpringMVC自动配置
 
 Spring Boot为Spring MVC提供了自动配置，可与大多数应用程序完美配合。
 
@@ -21,7 +21,7 @@ Spring Boot为Spring MVC提供了自动配置，可与大多数应用程序完�
 
 如果您想完全掌控 Spring MVC，可以添加自定义注解了 `@EnableWebMvc` 的 @Configuration 配置类。
 
-### 视图解析器
+## 视图解析器
 
 视图解析器：根据方法的返回值得到视图对象（View），视图对象决定如何渲染（转发？重定向？）
 
@@ -53,7 +53,7 @@ public class MyViewResolver implements ViewResolver {
 
 
 
-### 转换器、格式化器
+## 转换器、格式化器
 
 - `Converter`：转换器；  public String hello(User user)：类型转换使用Converter（表单数据转为user）
 - `Formatter`  格式化器；  2017.12.17===Date；
@@ -71,7 +71,7 @@ public class MyViewResolver implements ViewResolver {
 
 
 
-### HttpMessageConverters
+## HttpMessageConverters
 
 - `HttpMessageConverter`：SpringMVC用来转换Http请求和响应的；User---Json；
 - `HttpMessageConverters` 是从容器中确定；获取所有的HttpMessageConverter；
@@ -80,13 +80,13 @@ public class MyViewResolver implements ViewResolver {
 
 
 
-### MessageCodesResolver
+## MessageCodesResolver
 
 <mark>**我们可以配置一个ConfigurableWebBindingInitializer来替换默认的；（添加到容器）**</mark>
 
 
 
-### 扩展SpringMVC
+## 扩展SpringMVC
 
 以前的配置文件中的配置
 
@@ -178,7 +178,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 
 ![1573892805539](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573892805539.png)
 
-### 全面接管SpringMVC
+## 全面接管SpringMVC
 
 SpringBoot对SpringMVC的自动配置不需要了，所有都是由我们自己来配置；所有的SpringMVC的自动配置都失效了
 
@@ -235,7 +235,7 @@ public class WebMvcAutoConfiguration
 
 
 
-### 如何修改SpringBoot的默认配置
+## 如何修改SpringBoot的默认配置
 
 SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean、@Component）如果有就用用户配置的，如果没有，才自动配置；如果有些组件可以有多个（ViewResolver）将用户配置的和自己默认的组合起来；
 

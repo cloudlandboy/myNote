@@ -1,4 +1,4 @@
-## apache CXF入门
+# apache CXF入门
 
 maven依赖：
 
@@ -17,7 +17,7 @@ maven依赖：
 
 
 
-### 整合Spring开发
+## 整合Spring开发
 
 第一步：创建动态web项目
 

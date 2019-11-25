@@ -1,4 +1,4 @@
-##   LinkedList原理
+#   LinkedList原理
 
 [TOC]
 
@@ -15,7 +15,7 @@ LinkedList底层用双向链表实现的存储。特点：查询效率低，增�
 ![LinkedList的底层源码.png](https://cdn.static.note.zzrfdsn.cn/images/20191030205358.png)  
 ![ LinkedList的底层源码.png](https://cdn.static.note.zzrfdsn.cn/images/20191030205526.png)
 
-### 自己实现linkedlist
+## 自己实现linkedlist
 
 ``` java
 package cn.clboy.linkedlist;

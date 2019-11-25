@@ -1,4 +1,4 @@
-## SpringBoot默认的错误处理机制
+# SpringBoot默认的错误处理机制
 
 当访问一个不存在的页面，或者程序抛出异常时
 
@@ -28,7 +28,7 @@
 
 
 
-### ErrorPageCustomizer
+## ErrorPageCustomizer
 
 ```java
     @Bean
@@ -70,7 +70,7 @@
 
 然后这个error请求就会被BasicErrorController处理；
 
-### BasicErrorController
+## BasicErrorController
 
 ```java
     @Bean
@@ -127,7 +127,7 @@ ErrorViewResolver从哪里来的呢？
 
 已经在容器中注册了一个DefaultErrorViewResolver
 
-### DefaultErrorViewResolver
+## DefaultErrorViewResolver
 
 
 ```java
@@ -209,7 +209,7 @@ ErrorViewResolver从哪里来的呢？
 
 **所以：**
 
-### 如何定制错误响应页面
+## 如何定制错误响应页面
 
 - 有模板引擎的情况下；将错误页面命名为  `错误状态码.html` 放在模板引擎文件夹里面的 error文件夹下发生此状态码的错误就会来到这里找对应的页面；
 
@@ -236,7 +236,7 @@ ErrorViewResolver从哪里来的呢？
 
   **页面可以获取哪些数据**
 
-### DefaultErrorAttributes
+## DefaultErrorAttributes
 
 再看一下BasicErrorController的errorHtml方法
 
@@ -298,7 +298,7 @@ server.error.include-exception=true
 - 没有模板引擎（模板引擎找不到这个错误页面），就会在静态资源文件夹下找；
 - 如果以上都没有找到错误页面，就是默认来到SpringBoot默认的错误提示页面；
 
-### defaultErrorView
+## defaultErrorView
 
 ![1574146899180](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574146899180.png)
 
@@ -308,7 +308,7 @@ server.error.include-exception=true
 
 
 
-### 如何定制JSON数据
+## 如何定制JSON数据
 
 springboot做了自适应效果，浏览器访问响应错误页面。客户端访问响应错误信息的json数据
 

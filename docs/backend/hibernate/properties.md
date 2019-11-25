@@ -1,6 +1,6 @@
-## Hibernate配置文件
+# Hibernate配置文件
 
-### 主配置文件
+## 主配置文件
 
 `hibernate.cfg.xml`
 
@@ -74,7 +74,7 @@
 
 
 
-### 实体类映射文件
+## 实体类映射文件
 
 实体类
 
@@ -86,7 +86,7 @@
 
 
 
-#### 主键
+### 主键
 
 -  Java按**地址区**分同一个类的不同对象.l
 - 关系数据库用**主键区分同一条**记录l
@@ -173,7 +173,7 @@ dynamic-update="true/false" 同上
 
 
 
-### API
+## API
 
 ```java
 package club.zzrfdsnsyl.hibernateAPI;
@@ -241,7 +241,7 @@ public class A_api {
 
 
 
-### 简单的增删改查
+## 简单的增删改查
 
 ``` java
 package club.zzrfdsnsyl.hibernateAPI;
@@ -312,7 +312,7 @@ public class B_api {
 
 
 
-### 数据类型
+## 数据类型
 
 | Java数据类型                       | Hibernate数据类型 | 标准SQL数据类型 (PS:对于不同的DB可能有所差异) |
 | ---------------------------------- | ----------------- | --------------------------------------------- |

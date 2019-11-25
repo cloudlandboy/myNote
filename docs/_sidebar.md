@@ -5,8 +5,11 @@
   - [Hibernate](backend/hibernate/_sidebar.md)
   - [WebService](backend/webservice/_sidebar.md)
   - [Spring Boot](backend/springboot/_sidebar.md)
+  - [Spring Cloud](backend/springCloud/_sidebar.md)
 - **前端**
   - [node](/frontend/node/_sidebar.md)
+- 项目
+  - 
 - **其他**
   - [deepin](others/deepin/_sidebar.md)
   - [IDEA](others/IDEA.md)

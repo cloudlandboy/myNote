@@ -1,4 +1,4 @@
-## 自动配置原理
+# 自动配置原理
 
 配置文件到底能写什么？怎么写？自动配置原理；
 
@@ -15,7 +15,7 @@ SpringBoot启动的时候加载主配置类，开启了自动配置功能
 
 
 
-### @EnableAutoConfiguration 作用
+## @EnableAutoConfiguration 作用
 
 - 利用EnableAutoConfigurationImportSelector给容器中导入一些组件
 
@@ -36,7 +36,7 @@ SpringBoot启动的时候加载主配置类，开启了自动配置功能
 
 
 
-### 以HttpEncodingAutoConfiguration（Http编码自动配置）为例解释自动配置原理
+## 以HttpEncodingAutoConfiguration（Http编码自动配置）为例解释自动配置原理
 
 
 
@@ -119,7 +119,7 @@ public class HttpProperties {
 
 
 
-### 总结
+## 总结
 
 - SpringBoot启动会加载大量的自动配置类
 - 我们看我们需要的功能有没有SpringBoot默认写好的自动配置类
@@ -134,7 +134,7 @@ public class HttpProperties {
 
 
 
-### @Conditional派生注解
+## @Conditional派生注解
 
 作用：必须是@Conditional指定的条件成立，才给容器中添加组件，配置配里面的所有内容才生效；
 
@@ -155,7 +155,7 @@ public class HttpProperties {
 
 
 
-### 查看那些自动配置类生效了
+## 查看那些自动配置类生效了
 
 自动配置类必须在一定的条件下才能生效；
 

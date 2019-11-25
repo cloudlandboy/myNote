@@ -1,4 +1,4 @@
-## MySQL事物
+# MySQL事物
 
 TCL：`Transaction Control Language` 事务控制语言
 
@@ -10,7 +10,7 @@ TCL：`Transaction Control Language` 事务控制语言
 - 通过show engines；来查看mysql支持的存储引擎。
 - 在mysql中用的最多的存储引擎有：innodb，myisam ,memory 等。其中`innodb`支持事务，而myisam、memory等不支持
 
-### 转账案例
+## 转账案例
 
 张三丰转给郭襄500元
 
@@ -27,7 +27,7 @@ update 表 set 郭襄的余额=郭襄的余额+500 where name='郭襄'
 
 
 
-### 事务的特性(ACID)
+## 事务的特性(ACID)
 
 1. **原子性**（Atomicity）
 
@@ -45,9 +45,9 @@ update 表 set 郭襄的余额=郭襄的余额+500 where name='郭襄'
 
    持久性是指一个事务一旦被提交，它对数据库中数据的改变就是永久性的，接下来的其他操作和数据库故障不应该对其有任何影响
 
-### 事务的创建
+## 事务的创建
 
-#### 隐式事务
+### 隐式事务
 
 事务没有明显的开启和结束的标记，比如insert、update、delete语句
 
@@ -56,7 +56,7 @@ update 表 set 郭襄的余额=郭襄的余额+500 where name='郭襄'
 delete from 表 where id =1;
 ```
 
-#### 显式事务
+### 显式事务
 
 事务具有明显的开启和结束的标记
 
@@ -74,7 +74,7 @@ SHOW ENGINES;
 
 
 
-##### 开启事物步骤
+### 开启事物步骤
 
 1. 开启事务
 
@@ -104,7 +104,7 @@ SHOW ENGINES;
 
    
 
-### 并发事务
+## 并发事务
 
 1. 事务的并发问题是如何发生的？
 
@@ -123,7 +123,7 @@ SHOW ENGINES;
 
    通过设置隔离级别来解决并发问题
 
-### 事物隔离级别
+## 事物隔离级别
 
 √：已解决
 
@@ -154,7 +154,7 @@ set transaction isolation level read committed;
 set global transaction isolation level read committed;
 ```
 
-### 案例
+## 案例
 
 1. 事务的使用步骤
 

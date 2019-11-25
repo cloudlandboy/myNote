@@ -1,4 +1,4 @@
-## DML数据处理之增删改
+# DML数据处理之增删改
 
 DML(Data Manipulation Language –数据操纵语言) 可以在下列条件下执行:
 
@@ -33,17 +33,17 @@ CREATE TABLE users(
 DESC my_employees;
 ```
 
-### INSERT
+## INSERT
 
-#### 方式一
+### 方式一
 
-##### 语法
+### 语法
 
 ``` 
 insert into 表名(字段名,...) values(值,...);
 ```
 
-##### 特点
+### 特点
 
 1. 要求值的类型和字段的类型要一致或兼容
 
@@ -59,7 +59,7 @@ insert into 表名(字段名,...) values(值,...);
 4. 字段和值的个数必须一致
 5. 字段名可以省略，默认所有列
 
-#### 方式二
+### 方式二
 
 语法
 
@@ -84,7 +84,7 @@ insert into 表名 set 字段=值,字段=值,...;
    查询语句;
    ```
 
-#### 向表中插入数据
+### 向表中插入数据
 
 向my_employees表中插入下列数据
 
@@ -130,11 +130,11 @@ VALUES
 	( 3, 'Bbiri', 20 );
 ```
 
-### UPDATE
+## UPDATE
 
-#### 修改单表的记录
+### 修改单表的记录
 
-##### 语法
+### 语法
 
 ```
 update 表名 set 字段=值,字段=值 【where 筛选条件】;
@@ -152,9 +152,9 @@ update 表名 set 字段=值,字段=值 【where 筛选条件】;
    UPDATE my_employees SET salary=1000 WHERE salary<900;
    ```
 
-#### 修改多表的记录
+### 修改多表的记录
 
-##### 语法
+### 语法
 
 ``` 
 update 表1 别名 
@@ -164,19 +164,19 @@ set 字段=值,字段=值
 【where 筛选条件】;
 ```
 
-### DELETE
+## DELETE
 
-#### 删除单表的记录
+### 删除单表的记录
 
-##### 语法
+### 语法
 
 ```
 delete from 表名 【where 筛选条件】【limit 条目数】
 ```
 
-#### 级联删除
+### 级联删除
 
-##### 语法
+### 语法
 
 ```
 delete 别名1,别名2 from 表1 别名 
@@ -206,17 +206,17 @@ on 连接条件
    DELETE FROM users;
    ```
 
-### TRUNCATE
+## TRUNCATE
 
 清空表
 
-#### 语法
+### 语法
 
 ```
 truncate table 表名
 ```
 
-### DELETE和TRUNCATE的区别
+## DELETE和TRUNCATE的区别
 
 1. truncate删除后，如果再插入，标识列从1开始。delete删除后，如果再插入，标识列从断点开始
 2. delete可以添加筛选条件，truncate不可以添加筛选条件

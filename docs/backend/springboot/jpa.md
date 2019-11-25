@@ -1,10 +1,10 @@
-## SpringBoot整合JPA
+# SpringBoot整合JPA
 
 **SpringData：**
 
 ![SpringData](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180306105412.png)
 
-### 依赖
+## 依赖
 
 ```xml
 <dependencies>
@@ -32,7 +32,7 @@
 
 
 
-### 实体类
+## 实体类
 
 ```java
 package cn.clboy.springbootjpa.entity;
@@ -81,7 +81,7 @@ public class User {
 
 ```
 
-### DAO
+## DAO
 
 ```java
 package cn.clboy.springbootjpa.repository;
@@ -98,7 +98,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 }
 ```
 
-### 配置文件
+## 配置文件
 
 ```yaml
 spring:
@@ -115,7 +115,7 @@ spring:
 
 
 
-### Controller
+## Controller
 
 ```java
 

@@ -1,11 +1,11 @@
-## mysql的安装与使用
+# mysql的安装与使用
 
-### mysql的安装
+## mysql的安装
 
 - Windows
 - [Linux](https://note.zzrfdsn.cn/note/root/cloudlandboy/linux/1566488563139.html)
 
-### 启动和停止MySQL服务
+## 启动和停止MySQL服务
 
 - Windows
 
@@ -23,7 +23,7 @@
 
   状态：service mysql(mysqld) status
 
-### MySQL服务端的登录和退出
+## MySQL服务端的登录和退出
 
 - 登录
 
@@ -37,7 +37,7 @@
 
   exit(quit)
 
-### MySql数据库的使用
+## MySql数据库的使用
 
 - 不区分大小写(Linux上区分，可以通过配置文件修改)
 - 每句话用;或\g结尾
@@ -45,7 +45,7 @@
 - 关键字不能缩写也不能分行
 - 用缩进提高语句的可读性
 
-### 基本命令
+## 基本命令
 
 查看 mysql 中有哪些个数据库: 
 

@@ -1,8 +1,8 @@
-## SpringBoot启动流程
+# SpringBoot启动流程
 
 ![1574497298469](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574497298469.png)
 
-### 启动原理
+## 启动原理
 
 ```java
     public static void main(String[] args) {
@@ -403,7 +403,7 @@
 
 
 
-### 几个重要的事件回调机制
+## 几个重要的事件回调机制
 
 **配置在META-INF/spring.factories**
 
@@ -415,7 +415,7 @@
 - ApplicationRunner
 - CommandLineRunner
 
-### 测试
+## 测试
 
 1. 创建`ApplicationContextInitializer`和`SpringApplicationRunListener`的实现类，并在META-INF/spring.factories文件中配置
 
@@ -515,7 +515,7 @@
 
 
 
-### 修改Banner
+## 修改Banner
 
 默认是找类路径下的`banner.txt`，可以在配置文件中修改
 

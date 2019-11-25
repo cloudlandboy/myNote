@@ -1,4 +1,4 @@
-## 自定义Starter
+# 自定义Starter
 
 - 启动器只用来做依赖导入
 
@@ -8,12 +8,12 @@
 
   ![1574561125363](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574561125363.png)
 
-### 启动器
+## 启动器
 
 启动器模块是一个空 JAR 文件，仅提供辅助性依赖管理，这些依赖可能用于自动
 装配或者其他类库
 
-#### 命名规约
+### 命名规约
 
 - 官方命名
 
@@ -27,7 +27,7 @@
 
   *eg*：`mybatis-spring-boot-start`
 
-### 如何编写自动配置
+## 如何编写自动配置
 
 ```java
 @Configuration //指定这个类是一个配置类
@@ -52,7 +52,7 @@ org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
 
 
 
-### 案例
+## 案例
 
 1. 创建一个自动配置模块，和创建普通springboot项目一样，不需要引入其他starter
 

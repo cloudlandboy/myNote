@@ -1,8 +1,8 @@
 
 
-## WebService入门
+# WebService入门
 
-### 什么是WebService
+## 什么是WebService
 
 ​	Web service是一个[平台](http://baike.baidu.com/view/58664.htm)独立的，低耦合的，自包含的、基于可[编程](http://baike.baidu.com/view/3281.htm)的web的应用程序，可使用开放的[XML](http://baike.baidu.com/view/63.htm)（[标准通用标记语言](http://baike.baidu.com/view/5286041.htm)下的一个子集）[标准](http://baike.baidu.com/view/8079.htm)来[描述](http://baike.baidu.com/view/491264.htm)、发布、发现、协调和配置这些应用程序，用于开发分布式的互操作的[应用程序](http://baike.baidu.com/view/330120.htm)。
 
@@ -10,7 +10,7 @@
 
 ![webservice](https://cdn.static.note.zzrfdsn.cn/images/201911101542.png)
 
-### WebService的特点
+## WebService的特点
 
 - WebService通过HTTP POST方式接受客户的请求
 - WebService与客户端之间一般使用SOAP协议传输XML数据
@@ -18,13 +18,13 @@
 
 
 
-### 调用网络上的WebService服务
+## 调用网络上的WebService服务
 
 http://webxml.com.cn/
 
 
 
-### SOAP
+## SOAP
 
 Simple Object Access Protocol：简单对象访问协议
 
@@ -59,7 +59,7 @@ SOAPAction: "http://WebXml.com.cn/getCountryCityByIp"
 
 
 
-### WSDL 
+## WSDL 
 
 Web Services Description Language：Web服务描述语言
 
@@ -67,7 +67,7 @@ Web Services Description Language：Web服务描述语言
 
 
 
-### 发布一个WebService服务
+## 发布一个WebService服务
 
 
 
@@ -99,9 +99,9 @@ public class Hello {
 
 
 
-### 客户端调用
+## 客户端调用
 
-#### jdk中wsimport命令使用
+### jdk中wsimport命令使用
 
 作用：解析wsdl文件，生成客户端本地代码
 

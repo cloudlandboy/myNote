@@ -1,6 +1,6 @@
-## springboot日志配置
+# springboot日志配置
 
-### 市面上的日志框架
+## 市面上的日志框架
 
 `JUL`、`JCL`、`Jboss-logging`、`logback`、`log4j`、`log4j2`、`slf4j`....
 
@@ -16,7 +16,7 @@
 
 
 
-### SLF4j使用
+## SLF4j使用
 
 如何在系统中使用SLF4j  ：https://www.slf4j.org
 
@@ -40,7 +40,7 @@ public class HelloWorld {
 
 每一个日志的实现框架都有自己的配置文件。使用slf4j以后，配置文件还是做成日志实现框架自己本身的配置文件；
 
-### 遗留问题
+## 遗留问题
 
 项目中依赖的框架可能使用不同的日志：
 
@@ -50,7 +50,7 @@ public class HelloWorld {
 
 ![统一日志](http://www.slf4j.org/images/legacy.png)
 
-#### 如何让系统中所有的日志都统一到slf4j
+### 如何让系统中所有的日志都统一到slf4j
 
 1. 将系统中其他日志框架先排除出去；
 2. 用中间包来替换原有的日志框架（适配器的类名和包名与替换的被日志框架一致）；
@@ -58,7 +58,7 @@ public class HelloWorld {
 
 
 
-### SpringBoot日志关系
+## SpringBoot日志关系
 
 ```xml
 		<dependency>
@@ -121,9 +121,9 @@ Spring框架用的是commons-logging；
 
 **SpringBoot能自动适配所有的日志，而且底层使用slf4j+logback的方式记录日志，引入其他框架的时候，只需要把这个框架依赖的日志框架排除掉即可；**
 
-### 日志使用
+## 日志使用
 
-#### 默认配置
+### 默认配置
 
 SpringBoot默认帮我们配置好了日志；
 
@@ -163,7 +163,7 @@ SpringBoot默认帮我们配置好了日志；
 
 ```
 
-#### SpringBoot修改日志的默认配置
+### SpringBoot修改日志的默认配置
 
 ```properties
 # 也可以指定一个包路径 logging.level.com.xxx=error
@@ -190,7 +190,7 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 | 指定文件名   | (none)       | my.log   | 输出日志到my.log文件               |
 | (none)       | 指定目录     | /var/log | 输出到指定目录的 spring.log 文件中 |
 
-#### 指定配置
+### 指定配置
 
 给类路径下放上每个日志框架自己的配置文件即可；SpringBoot就不使用他默认配置的了
 
@@ -242,7 +242,7 @@ logback.xml：直接就被日志框架识别了；
 
  `no applicable action for [springProfile]`
 
-### 切换日志框架
+## 切换日志框架
 
 可以按照slf4j的日志适配图，进行相关的切换；
 

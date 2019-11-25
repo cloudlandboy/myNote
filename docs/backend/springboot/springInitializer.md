@@ -1,4 +1,4 @@
-## 使用Spring Initializer快速创建Spring Boot项目
+# 使用Spring Initializer快速创建Spring Boot项目
 
 IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目；
 
@@ -6,7 +6,7 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 !> 需要联网
 
-### IDEA
+## IDEA
 
 1. 创建项目时选择Spring Initializr
 
@@ -32,7 +32,7 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 
 
-### Eclipse
+## Eclipse
 
 1. 需要安装插件，或者使用STS版本
 

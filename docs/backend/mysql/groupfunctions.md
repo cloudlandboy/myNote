@@ -1,8 +1,8 @@
-## 分组函数
+# 分组函数
 
 用作统计使用，又称为聚合函数或统计函数或组函数
 
-### SUM(expression)
+## SUM(expression)
 
 ​	求和
 
@@ -10,7 +10,7 @@
 SELECT SUM(salary) FROM employees;
 ```
 
-### AVG(expression)
+## AVG(expression)
 
 ​	平均值
 
@@ -20,7 +20,7 @@ SELECT AVG(salary) FROM employees;
 
 
 
-### MAX(expression)
+## MAX(expression)
 
 ​	最大值
 
@@ -30,7 +30,7 @@ SELECT MAX(salary) FROM employees;
 
 
 
-### MIN(expression)
+## MIN(expression)
 
 ​	最小值
 
@@ -40,7 +40,7 @@ SELECT MIN(salary) FROM employees;
 
 
 
-### COUNT(expression)
+## COUNT(expression)
 
 ​	计算个数
 
@@ -88,9 +88,9 @@ FROM
 	employees;
 ```
 
-### 参数支持哪些类型
+## 参数支持哪些类型
 
-#### 字符
+### 字符
 
 先试图将字符转换成数值，如果转换成功，则继续运算；否则转换成0，再做运算
 
@@ -116,7 +116,7 @@ FROM
 
 
 
-#### 日期
+### 日期
 
 ``` mysql
 SELECT SUM(hiredate) ,AVG(hiredate) FROM employees;
@@ -132,7 +132,7 @@ SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 
 
 
-### 特点
+## 特点
 
 1. sum、avg一般用于处理数值型
 
@@ -142,7 +142,7 @@ SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 5. 一般使用count(*)用作统计行数
 6. 和分组函数一同查询的字段要求是group by后的字段
 
-### 案例
+## 案例
 
 1. 查询员工表中的最大入职时间和最小入职时间的相差天数 （DIFFRENCE）
 

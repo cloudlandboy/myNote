@@ -1,6 +1,6 @@
-## SpringBoot与数据库连接
+# SpringBoot与数据库连接
 
-### 依赖
+## 依赖
 
 ```xml
 <dependencies>
@@ -30,7 +30,7 @@
 </dependencies>
 ```
 
-### 配置数据库连接信息
+## 配置数据库连接信息
 
 ```yaml
 spring:
@@ -63,7 +63,7 @@ springboot默认是使用`com.zaxxer.hikari.HikariDataSource`作为数据源，2
 
 数据源的相关配置都在DataSourceProperties里面；
 
-### 自动配置原理
+## 自动配置原理
 
 ?> *TODO*
 
@@ -103,7 +103,7 @@ springboot默认支持的连池：
 
 
 
-### 启动应用执行sql
+## 启动应用执行sql
 
 SpringBoot在创建连接池后还会运行预定义的SQL脚本文件，具体参考`org.springframework.boot.autoconfigure.jdbc.DataSourceInitializationConfiguration`配置类，
 
@@ -178,7 +178,7 @@ spring:
 
 !> **注意：**项目每次启动都会执行一次sql
 
-### 整合Druid数据源
+## 整合Druid数据源
 
 > 选择哪个数据库连接池
 >
@@ -237,7 +237,7 @@ spring:
    }
    ```
 
-#### 配置参数
+### 配置参数
 
 ```yaml
 spring:

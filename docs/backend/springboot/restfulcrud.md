@@ -1,4 +1,4 @@
-## restful风格的增删改查
+# restful风格的增删改查
 
 静态资源文件：https://www.lanzous.com/i7eenib
 
@@ -9,7 +9,7 @@
 
 !> 如果你的静态资源明明放到了静态资源文件夹下却无法访问，请检查一下是不是在自定义的配置类上加了**@EnableWebMvc注解**
 
-### 默认访问首页
+## 默认访问首页
 
 template文件加不是静态资源文件夹，默认是无法直接访问的，所以要添加视图映射
 
@@ -40,7 +40,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 访问：<http://localhost:8080/>
 
-### i18n国际化
+## i18n国际化
 
 1. 编写国际化配置文件，抽取页面需要显示的国际化消息
 
@@ -197,7 +197,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 
 
-### 点击连接切换语言
+## 点击连接切换语言
 
 
 6. 实现点击连接切换语言，而不是更改浏览器
@@ -265,7 +265,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 
 
-### 实现登录功能
+## 实现登录功能
 
 1. 提供登录的controller
 
@@ -332,7 +332,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 
 
-### 修改页面立即生效
+## 修改页面立即生效
 
 ```properties
 # 禁用缓存
@@ -341,7 +341,7 @@ spring.thymeleaf.cache=false
 
 在页面修改完成以后按快捷键`ctrl+f9`，重新编译；
 
-### 拦截器进行登陆检查
+## 拦截器进行登陆检查
 
 1. 实现拦截器
 
@@ -438,7 +438,7 @@ spring.thymeleaf.cache=false
 
 
 
-### CRUD-员工列表
+## CRUD-员工列表
 
 使用rest风格
 
@@ -492,9 +492,9 @@ spring.thymeleaf.cache=false
 
 
 
-### thymeleaf公共页面元素抽取
+## thymeleaf公共页面元素抽取
 
-#### 语法
+### 语法
 
 ~{templatename::selector}：模板名::选择器
 
@@ -551,7 +551,7 @@ spring.thymeleaf.cache=false
 
 
 
-#### 后台页面抽取
+### 后台页面抽取
 
 1. 将后台主页中的顶部导航栏作为片段，在list页面引入
 
@@ -599,7 +599,7 @@ spring.thymeleaf.cache=false
    ```
 
    
-#### 引入片段传递参数
+### 引入片段传递参数
 
 实现点击当前项高亮
 
@@ -722,7 +722,7 @@ spring.thymeleaf.cache=false
 
    
 
-#### 员工添加
+### 员工添加
 
 1. 创建员工添加页面`add.html`
 
@@ -823,7 +823,7 @@ spring.thymeleaf.cache=false
 
 
 
-##### 日期格式修改
+### 日期格式修改
 
 !> 表单提交的日期格式必须是`yyyy/MM/dd`的格式，可以在配置文件中修改格式
 
@@ -835,7 +835,7 @@ spring.mvc.date-format=yyyy-MM-dd
 
 
 
-#### 员工修改
+### 员工修改
 
 1. 点击按钮跳转到编辑页面
 
@@ -923,7 +923,7 @@ spring.mvc.date-format=yyyy-MM-dd
 
 
 
-#### 员工删除
+### 员工删除
 
 1. 点击删除提交发出delete请求
 

@@ -1,6 +1,6 @@
-## SpringBoot整合Mybatis
+# SpringBoot整合Mybatis
 
-### 引入依赖
+## 引入依赖
 
 ```xml
 <dependencies>
@@ -48,7 +48,7 @@
 
 
 
-### 项目构建
+## 项目构建
 
 1. 在resources下创建`department.sql`和`employee.sql`，项目启动时创建表
 
@@ -206,7 +206,7 @@
          - classpath:employee.sql
    ```
 
-### Mybatis增删改查
+## Mybatis增删改查
 
 1. 创建mapper接口
 
@@ -260,9 +260,9 @@
 
    访问：<http://localhost:8080/dep/1>获取数据
 
-### Mybatis配置
+## Mybatis配置
 
-#### 开启驼峰命名法
+### 开启驼峰命名法
 
 我们的实体类和表中的列名一致，一点问题也没有
 
@@ -308,7 +308,7 @@ public class MybatisConfig {
 
 ![1574430280791](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574430280791.png)
 
-### Mapper扫描
+## Mapper扫描
 
 使用`@mapper注解`的类可以被扫描到容器中，但是每个Mapper都要加上这个注解就是一个繁琐的工作，能不能直接扫描某个包下的所有Mapper接口呢，当然可以，在springboot启动类上加上`@MapperScan`
 
@@ -324,7 +324,7 @@ public class SpringbootMybatisApplication {
 }
 ```
 
-### 使用xml配置文件
+## 使用xml配置文件
 
 1. 创建mybatis全局配置文件
 

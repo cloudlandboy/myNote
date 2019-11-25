@@ -1,4 +1,4 @@
-## 条件查询
+# 条件查询
 
 过滤：使用WHERE 子句，将不满足条件的行过滤掉。
 
@@ -18,9 +18,9 @@ select 查询列表 from 表名 where 筛选条件;
 |            | or (\|\|)             | 多个条件任一成立                                             |
 |            | not (!)               | 不成立，例：where not(salary>100);                           |
 
-### 案例
+## 案例
 
-#### 按条件表达式筛选
+### 按条件表达式筛选
 
 1. 查询工资>12000的员工信息
 
@@ -45,7 +45,7 @@ select 查询列表 from 表名 where 筛选条件;
    	department_id<>90;
    ```
 
-#### 按逻辑表达式筛选
+### 按逻辑表达式筛选
 
 1. 查询工资在10000到20000之间的员工名、工资以及奖金
 
@@ -99,7 +99,7 @@ select 查询列表 from 表名 where 筛选条件;
    ```
 
 
-####  模糊查询
+### 模糊查询
 
 1. 查询员工名中包含字符a的员工信息
 
@@ -137,7 +137,7 @@ select 查询列表 from 表名 where 筛选条件;
    	last_name LIKE '_$_%' ESCAPE '$';
    ```
 
-####  IN
+### IN
 
 含义：判断某字段的值是否属于in列表中的某一项
 特点：
@@ -170,7 +170,7 @@ WHERE
 	job_id = 'IT_PROT' OR job_id = 'AD_VP' OR JOB_ID ='AD_PRES';
 ```
 
-#### IS NULL
+### IS NULL
 
 **=或<>不能用于判断null值**
 is null或is not null 可以判断null值
@@ -199,7 +199,7 @@ is null或is not null 可以判断null值
    	commission_pct IS NOT NULL;
    ```
 
-#### 安全等于  <=>
+### 安全等于  <=>
 
 1. 查询没有奖金的员工名和奖金率
 

@@ -1,6 +1,6 @@
-## Spring Boot 入门
+# Spring Boot 入门
 
-### 简介
+## 简介
 
 [百度百科](http://t.cn/AirXJZuO)
 
@@ -16,7 +16,7 @@
 
 
 
-### 微服务
+## 微服务
 
 > 2014，martin fowler
 >
@@ -34,7 +34,7 @@
 
 
 
-### 环境约束
+## 环境约束
 
 –jdk1.8：Spring Boot 推荐jdk1.7及以上；
 
@@ -42,7 +42,7 @@
 
 
 
-### Maven设置
+## Maven设置
 
 给maven 的settings.xml配置文件的profiles标签添加：（设置使用的jdk版本）
 
@@ -65,7 +65,7 @@
 
 
 
-### 创建一个maven工程
+## 创建一个maven工程
 
 1. 导入spring boot相关的依赖
 
@@ -143,7 +143,7 @@
 
 
 
-### 简化部署
+## 简化部署
 
 1. 添加maven插件
 
@@ -167,9 +167,9 @@
 
 
 
-### Hello World探究
+## Hello World探究
 
-#### 依赖
+### 依赖
 
 ```
 	<!--Hello World项目的父工程是org.springframework.boot-->
@@ -194,7 +194,7 @@
   </parent>
 ```
 
-#### 启动器
+### 启动器
 
 ```xml
         <dependency>
@@ -211,7 +211,7 @@ Spring Boot将所有的功能场景都抽取出来，做成一个个的starters�
 
 
 
-#### 主程序类，主入口类
+### 主程序类，主入口类
 
 ```java
 @SpringBootApplication
