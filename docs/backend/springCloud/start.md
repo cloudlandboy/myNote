@@ -8,7 +8,7 @@
 
 当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是影响项目开发的关键。
 
- ![1525529091749](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525529091749.png)
+ ![1525529091749](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525529091749.png)
 
 存在的问题：
 
@@ -23,7 +23,7 @@
 
 当访问量逐渐增大，单一应用无法满足需求，此时为了应对更高的并发和业务需求，我们根据业务功能对系统进行拆分：
 
- ![1525529671801](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525529671801.png)
+ ![1525529671801](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525529671801.png)
 
 优点：
 
@@ -39,7 +39,7 @@
 
 当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式调用是关键。
 
- ![1525530657919](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525530657919.png)
+ ![1525530657919](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525530657919.png)
 
 优点：
 
@@ -55,7 +55,7 @@
 
 当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高集群利用率的资源调度和治理中心(SOA)是关键
 
-![1525530804753](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525530804753.png)
+![1525530804753](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525530804753.png)
 
 以前出现了什么问题？
 
@@ -78,7 +78,7 @@
 
 前面说的SOA，英文翻译过来是面向服务。微服务，似乎也是服务，都是对系统进行拆分。因此两者非常容易混淆，但其实有一些差别：
 
-![1525532344817](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525532344817.png)
+![1525532344817](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525532344817.png)
 
 微服务的特点：
 
@@ -96,7 +96,7 @@
 
 微服务结构图：
 
-![1526860071166](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1526860071166.png)
+![1526860071166](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1526860071166.png)
 
 
 

@@ -1,7 +1,5 @@
 # 初识SpringCloud
 
-# 
-
 微服务是一种架构方式，最终肯定需要技术架构去实施。
 
 微服务的实现方式很多，但是最火的莫过于Spring Cloud了。为什么？
@@ -29,7 +27,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 以上只是其中一部分，架构图：
 
-![1525575656796](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525575656796.png)
+![1525575656796](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525575656796.png)
 
 
 
@@ -397,9 +395,7 @@ Eureka就好比是滴滴，负责管理、记录服务提供者的信息。服�
 
 > 原理图
 
- ![1525597885059](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525597885059.png)
-
-<https://jingyan.baidu.com/article/ce4366495a1df73773afd3d3.html>
+ ![1525597885059](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525597885059.png)
 
 
 
@@ -413,11 +409,11 @@ Eureka就好比是滴滴，负责管理、记录服务提供者的信息。服�
 
 EurekaServer-服务注册中心依赖，Eureka Discovery-服务提供方和服务消费方。因为，对于eureka来说：服务提供方和服务消费方都属于客户端，注意选择Springboot的版本，可以查看springcloud官网当前稳定版本兼容的springboot版本
 
-![1574680199268](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680199268.png)
+![1574680199268](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680199268.png)
 
-![1574680309713](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680309713.png)
+![1574680309713](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680309713.png)
 
-![1574680364490](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680364490.png)
+![1574680364490](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574680364490.png)
 
 
 
@@ -536,7 +532,7 @@ public class SpringcloudEurekaServerApplication {
 
 创建项目，项目名为`springcloud-eureka-service-provider`，选择web场景和eureka客户端场景，添加mysql驱动和通用mapper依赖
 
-![1574683898661](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574683898661.png)
+![1574683898661](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574683898661.png)
 
 <details>
 

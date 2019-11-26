@@ -38,7 +38,7 @@ RPC，即 Remote Procedure Call（远程过程调用），是一个计算机通�
 
 RPC调用流程图：
 
-![1525568965976](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525568965976.png)
+![1525568965976](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525568965976.png)
 
 想要了解详细的RPC实现，给大家推荐一篇文章：[自己动手实现RPC](https://legacy.gitbook.com/book/huge0612/tour-of-rpc/details)
 
@@ -56,7 +56,7 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
 
 例如我们通过浏览器访问网站，就是通过Http协议。只不过浏览器把请求封装，发起请求以及接收响应，解析响应的事情都帮我们做了。如果是不通过浏览器，那么这些事情都需要自己去完成。
 
-![1525569352313](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525569352313.png)
+![1525569352313](https://cdn.static.note.zzrfdsn.cn/images/springcloud/https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525569352313.png)
 
 
 

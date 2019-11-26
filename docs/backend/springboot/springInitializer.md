@@ -18,7 +18,7 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
    ![idea02](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573639923504.png)
 
-   !> 出现 **Artifact contains illegal characters** 是因为使用了大写，只能是全小写
+   !> 出现 **Artifact contains illegal characters** 是因为`Artifact`中使用了大写，只能是全小写，单词之间用`-`分隔
 
 3. 选择需要的starter
 
