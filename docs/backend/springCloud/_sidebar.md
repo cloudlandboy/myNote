@@ -6,4 +6,6 @@
   - [负载均衡Ribbon](backend/springCloud/ribbon.md)
   - [Hystrix](backend/springCloud/hystrix.md)
   - [Feign](backend/springCloud/feign.md)
+  - [Zuul网关](backend/springCloud/zuul.md)
+  - [SpringCloud思维导图](http://static.clboy.cn/images/mimp/springCloud.png)
 
