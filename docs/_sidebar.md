@@ -8,8 +8,9 @@
   - [Spring Cloud](backend/springCloud/_sidebar.md)
 - **前端**
   - [node](/frontend/node/_sidebar.md)
+  - [ECMAScript](frontend/ecmascript/_sidebar.md)
 - 项目
-  - 
+  - [乐优商城](project/leyoumall/_sidebar.md)
 - **其他**
   - [deepin](others/deepin/_sidebar.md)
   - [IDEA](others/IDEA.md)
