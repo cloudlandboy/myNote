@@ -13,7 +13,7 @@
 - 孙云腊/男/1997
 - 专科
 - 期望职位：Java程序员
-- 期望薪资：5000-6000
+- 期望薪资：5000-8000
 - 期望城市：杭州
 - 个人博客：[http://www.clboy.cn](http://www.clboy.cn)
 
@@ -38,7 +38,8 @@
 - 熟悉关系型数据库MySQL，了解缓存数据库Redis
 - 熟悉全文检索Luene和Solr
 - 熟悉Linux常用命令
-- 了解FreeMarker模板引擎技术
+- 了解SpringBoot，SpringCloud
+- 了解FreeMarker和Thyemleaf模板引擎技术
 - 了解反向代理Nginx
 - 了解消息中间件ActiveMQ
 - 了解Dubbo和WebService远程调用
