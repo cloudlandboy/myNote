@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
   <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
   <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/emn178/js-md5/build/md5.min.js"></script>
   <script>
     const gitalk = new Gitalk({
       clientID: '4183c30109a1adc7be5a',
@@ -43,7 +44,7 @@
       repo: 'myNote',
       owner: 'cloudlandboy',
       admin: ['cloudlandboy'],
-      id: (location.pathname).split("/").pop().substring(0, 49), 
+      id: md5(location.pathname), 
       distractionFreeMode: false
     })
   </script>
