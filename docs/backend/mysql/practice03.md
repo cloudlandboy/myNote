@@ -65,7 +65,7 @@ SELECT a.* FROM a INNER JOIN b ON a.a_id = b.b_id;
 
 先使用连接查询a表的全部
 
-![1577093558538](https://cdn.staticzzrfdsn.cn/images/mysql/1577093558538.png)
+![1577093558538](https://cdn.static.zzrfdsn.cn/images/mysql/1577093558538.png)
 
 然后筛选出b中没有的数据
 

@@ -305,11 +305,11 @@ public @interface SpringBootApplication
 
        导入的组件由`org.springframework.boot.autoconfigure.AutoConfigurationPackages.Registrar`将主配置类（<mark>@SpringBootApplication标注的类</mark>）的所在包及下面所有子包里面的所有组件扫描到Spring容器；
 
-       ![DEBUG](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573637120233.png)
+       ![DEBUG](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573637120233.png)
 
        这里controller包是在主程序所在的包下，所以会被扫描到，我们在springboot包下创建一个test包，把主程序放在test包下，这样启动就只会去扫描test包下的内容而controller包就不会被扫描到，再访问开始的hello就是404
 
-       ![DEBUG](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573637728857.png)
+       ![DEBUG](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573637728857.png)
 
    - `@Import({AutoConfigurationImportSelector.class})`
 
@@ -317,7 +317,7 @@ public @interface SpringBootApplication
 
      有了自动配置类，免去了我们手动编写配置注入功能组件等的工作；
 
-     ![Configuration](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573638685562.png)
+     ![Configuration](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573638685562.png)
 
 
 

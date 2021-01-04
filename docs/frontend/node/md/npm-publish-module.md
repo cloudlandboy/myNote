@@ -37,7 +37,7 @@ Logged in as clboy on https://registry.npmjs.org/.
 
 如果你的邮箱没有验证就会出现下面发布失败的提示
 
-![20200427174432.png](https://cdn.staticzzrfdsn.cn/images/node/20200427174432.png)
+![20200427174432.png](https://cdn.static.zzrfdsn.cn/images/node/20200427174432.png)
 
 ## 测试
 
@@ -47,7 +47,7 @@ Logged in as clboy on https://registry.npmjs.org/.
 
 [index.js ](../code/npm-published-test/index.js ':include :type=code')
 
-![20200428161721.png](https://cdn.staticzzrfdsn.cn/images/node/20200428161721.png)
+![20200428161721.png](https://cdn.static.zzrfdsn.cn/images/node/20200428161721.png)
 
 
 

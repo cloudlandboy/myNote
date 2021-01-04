@@ -28,7 +28,7 @@ SpringBoot启动的时候加载主配置类，开启了自动配置功能
 
 - getCandidateConfigurations方法中，SpringFactoriesLoader.loadFactoryNames()，扫描所有jar包类路径下  `META-INF/spring.factories`，把扫描到的这些文件的内容包装成properties对象，从properties中获取到EnableAutoConfiguration.class（类名）对应的值，然后把它们添加在容器中
 
-  ![1573805094643](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573805094643.png)
+  ![1573805094643](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573805094643.png)
 
 - 每一个这样的  `xxxAutoConfiguration`类都是容器中的一个组件，都加入到容器中；用他们来做自动配置；
 

@@ -52,7 +52,7 @@ eureka:
 
 启动报错，很正常。因为10002服务没有启动：
 
-![1574732128406](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574732128406.png)
+![1574732128406](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574732128406.png)
 
 再次修改springcloud-eureka-server的配置(将10002注册给10001)：
 
@@ -71,23 +71,23 @@ eureka:
 
 将应用复制一份，换个名字，点击应用然后启动，如果没有services这个窗口，参考这里：[RunDashboard如何显示出来](<https://jingyan.baidu.com/article/ce4366495a1df73773afd3d3.html>)，也可以使用[第二种方式](#second-way)
 
-![1574732908137](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574732908137.png)
+![1574732908137](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574732908137.png)
 
-![1574732983985](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574732983985.png)
+![1574732983985](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574732983985.png)
 
-![1574733028306](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574733028306.png)
+![1574733028306](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574733028306.png)
 
-![1574733235604](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574733235604.png)
+![1574733235604](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574733235604.png)
 
 <details id="second-way">
 
 ​    <summary>第二种方式</summary>
 
-![1574733492084](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574733492084.png)
+![1574733492084](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574733492084.png)
 
-![1574733572547](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574733572547.png)
+![1574733572547](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574733572547.png)
 
-![1574733661113](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574733661113.png)
+![1574733661113](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574733661113.png)
 
 </details>
 
@@ -95,7 +95,7 @@ eureka:
 
 分别访问：<http://localhost:10001/>和<http://localhost:10002/>
 
-![1574734126761](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574734126761.png)
+![1574734126761](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1574734126761.png)
 
 > 多个如何注册？
 
@@ -201,7 +201,7 @@ eureka:
 
 我们关停一个服务，就会在Eureka面板看到一条警告：
 
-![1525618396076](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525618396076.png)
+![1525618396076](https://cdn.static.zzrfdsn.cn/images/springcloud/assets/1525618396076.png)
 
 这是触发了Eureka的自我保护机制。当一个服务未按时进行心跳续约时，Eureka会统计最近15分钟心跳失败的服务实例的比例是否超过了85%。在生产环境下，因为网络延迟等原因，心跳失败实例的比例很有可能超标，但是此时就把服务剔除列表并不妥当，因为服务可能没有宕机。Eureka就会把当前实例的注册信息保护起来，不予剔除。生产环境下这很有效，保证了大多数服务依然可用。
 

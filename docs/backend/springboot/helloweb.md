@@ -51,7 +51,7 @@
 
 [webjars官网](https://www.webjars.org/)
 
-![1573815091111](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573815091111.png)
+![1573815091111](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573815091111.png)
 
 
 
@@ -65,7 +65,7 @@
         </dependency>
 ```
 
-![1573815506777](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573815506777.png)
+![1573815506777](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573815506777.png)
 
 访问地址对应就是：http://localhost:8080/webjars/jquery/3.4.1/jquery.js
 
@@ -97,7 +97,7 @@ public class ResourceProperties {
 
 
 
-![1573817274649](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573817274649.png)
+![1573817274649](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573817274649.png)
 
 
 
@@ -114,7 +114,7 @@ localhost:8080/abc 	--->	去静态资源文件夹里面找abc
 
 ## 欢迎页映射
 
-![1573819949494](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573819949494.png)
+![1573819949494](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573819949494.png)
 
 `location`就是静态资源路径，所以欢迎页的页面就是上面静态资源下的`index.html`，被`/**`映射，因此直接访问项目就是访问欢迎页
 

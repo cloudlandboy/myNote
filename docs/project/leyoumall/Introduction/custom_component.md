@@ -18,7 +18,7 @@
 
 效果：
 
-![1526003587571](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526003587571.png)
+![1526003587571](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526003587571.png)
 
 
 
@@ -105,13 +105,13 @@
 
 ### 效果：
 
- ![1526132984603](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526132984603.png)
+ ![1526132984603](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526132984603.png)
 
 ### 结果值
 
 `v-model`绑定的数据结果：
 
- ![1526133161647](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526133161647.png)
+ ![1526133161647](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526133161647.png)
 
 
 
@@ -163,11 +163,11 @@
 
 上传前：
 
- ![1526135411867](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526135411867.png)
+ ![1526135411867](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526135411867.png)
 
 上传后：
 
- ![1526135369482](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526135369482.png)
+ ![1526135369482](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526135369482.png)
 
 
 
@@ -186,7 +186,7 @@
 
 效果：
 
- ![1526135336908](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526135336908.png)
+ ![1526135336908](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526135336908.png)
 
 
 
@@ -223,7 +223,7 @@
 
 ### 效果：
 
- ![1526296194839](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526296194839.png)
+ ![1526296194839](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526296194839.png)
 
 
 

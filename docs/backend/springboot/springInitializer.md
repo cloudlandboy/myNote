@@ -10,23 +10,23 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 1. 创建项目时选择Spring Initializr
 
-   ![idea01](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573639771931.png)
+   ![idea01](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573639771931.png)
 
    
 
 2. 完善项目信息
 
-   ![idea02](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573639923504.png)
+   ![idea02](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573639923504.png)
 
    !> 出现 **Artifact contains illegal characters** 是因为`Artifact`中使用了大写，只能是全小写，单词之间用`-`分隔
 
 3. 选择需要的starter
 
-   ![idea03](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573640773365.png)
+   ![idea03](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573640773365.png)
 
 4. 创建完成后 不要的文件可以删除
 
-   ![idea04](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573641023432.png)
+   ![idea04](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573641023432.png)
 
 
 
@@ -38,15 +38,15 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 2. 创建项目时选择Spring Starter Project
 
-   ![eclipse01](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573643167357.png)
+   ![eclipse01](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573643167357.png)
 
 3. 完善信息
 
-   ![eclipse02](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573643396117.png)
+   ![eclipse02](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573643396117.png)
 
 4. 选择需要的选择需要的starter
 
-   ![eclipse03](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573643505863.png)
+   ![eclipse03](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1573643505863.png)
 
 
 

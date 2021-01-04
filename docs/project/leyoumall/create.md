@@ -59,13 +59,13 @@ switchhost下载连接：<https://github.com/oldj/SwitchHosts/releases>
 
 创建Maven工程，打包方式为`pom`，项目名为`leyou-parent`
 
-![1529224631578](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1529224631578.png)
+![1529224631578](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1529224631578.png)
 
-![1575013405726](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1575013405726.png)
+![1575013405726](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1575013405726.png)
 
 
 
-![1575013466149](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1575013466149.png)
+![1575013466149](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1575013466149.png)
 
 添加依赖
 
@@ -172,7 +172,7 @@ switchhost下载连接：<https://github.com/oldj/SwitchHosts/releases>
 
 创建Eureka注册中心模块
 
-![1529225751893](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1529225751893.png)
+![1529225751893](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1529225751893.png)
 
 选择创建maven模块，项目名为`leyou-registry`
 
@@ -360,7 +360,7 @@ public class LeyouGatewayApplication {
 
 调用关系如图所示：
 
-![1525744281610](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525744281610.png)
+![1525744281610](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525744281610.png)
 
 ## leyou-item
 
@@ -614,13 +614,13 @@ zuul:
 
 在`leyou-parent`创建leyou-common模块
 
-![1575026025232](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1575026025232.png)
+![1575026025232](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1575026025232.png)
 
 
 
 ## 项目结构
 
-![1575026161952](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1575026161952.png)
+![1575026161952](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1575026161952.png)
 
 
 

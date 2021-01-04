@@ -1,6 +1,6 @@
 # SpringBoot启动流程
 
-![1574497298469](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574497298469.png)
+![1574497298469](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574497298469.png)
 
 ## 启动原理
 
@@ -65,7 +65,7 @@
        }
    ```
 
-   ![1574503716694](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574503716694.png)
+   ![1574503716694](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574503716694.png)
 
    <details>
 
@@ -118,7 +118,7 @@
 
    <summary>2.2.1</summary>
 
-   ![1574499682826](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574499682826.png)
+   ![1574499682826](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574499682826.png)
 
       上图65行中调用重载的方法：
 
@@ -127,13 +127,13 @@
       (List)loadSpringFactories(classLoader)
       ```
 
-      ![1574501479198](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574501479198.png)
+      ![1574501479198](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574501479198.png)
 
       然后再调用`getOrDefault(factoryTypeName, Collections.emptyList())`方法，获取key为
 
       `ApplicationContextInitializer`类名的value集合
 
-      ![1574501635588](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574501635588.png)
+      ![1574501635588](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574501635588.png)
 
       好了，回到2.2
 
@@ -166,7 +166,7 @@
    }
    ```
 
-   ![1574502740682](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574502740682.png)
+   ![1574502740682](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574502740682.png)
 
    返回到2.2 `this.setInitializers(ApplicationContextInitializer类型对象的集合)`
 
@@ -177,7 +177,7 @@
 
 3. 调用SpringApplication对象的run方法
 
-   ![1574512218795](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574512218795.png)
+   ![1574512218795](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574512218795.png)
 
    ```java
        public ConfigurableApplicationContext run(String... args) {
@@ -478,7 +478,7 @@
 
    启动报错：说是没有找到带org.springframework.boot.SpringApplication和String数组类型参数的构造器，给TestSpringApplicationRunListener添加这样的构造器
 
-   ![1574515721669](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574515721669.png)
+   ![1574515721669](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574515721669.png)
 
    ```java
        public TestSpringApplicationRunListener(SpringApplication application,String[] args) {
@@ -509,7 +509,7 @@
    }
    ```
 
-   ![1574517578711](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574517578711.png)
+   ![1574517578711](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574517578711.png)
 
    
 
@@ -525,7 +525,7 @@ spring.banner.location=xxx.txt
 
 生成banner的网站：<http://patorjk.com/software/taag>
 
-![1574508283758](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574508283758.png)
+![1574508283758](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574508283758.png)
 
 也可以使用图片(将其像素解析转换成assii编码之后打印)，默认是在类路径下找名为`banner`后缀为`"gif", "jpg", "png"`的图片
 

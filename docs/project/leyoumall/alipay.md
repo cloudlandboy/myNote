@@ -10,7 +10,7 @@
 
 登录后选择开发者中心->研发中心
 
-![1576975701986](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576975701986.png)
+![1576975701986](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576975701986.png)
 
 
 
@@ -18,7 +18,7 @@
 
 密钥生成后将公钥(yuè)配置到沙箱，然后保存生成的支付宝公钥(yuè)
 
-![1576919593220](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576919593220.png)
+![1576919593220](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576919593220.png)
 
 
 
@@ -263,15 +263,15 @@ public class AliPayHelper {
 
 注册后登录隧道管理>开通隧道，选择免费服务器
 
-![1576920387603](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576920387603.png)
+![1576920387603](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576920387603.png)
 
 填写需要转发到的本机端口地址，我的订单服务端口是`7009`
 
-![1576920563097](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576920563097.png)
+![1576920563097](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576920563097.png)
 
 记下生成的隧道id和域名，然后[下载客户端](http://www.ngrok.cc/download.html)
 
-![1576920661551](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576920661551.png)
+![1576920661551](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576920661551.png)
 
 下载后解压，进入解压后的目录运行，windows是`sunny.exe`
 
@@ -279,7 +279,7 @@ public class AliPayHelper {
 ./sunny clientid 隧道id
 ```
 
-![1576921124660](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576921124660.png)
+![1576921124660](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576921124660.png)
 
 启动完成后访问域名测试能否成功访问 ，以debug启动应用，然后在登录拦截器中打上断店，访问域名看看能不能进入断点
 
@@ -435,7 +435,7 @@ submit() {
 
 交易成功后支付宝会将客户端重定向到配置的同步url，后面会添加上参数，其中有交易金额，修改支付成功页面更改支付金额显示
 
-![1576974677100](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576974677100.png)
+![1576974677100](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1576974677100.png)
 
 ```html
 <div class="paysuccess" id="paysuccess">
@@ -498,6 +498,6 @@ const taskId = setInterval(() => {
 
 ### 演示
 
-<video src="https://cdn.staticzzrfdsn.cn/images/project/leyoumall/20191222110734.mp4" controls="controls" width="100%">
+<video src="https://cdn.static.zzrfdsn.cn/images/project/leyoumall/20191222110734.mp4" controls="controls" width="100%">
 your browser does not support the video tag
 </video>

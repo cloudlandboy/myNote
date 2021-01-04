@@ -43,23 +43,23 @@
 
 中国电子商务研究中心数据显示，截止到 2012 年底，中国电子商务市场交易规模达 7.85万亿人民币，同比增长 30.83%。其中，B2B 电子商务交易额达 6.25 万亿，同比增长 27%。而 2011 年全年，中国电子商务市场交易额达 6 万亿人民币，同比增长 33%，占 GDP 比重上升到 13%；2012 年，电子商务占 GDP 的比重已经高达 15%。
 
- ![1525686041466](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525686041466.png)
+ ![1525686041466](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525686041466.png)
 
 
 
 ### 数据
 
-![1529165766652](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1529165766652.png)
+![1529165766652](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1529165766652.png)
 
 来看看双十一的成交数据：
 
-![1525686135308](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525686135308.png)
+![1525686135308](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525686135308.png)
 
-![1525686160411](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525686160411.png)
+![1525686160411](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525686160411.png)
 
 2016双11开场30分钟，创造**每秒交易峰值17.5万笔**，**每秒**支付峰值**12万笔**的新纪录。菜鸟单日物流订单量超过**4.67亿**，创历史新高。
 
-![1529165714679](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1529165714679.png)
+![1529165714679](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1529165714679.png)
 
 
 
@@ -145,13 +145,13 @@
 
 项目开发流程图：
 
- ![1525697632643](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525697632643.png)
+ ![1525697632643](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525697632643.png)
 
 
 
 公司现状：
 
- ![](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525697681975.png)
+ ![](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525697681975.png)
 
 
 
@@ -175,7 +175,7 @@
 
 乐优商城架构缩略图：
 
-![1525703759035](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525703759035.png)
+![1525703759035](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525703759035.png)
 
 
 
@@ -202,7 +202,7 @@
     - 评价商品等等
   - 前台系统我们会使用Thymeleaf模板引擎技术来完成页面开发。出于SEO优化的考虑，我们将不采用单页应用。
 
-  ![1525704277126](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1525704277126.png)
+  ![1525704277126](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1525704277126.png)
 
 
 

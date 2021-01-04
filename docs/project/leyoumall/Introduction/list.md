@@ -33,7 +33,7 @@
 
 ## 使用端口一览
 
-![201912111140](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/201912111140.png)
+![201912111140](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/201912111140.png)
 
 - `leyou-manage-web :9001` 后台管理页面(VUE单页应用)
 - `leyou-portal :9002` 商城门户

@@ -6,7 +6,7 @@
 
 - 启动器依赖自动配置模块，项目中引入相应的starter就会引入启动器的所有传递依赖
 
-  ![1574561125363](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574561125363.png)
+  ![1574561125363](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574561125363.png)
 
 ## 启动器
 
@@ -95,7 +95,7 @@ org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
    </project>
    ```
 
-   ![1574563050873](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574563050873.png)
+   ![1574563050873](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574563050873.png)
 
 3. 创建配置类和自动配置类
 
@@ -181,7 +181,7 @@ org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
 
 4. 在resources文件夹下创建META-INF/spring.factories
 
-   ![1574568406300](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574568406300.png)
+   ![1574568406300](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574568406300.png)
 
    ```properties
    org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
@@ -192,7 +192,7 @@ org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
 
 6. 创建starter，选择maven工程即可，只是用于管理依赖，添加对AutoConfiguration模块的依赖
 
-   ![1574565106397](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574565106397.png)
+   ![1574565106397](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574565106397.png)
 
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
@@ -290,4 +290,4 @@ org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
 
 !> 注意查看文件夹的命名是否正确，最好是从别的包中复制过去，正确的情况下spring.factories是有小绿叶图标的
 
-![1574567314385](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574567314385.png)
+![1574567314385](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574567314385.png)

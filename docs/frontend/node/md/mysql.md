@@ -180,7 +180,7 @@ dao.queryAll();
 
 运行结果如下：
 
-![20200506020322.png](https://cdn.staticzzrfdsn.cn/images/node/20200506020322.png)
+![20200506020322.png](https://cdn.static.zzrfdsn.cn/images/node/20200506020322.png)
 
 
 
@@ -215,7 +215,7 @@ module.exports = {
 }
 ```
 
-![20200506021815.png](https://cdn.staticzzrfdsn.cn/images/node/20200506021815.png)
+![20200506021815.png](https://cdn.static.zzrfdsn.cn/images/node/20200506021815.png)
 
 ### 删除数据
 
@@ -249,7 +249,7 @@ module.exports = {
 }
 ```
 
-![20200506022850.png](https://cdn.staticzzrfdsn.cn/images/node/20200506022850.png)
+![20200506022850.png](https://cdn.static.zzrfdsn.cn/images/node/20200506022850.png)
 
 ## 源代码
 

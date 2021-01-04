@@ -84,7 +84,7 @@
 ```
 ## 冒泡排序
 
-![](https://cdn.staticzzrfdsn.cn/images/1258817-20190325093445247-432584102.gif)
+![](https://cdn.static.zzrfdsn.cn/images/1258817-20190325093445247-432584102.gif)
 ``` java
     public static void main(String[] args) throws Exception {
         int[] arr = {3, 1, 6, 2, 9, 0, 7, 4, 5, 8};
