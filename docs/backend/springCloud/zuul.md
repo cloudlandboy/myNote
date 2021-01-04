@@ -2,7 +2,7 @@
 
 通过前面的学习，使用Spring Cloud实现微服务的架构基本成型，大致是这样的：
 
-![1525674644660](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525674644660.png)
+![1525674644660](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525674644660.png)
 
 我们使用Spring Cloud Netflix中的`Eureka`实现了服务注册中心以及服务注册与发现；
 
@@ -46,13 +46,13 @@ Zuul：维基百科
 
 事实上，在微服务架构中，Zuul就是守门的大Boss！一夫当关，万夫莫开！
 
-![1525675168152](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525675168152.png)
+![1525675168152](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525675168152.png)
 
 
 
 ## Zuul加入后的架构
 
- ![1525675648881](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525675648881.png)
+ ![1525675648881](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525675648881.png)
 
 不管是来自于客户端（PC或移动端）的请求，还是服务内部调用。一切对服务的请求都会经过Zuul这个网关，然后再由网关来实现 鉴权、动态路由等等操作。Zuul就是我们服务的统一入口。
 
@@ -66,7 +66,7 @@ Zuul：维基百科
 
 2. 添加Zuul依赖：
 
-   ![1574929547498](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574929547498.png)
+   ![1574929547498](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574929547498.png)
 
 
 
@@ -104,7 +104,7 @@ public class SpringcloudZuulApplication {
 
 我们需要用Zuul来代理service-provider服务，先看一下控制面板中的服务状态：
 
-![1574930299265](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574930299265.png)
+![1574930299265](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574930299265.png)
 
 - ip为：127.0.0.1(本机)
 - 端口为：8081
@@ -132,7 +132,7 @@ zuul:
 
 ### 启动测试
 
-![1574930644979](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574930644979.png)
+![1574930644979](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574930644979.png)
 
 访问的路径中需要加上配置规则的映射路径
 
@@ -344,7 +344,7 @@ public abstract ZuulFilter implements IZuulFilter{
 
 这张是Zuul官网提供的请求生命周期图，清晰的表现了一个请求在各个过滤器的执行顺序。
 
-![1529152248172](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1529152248172.png)
+![1529152248172](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1529152248172.png)
 
 正常流程：
 - 请求到达首先会经过pre类型过滤器，而后到达route类型，进行路由，请求就到达真正的服务提供者，执行请求，返回结果后，会到达post过滤器。而后返回响应。
@@ -356,7 +356,7 @@ public abstract ZuulFilter implements IZuulFilter{
 
 所有内置过滤器列表：
 
- ![](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525682427811.png)
+ ![](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525682427811.png)
 
 
 

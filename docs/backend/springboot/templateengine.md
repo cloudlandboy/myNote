@@ -112,7 +112,7 @@ public class ThymeleafProperties {
 
 `th：任意html属性 ` --> 来替换原生属性的值
 
-![thymeleaf](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/2018-02-04_123955.png)
+![thymeleaf](https://cdn.staticzzrfdsn.cn/images/springboot/assets/2018-02-04_123955.png)
 
 更多配置参考官方文档：<https://www.thymeleaf.org/documentation.html>
 

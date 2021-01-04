@@ -8,6 +8,6 @@
 
 <small style="color:green"></small>
 
-https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/
+https://cdn.staticzzrfdsn.cn/images/project/leyoumall/
 
 https://api.ixiaowai.cn/gqapi/gqapi.php

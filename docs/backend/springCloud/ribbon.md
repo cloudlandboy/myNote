@@ -10,7 +10,7 @@
 
 什么是Ribbon：
 
-![1525619257397](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1525619257397.png)
+![1525619257397](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1525619257397.png)
 
 
 
@@ -22,13 +22,13 @@
 
 首先参照`springcloud-eureka-server`启动两个`springcloud-eureka-service-provider`实例，一个8081，一个8084。
 
-![1574740696735](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574740696735.png)
+![1574740696735](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574740696735.png)
 
 
 
 查看Eureka监控面板：
 
-![1574740920124](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574740920124.png)
+![1574740920124](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574740920124.png)
 
 
 
@@ -126,7 +126,7 @@ public class UserController {
 
 我们在调用接口的地方打上端点，一探究竟
 
-![1574741717858](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574741717858.png)
+![1574741717858](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574741717858.png)
 
 以DEBUG的方法重新启动`springcloud-eureka-service-consumer`，然后访问<http://localhost:8083/user/1>
 
@@ -156,7 +156,7 @@ public class UserController {
 
 3. request.execute，调用`AbstractClientHttpRequest`的execute方法
 
-   ![1574742576423](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574742576423.png)
+   ![1574742576423](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574742576423.png)
 
 4. 又调用`AbstractBufferingClientHttpRequest`的executeInternal方法
 
@@ -199,7 +199,7 @@ public class UserController {
 
 7. 调用请求拦截器的执行方法
 
-   ![1574743938108](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574743938108.png)
+   ![1574743938108](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574743938108.png)
 
    在执行方法中获取拦截器，调用其intercept方法
 
@@ -270,7 +270,7 @@ public class UserController {
         }
     ```
 
-    ![1574751683467](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574751683467.png)
+    ![1574751683467](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574751683467.png)
 
 
 
@@ -341,7 +341,7 @@ service-provider:
 
 负载均衡规则(IRule)有图中几个实现
 
-![1574754059660](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574754059660.png)
+![1574754059660](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574754059660.png)
 
 
 
@@ -359,11 +359,11 @@ Eureka的服务治理强调了CAP原则中的AP，即可用性和可靠性。它
 
 我们现在关闭一个服务实例，关闭8084端口：
 
-![1574758231721](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574758231721.png)
+![1574758231721](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574758231721.png)
 
 此时再次访问你会得到错误提示
 
-![1574758211036](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/1574758211036.png)
+![1574758211036](https://cdn.staticzzrfdsn.cn/images/springcloud/assets/1574758211036.png)
 
 但是此时，8081服务其实是正常的。
 

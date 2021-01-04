@@ -4,7 +4,7 @@
 
 首先看下页面要实现的效果：
 
-![1526725119663](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526725119663.png)
+![1526725119663](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526725119663.png)
 
 整个过滤部分有3块：
 
@@ -50,7 +50,7 @@
 
 看页面：
 
- ![1526738120021](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526738120021.png)
+ ![1526738120021](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526738120021.png)
 
 
 
@@ -60,7 +60,7 @@
 
 我们新建一个类，继承PageResult，然后扩展两个新的属性：分类集合和品牌集合：
 
- ![1543671901773](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1543671901773.png)
+ ![1543671901773](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1543671901773.png)
 
 ```java
 package com.leyou.search.pojo;
@@ -168,7 +168,7 @@ public SearchResult searchGoods(SearchRequest searchRequest) {
 
 测试：
 
-![1532259453938](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532259453938.png)
+![1532259453938](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532259453938.png)
 
 
 
@@ -178,13 +178,13 @@ public SearchResult searchGoods(SearchRequest searchRequest) {
 
 来看下页面的展示效果：
 
- ![1526742664217](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526742664217.png)
+ ![1526742664217](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526742664217.png)
 
 虽然分类、品牌内容都不太一样，但是结构相似，都是key和value的结构。
 
 而且页面结构也极为类似：
 
- ![1526742817804](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526742817804.png)
+ ![1526742817804](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526742817804.png)
 
 
 
@@ -219,11 +219,11 @@ data: {
 
 然后在查询搜索结果的回调函数中，对过滤参数进行封装：
 
-![1532261937404](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532261937404.png)
+![1532261937404](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532261937404.png)
 
 然后刷新页面，通过浏览器工具，查看封装的结果：
 
-![1576048958372](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576048958372.png)
+![1576048958372](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576048958372.png)
 
 
 
@@ -231,7 +231,7 @@ data: {
 
 首先看页面原来的代码：
 
- ![1526803362517](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526803362517.png)
+ ![1526803362517](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526803362517.png)
 
 我们注意到，虽然页面元素是一样的，但是品牌会比其它搜索条件多出一些样式，因为品牌是以图片展示。需要进行特殊处理。数据展示是一致的，我们采用v-for处理：
 
@@ -260,7 +260,7 @@ data: {
 
 结果：
 
-![1532264524663](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532264524663.png)
+![1532264524663](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532264524663.png)
 
 
 
@@ -307,7 +307,7 @@ data: {
 
 我们直接看页面效果：
 
-![1526805322441](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526805322441.png)
+![1526805322441](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526805322441.png)
 
 我们之前存储时已经将数据分段，恰好符合这里的需求
 
@@ -372,7 +372,7 @@ if (!CollectionUtils.isEmpty(categoryDatas) && categoryDatas.size() == 1) {
 
 将开始的查询条件抽取出来
 
-![1576057575306](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576057575306.png)
+![1576057575306](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576057575306.png)
 
 
 
@@ -397,7 +397,7 @@ private List<Map<String, Object>> getSpecAggregation(Long cid, QueryBuilder basi
 
 然后，我们需要根据商品分类，查询所有可用于搜索的规格参数：
 
-![1543674113503](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1543674113503.png)
+![1543674113503](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1543674113503.png)
 
 要注意的是，这里我们需要根据分类id查询规格，而规格参数接口需要从商品微服务提供
 
@@ -407,7 +407,7 @@ private List<Map<String, Object>> getSpecAggregation(Long cid, QueryBuilder basi
 
 因为规格参数保存时不做分词，因此其名称要带上一个.keyword后缀：
 
-![1576058250407](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576058250407.png)
+![1576058250407](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576058250407.png)
 
 ```java
 private List<Map<String, Object>> getSpecAggregation(Long cid, QueryBuilder basicQuery) {
@@ -436,7 +436,7 @@ private List<Map<String, Object>> getSpecAggregation(Long cid, QueryBuilder basi
 
 ### 解析聚合结果
 
-![1543674250920](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1543674250920.png)
+![1543674250920](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1543674250920.png)
 
 ### 最终的完整代码
 
@@ -546,7 +546,7 @@ hystrix:
 
 ### 测试结果
 
-![1532270167684](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532270167684.png)
+![1532270167684](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532270167684.png)
 
 
 
@@ -581,11 +581,11 @@ data.specs.forEach(item => {
 
 是不是感觉显示的太多了，我们可以通过按钮点击来展开和隐藏部分内容：
 
-![1532271362148](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532271362148.png)
+![1532271362148](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532271362148.png)
 
 我们在data中定义变量，记录展开或隐藏的状态：
 
-![1532271577293](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532271577293.png)
+![1532271577293](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532271577293.png)
 
 然后在按钮绑定点击事件，以改变show的取值：
 
@@ -606,7 +606,7 @@ data.specs.forEach(item => {
 
 在展示规格时，对show进行判断：
 
-![1532272262743](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532272262743.png)
+![1532272262743](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532272262743.png)
 
 OK！
 
@@ -628,11 +628,11 @@ OK！
 
 我们把已选择的过滤项保存在search中：
 
-![1532273487583](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532273487583.png)
+![1532273487583](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532273487583.png)
 
 要注意，在created构造函数中会对search进行初始化，所以要在构造函数中对filter进行初始化：
 
-![1533566768364](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1533566768364.png)
+![1533566768364](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1533566768364.png)
 
 search.filter是一个对象，结构：
 
@@ -648,7 +648,7 @@ search.filter是一个对象，结构：
 
 给所有的过滤项绑定点击事件：
 
-![1532272879418](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532272879418.png)
+![1532272879418](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532272879418.png)
 
 要注意，点击事件传2个参数：
 
@@ -674,9 +674,9 @@ selectFilter(k, option) {
 
 另外，这里search对象中嵌套了filters对象，请求参数格式化时需要进行特殊处理，修改common.js中的一段代码：
 
-![1576072508268](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576072508268.png)
+![1576072508268](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576072508268.png)
 
-![1532273144046](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1532273144046.png)
+![1532273144046](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1532273144046.png)
 
 
 
@@ -710,7 +710,7 @@ private Map<String, String> filters = new HashMap<>();
 
 目前，我们的基本查询是这样的：
 
-![1533567897849](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1533567897849.png)
+![1533567897849](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1533567897849.png)
 
 现在，我们要把页面传递的过滤条件也加入进去。
 
@@ -743,9 +743,9 @@ GET goods/_search
 
 所以，我们对原来的基本查询进行改造：（SearchService中的search方法）
 
-![1543674461682](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1543674461682.png)
+![1543674461682](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1543674461682.png)
 
-![1543674644998](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1543674644998.png)
+![1543674644998](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1543674644998.png)
 
 因为比较复杂，我们将其封装到一个方法中了
 
@@ -845,7 +845,7 @@ private QueryBuilder buildBooleanQueryBuilder(SearchRequest searchRequest) {
 
 当用户选择一个商品分类以后，我们应该在过滤模块的上方展示一个面包屑，把三级商品分类都显示出来。
 
- ![1526912181355](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526912181355.png)
+ ![1526912181355](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526912181355.png)
 
 用户选择的商品分类就存放在`search.filters`中，但是里面只有第三级分类的id：cid3
 
@@ -883,7 +883,7 @@ public ResponseEntity<List<Category>> queryAllByCid3(@RequestParam("id") Long id
 
 测试：
 
-![1576121418140](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576121418140.png)
+![1576121418140](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576121418140.png)
 
 
 
@@ -899,7 +899,7 @@ public ResponseEntity<List<Category>> queryAllByCid3(@RequestParam("id") Long id
 
 我们判断商品分类是否只有1个，如果是，则查询三级商品分类，添加到面包屑即可。
 
-![1526914910479](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526914910479.png)
+![1526914910479](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526914910479.png)
 
 渲染：
 
@@ -925,7 +925,7 @@ if (data.categories.length == 1) {
 
 刷新页面：
 
- ![1526914954839](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526914954839.png)
+ ![1526914954839](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526914954839.png)
 
 
 
@@ -933,13 +933,13 @@ if (data.categories.length == 1) {
 
 接下来，我们需要在页面展示用户已选择的过滤项，如图：
 
-![1526911364625](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526911364625.png)
+![1526911364625](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526911364625.png)
 
 我们知道，所有已选择过滤项都保存在`search.filters`中，因此在页面遍历并展示即可。
 
 但这里有个问题，filters中数据的格式：
 
-![1576123329282](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1576123329282.png)
+![1576123329282](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1576123329282.png)
 
 基本有四类数据：
 
@@ -983,7 +983,7 @@ getFilterValue(k, v) {
 
 然后刷新页面，即可看到效果：
 
- ![1526911811998](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526911811998.png)
+ ![1526911811998](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526911811998.png)
 
 
 
@@ -993,7 +993,7 @@ getFilterValue(k, v) {
 
 已经选择的过滤项，在过滤列表中依然存在：
 
-![1526915075037](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526915075037.png)
+![1526915075037](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526915075037.png)
 
 
 
@@ -1003,7 +1003,7 @@ getFilterValue(k, v) {
 
 你必须先知道用户选择了什么。用户选择的项保存在`search.filters`中：
 
- ![1526915191753](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526915191753.png)
+ ![1526915191753](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526915191753.png)
 
 我们可以编写一个计算属性，把filters中的 已经被选择的key过滤掉：
 
@@ -1019,21 +1019,21 @@ computed: {
 
 然后页面不再直接遍历`filters`，而是遍历`remainFilters`
 
-![1526916315470](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526916315470.png)
+![1526916315470](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526916315470.png)
 
 刷新页面：
 
-![1526916538925](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526916538925.png)
+![1526916538925](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526916538925.png)
 
 
 
 最后发现，还剩下一堆没选过的。但是都只有一个可选项，此时再过滤没有任何意义，应该隐藏，所以，在刚才的过滤条件中，还应该添加一条：如果只剩下一个可选项，不显示
 
-![1526916815264](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526916815264.png)
+![1526916815264](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526916815264.png)
 
 
 
-![1526916838222](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526916838222.png)
+![1526916838222](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526916838222.png)
 
 
 
@@ -1052,7 +1052,7 @@ computed: {
 
 > 绑定点击事件：
 
-![1526955150293](https://cdn.static.note.zzrfdsn.cn/images/project/leyoumall/1526955150293.png)
+![1526955150293](https://cdn.staticzzrfdsn.cn/images/project/leyoumall/1526955150293.png)
 
 绑定点击事件时，把k传递过去，方便删除
 

@@ -2,7 +2,7 @@
 
 **SpringData：**
 
-![SpringData](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180306105412.png)
+![SpringData](https://cdn.staticzzrfdsn.cn/images/springboot/assets/20180306105412.png)
 
 ## 依赖
 
@@ -28,7 +28,7 @@
     </dependencies>
 ```
 
-![1574481366615](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574481366615.png)
+![1574481366615](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1574481366615.png)
 
 
 

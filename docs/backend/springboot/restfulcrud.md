@@ -5,7 +5,7 @@
 1. 将静态资源(css,img,js)添加到项目中，放到springboot[默认的静态资源文件夹下](backend/springboot/helloweb?id=非webjars，自己的静态资源怎么访问)
 2. 将模板文件(html)放到[template文件夹下](backend/springboot/templateengine?id=thymeleaf%e4%bd%bf%e7%94%a8)
 
-![1573896827010](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573896827010.png)
+![1573896827010](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573896827010.png)
 
 !> 如果你的静态资源明明放到了静态资源文件夹下却无法访问，请检查一下是不是在自定义的配置类上加了**@EnableWebMvc注解**
 
@@ -96,7 +96,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
    创建i18n文件夹存放配置文件，文件名格式为`基础名(login)`+`语言代码(zh)`+`国家代码(CN)`
 
-   ![1573900332686](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573900332686.png)
+   ![1573900332686](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573900332686.png)
 
 2. 在配置文件中添加国际化文件的位置和基础名
 
@@ -133,7 +133,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 4. 然后就可以更改浏览器语言，页面就会使用对应的国际化配置文件
 
-      ![1573900071209](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573900071209.png)
+      ![1573900071209](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573900071209.png)
 
 5. 原理
 
@@ -941,11 +941,11 @@ spring.mvc.date-format=yyyy-MM-dd
    spring.mvc.hiddenmethod.filter.enabled=true
    ```
 
-   ![1573987255217](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573987255217.png)
+   ![1573987255217](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573987255217.png)
 
    这个好像是2.0版本以后修改的
 
-   ![1573988088629](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573988088629.png)
+   ![1573988088629](https://cdn.staticzzrfdsn.cn/images/springboot/assets/1573988088629.png)
 
    !> 如果删除不掉，请修改`EmployeeDao`，把String转为Integer类型
 
