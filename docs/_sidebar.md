@@ -6,6 +6,8 @@
   - [WebService](backend/webservice/_sidebar.md)
   - [Spring Boot](backend/springboot/_sidebar.md)
   - [Spring Cloud](backend/springCloud/_sidebar.md)
+  - [Elasticsearch](backend/elasticsearch/_sidebar.md)
+  - [RabbitMQ](backend/rabbitmq/_sidebar.md)
   
 - **前端**
   - [node](/frontend/node/md/_sidebar.md)

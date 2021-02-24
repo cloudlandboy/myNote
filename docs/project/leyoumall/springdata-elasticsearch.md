@@ -114,7 +114,7 @@ Spring Data Elasticsearch的页面：https://projects.spring.io/spring-data-elas
 
 ## 配置文件
 
-application.yml文件配置，使用`ElasticsearchRestTemplate`如下配置(后面学习都是基本RestTemplate)：
+application.yml文件配置，使用`RestClient`如下配置
 
 ```yaml
 spring:

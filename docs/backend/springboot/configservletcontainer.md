@@ -165,6 +165,20 @@ public class MyServletContextListener implements ServletContextListener {
 
 </details>
 
+## 使用注解方式注册Servlet三大组件
+
+`@WebServlet`，`@WebFilter`和带`@WebListener`注释的类可以通过向有`@Configuration`注解的类上加`@ServletComponentScan`并指定包含要注册的组件的包来自动向嵌入式servlet容器注册。默认情况下，`@ServletComponentScan`从带注释的类的包进行扫描。
+
+例如在启动类上添加`@ServletComponentScan`注解，就会自动扫描启动类所在包及其子包下带有`@WebServlet`，`@WebFilter`和`@WebListener`的类
+
+```java
+@ServletComponentScan
+@SpringBootApplication
+public class DemoEmbeddedWebServersApplication 
+```
+
+
+
 
 
 ## 替换为其他嵌入式web服务器

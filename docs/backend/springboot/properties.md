@@ -1,5 +1,7 @@
 # 配置文件
 
+> [官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config)
+
 SpringBoot使用一个全局的配置文件，配置文件名`application`是固定的；
 
 - application.properties
@@ -65,6 +67,20 @@ YAML（YAML Ain't Markup Language）
 
 
 
+### Map属性Key特殊字符
+
+```
+acme:
+  map:
+    "[/key1]": "value1"
+    "[/key2]": "value2"
+    "/key3": "value3"
+```
+
+!>  对于YAML文件，方括号需要用引号引起来，以便正确解析密钥。
+
+上面的性质将结合一个Map具有`/key1`，`/key2`并`key3`作为映射中的键。由于斜杠key3没有被方括号包围，因此已将其删除
+
 ### 数组（List、Set）
 
 1. ```
@@ -79,8 +95,14 @@ YAML（YAML Ain't Markup Language）
    ```
    fruits: [苹果,桃子,香蕉]
    ```
-
-
+   
+   !> 使用`@Value`注解时带中括号的行内写法会报错，可以这样写
+   
+   ```
+   fruits: 苹果,桃子,香蕉
+   ```
+   
+   
 
 ## 配置文件值注入
 
