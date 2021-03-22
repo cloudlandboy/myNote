@@ -148,6 +148,8 @@ CREATE TABLE `department` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ```
 
+!> 注意sql一定要有`;`结尾，否则启动会报错。
+
 程序启动后发现表并没有被创建，DEBUG查看以下，发现在运行之前会有一个判断
 
 ![1574411869052](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574411869052.png)

@@ -41,7 +41,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 所以 Edgware.SR3就是Edgware的第3个Release版本。  
 
-
+> [SpringCloud的版本和springboot版本对照表](https://spring.io/projects/spring-cloud#adding-spring-cloud-to-an-existing-spring-boot-application)
 
 ## 微服务场景模拟
 
@@ -287,7 +287,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 
 
-### 服务提供方
+### 服务消费方
 
 1. 创建工程，名为`springcloud-service-consumer`，只需要选择web场景即可
 
@@ -494,7 +494,8 @@ spring:
     name: eureka-server
 eureka:
   client:
-    # 此应用为注册中心，false：不向注册中心注册自己。不配置这个启动会抛出一堆错误，不过不影响启动，就是看着闹心
+    # 服务注册，是否将自己注册到Eureka服务中
+    # 此应用为注册中心，false：不向注册中心注册自己。不配置false启动会抛出一堆错误，不过不影响启动，就是看着闹心
     register-with-eureka: false
     # 注册中心职责是维护服务实例，false：不检索服务。(因为这是一个单点的EurekaServer，不需要同步其它EurekaServer节点的数据，故设为false)
     fetch-registry: false
@@ -504,9 +505,21 @@ eureka:
 
 ```
 
+- `register-with-eureka`：被其它服务调用时需向Eureka注册
+
+- `fetch-registry`：需要从Eureka中查找要调用的目标服务时需要设置为true
+
+- `service-url.defaultZone` 配置上报Eureka服务地址高可用状态配置对方的地址，单机状态配置自己
+
+
+
 #### @EnableEurekaServer
 
-> 声明当前springboot应用是一个eureka服务中心
+> 需要在启动类上用`@EnableEurekaServer`
+>
+> 标识此服务为Eureka服务声明当前springboot应用是一个eureka服务中心
+
+
 
 修改引导类，在类上添加@EnableEurekaServer注解：
 
@@ -634,14 +647,22 @@ spring:
     name: service-provider
 eureka:
   client:
-    # EurekaServer地址
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:10001/eureka
+  instance:
+    # spring.application.name
+    instance-id: ${spring.application.name}:${server.port}
 ```
 
 
 
 !> 这里我们添加了spring.application.name属性来指定应用名称，将来会作为`应用的id`使用。
+
+> instance-id获取规则：
+
+![image-20210304000950711](https://cdn.static.note.zzrfdsn.cn/images/springcloud/assets/image-20210304000950711.png)
 
 #### @EnableDiscoveryClient
 
