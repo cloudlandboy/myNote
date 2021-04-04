@@ -1,3 +1,3 @@
 - RabbitMQ
-  - [rabbitmq的安装](project/leyoumall/rabbitmq-install.md)
-  - [RabbitMQ和数据同步](project/leyoumall/rabbitmq-data-sync.md)
+  - [rabbitmq的安装](backend/rabbitmq/rabbitmq-install.md)
+  - [RabbitMQ和数据同步](backend/rabbitmq/rabbitmq-data-sync.md)

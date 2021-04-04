@@ -246,3 +246,20 @@ mysql -uroot -proot
 docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7.28
 ```
 
+
+
+## 普通用户运行docker
+
+> docker 命令只能由root用户运行，普通用户还需要加上sudo命令。在第三方开发工具中无法使用docker插件
+>
+> docker守护进程启动的时候，会默认赋予名为docker的用户组读写Unix socket的权限，因此只要创建docker用户组，并将当前用户加入到docker用户组中，那么当前用户就有权限访问Unix socket了，进而也就可以执行docker相关命令
+>
+> 安装docker已经创建了docker用户组，只需要将用户加入到docker组即可
+
+```shell
+sudo gpasswd -a 用户名 docker
+```
+
+
+
+​     

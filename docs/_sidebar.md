@@ -8,6 +8,7 @@
   - [Spring Cloud](backend/springCloud/_sidebar.md)
   - [Elasticsearch](backend/elasticsearch/_sidebar.md)
   - [RabbitMQ](backend/rabbitmq/_sidebar.md)
+  - [文件储存](backend/storage/_sidebar)
   
 - **前端**
   - [node](/frontend/node/md/_sidebar.md)
@@ -20,8 +21,8 @@
   
 - **项目**
   
-  - [乐优商城](project/leyoumall/_sidebar.md)
-  - [学成在线](project/XCEdu/_sidebar.md)
+  - [商城项目](project/leyoumall/_sidebar.md)
+  - [在线教育项目](project/XCEdu/_sidebar.md)
   
 - **其他**
 

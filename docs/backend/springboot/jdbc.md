@@ -156,7 +156,19 @@ CREATE TABLE `department` (
 
 ![1574412098885](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574412098885.png)
 
-上面方法也不知道在干什么，反正就是只要是`NEVER`和`EMBEDDED`就为true，而DataSourceInitializationMode枚举类中除了这两个就剩下`ALWAYS`了，可以在配置文件中配置为ALWAYS
+上面方法是在判断当前的`initialization-mode`，共有3个值
+
+```java
+
+public enum DataSourceInitializationMode {
+	ALWAYS, # 始终初始化数据源
+	EMBEDDED, #仅初始化嵌入式数据源，例如H2 ，默认值
+	NEVER #不要初始化数据源
+}
+
+```
+
+
 
 ![1574412237660](https://cdn.static.zzrfdsn.cn/images/springboot/assets/1574412237660.png)
 

@@ -846,72 +846,7 @@ public class LeyouCorsConfiguration {
 
 ## FastDFS
 
-### 什么是分布式文件系统
-
-分布式文件系统（Distributed File System）是指文件系统管理的物理存储资源不一定直接连接在本地节点上，而是通过计算机网络与节点相连。 
-
-通俗来讲：
-
-- 传统文件系统管理的文件就存储在本机。
-- 分布式文件系统管理的文件存储在很多机器，这些机器通过网络连接，要被统一管理。无论是上传或者访问文件，都需要通过管理中心来访问
-
-
-
-### 什么是FastDFS
-
-FastDFS是由淘宝的余庆先生所开发的一个轻量级、高性能的开源分布式文件系统。用纯C语言开发，功能丰富：
-
-- 文件存储
-- 文件同步
-- 文件访问（上传、下载）
-- 存取负载均衡
-- 在线扩容
-
-适合有大容量存储需求的应用或系统。同类的分布式文件系统有谷歌的GFS、HDFS（Hadoop）、TFS（淘宝）等。
-
-### FastDFS的架构
-
-先上图：
-
- ![1526205318630](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526205318630.png)
-
-FastDFS两个主要的角色：Tracker Server 和 Storage Server 。
-
-- Tracker Server：跟踪服务器，主要负责调度storage节点与client通信，在访问上起负载均衡的作用，和记录storage节点的运行状态，是连接client和storage节点的枢纽。 
-- Storage Server：存储服务器，保存文件和文件的meta data（元数据），每个storage server会启动一个单独的线程主动向Tracker cluster中每个tracker server报告其状态信息，包括磁盘使用情况，文件同步情况及文件上传下载次数统计等信息
-- Group：文件组，多台Storage Server的集群。上传一个文件到同组内的一台机器上后，FastDFS会将该文件即时同步到同组内的其它所有机器上，起到备份的作用。不同组的服务器，保存的数据不同，而且相互独立，不进行通信。 
-- Tracker Cluster：跟踪服务器的集群，有一组Tracker Server（跟踪服务器）组成。
-- Storage Cluster ：存储集群，有多个Group组成。
-
-
-
-### 上传和下载流程
-
-> 上传
-
- ![1526205664373](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526205664373.png)
-
-1. Client通过Tracker server查找可用的Storage server。
-2. Tracker server向Client返回一台可用的Storage server的IP地址和端口号。
-3. Client直接通过Tracker server返回的IP地址和端口与其中一台Storage server建立连接并进行文件上传。
-4. 上传完成，Storage server返回Client一个文件ID，文件上传结束。
-
-> 下载
-
- ![1526205705687](https://cdn.static.zzrfdsn.cn/images/project/leyoumall/1526205705687.png)
-
-1. Client通过Tracker server查找要下载文件所在的的Storage server。
-2. Tracker server向Client返回包含指定文件的某个Storage server的IP地址和端口号。
-3. Client直接通过Tracker server返回的IP地址和端口与其中一台Storage server建立连接并指定要下载文件。
-4. 下载文件成功。
-
-
-
-### 安装和使用
-
-所需文件下载地址：<https://github.com/happyfish100>
-
-参考资料：[FastDFS的安装](project/leyoumall/Introduction/FastDFS-install.md ':target=_blank')
+[安装FastDFS](/#/backend/storage/fastdfs ":ignore :target=_black")
 
 
 
