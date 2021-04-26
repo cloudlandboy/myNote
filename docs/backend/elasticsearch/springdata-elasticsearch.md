@@ -42,6 +42,14 @@ Spring Data Elasticsearch的页面：https://projects.spring.io/spring-data-elas
 - 基于注解的元数据映射方式，而且可扩展以支持更多不同的数据格式
 - 根据持久层接口自动生成对应实现方法，无需人工编写基本操作代码（类似mybatis，根据接口自动得到实现）。当然，也支持人工定制查询
 
+## springboot对应版本
+
+> springboot与elasticsearch客户端版本对照
+>
+> https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
+
+
+
 
 
 ## 创建Demo工程
