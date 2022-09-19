@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- https://www.clboy.cn -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日一句</title>
+    <style>
+        div,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            transition: .25s;
+        }
+
+        a:hover {
+            color: #57b7fc;
+        }
+
+        .detail-box {
+            padding: 0px 29px 30px;
+            width: 888px;
+            background-color: #fff;
+            font: 14px/1 'Microsoft Yahei', sans-serif, Arial, Verdana;
+            margin: auto;
+
+        }
+
+        .detail-title,
+        .detail-banner {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .detail-title-month {
+            float: left;
+            width: 120px;
+            height: 96px;
+            line-height: 96px;
+            font-size: 52px;
+            font-weight: 700;
+        }
+
+        .detail-title-week {
+            float: right;
+            text-align: center;
+            list-style: none;
+        }
+
+        .detail-title-week-item {
+            float: left;
+            margin-left: 26px;
+            margin-top: 20px;
+        }
+
+        .detail-title-week-item-top {
+            display: block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #f0f0f0;
+            border-radius: 50%;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .detail-title-week-item-bottom {
+            display: block;
+            line-height: 24px;
+            font-size: 12px;
+        }
+
+        .detail-title-week-item:hover .detail-title-week-item-top {
+            color: #5cb8f9;
+            border-color: #a6d7fc;
+        }
+
+        .detail-title-week-item:hover .detail-title-week-item-bottom {
+            color: #5cb8f9;
+        }
+
+
+        .detail-banner-img {
+            width: 888px;
+        }
+
+        .detail-content-en {
+            font-size: 26px;
+            line-height: 34px;
+            margin-top: 20px;
+        }
+
+        .detail-content-zh {
+            font-size: 18px;
+            line-height: 24px;
+            margin-top: 10px;
+        }
+
+        .detail-title-week-item .detail-title-week-item-top.on {
+            color: #fff;
+            border-color: #1596f5;
+            background-color: #1596f5;
+            cursor: default;
+        }
+
+        .detail-title-week-item .detail-title-week-item-top.on+.detail-title-week-item-bottom {
+            color: #1596f5;
+        }
+
+        .detail-title-week-item .detail-title-week-item-top.detail-disable {
+            color: #fff;
+            border-color: #ddd;
+            background-color: #ddd;
+            cursor: default;
+        }
+
+        .detail-title-week-item .detail-title-week-item-top.detail-disable+.detail-title-week-item-bottom {
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="detail" id="detail">
+        <div class="detail-box" v-if="daily">
+            <div class="detail-title">
+                <div class="detail-title-month">{{month}}月</div>
+                <ul class="detail-title-week">
+                    <li class="detail-title-week-item" v-for="info in daily.week_info">
+                        <a v-if="info.flag=='show'" class="detail-title-week-item-top" href="javascript:void(0)"
+                            @click='getData(info.date)'>{{info.week}}</a>
+                        <a v-else-if="info.flag=='cur'" class="detail-title-week-item-top on"
+                            href="javascript:void(0)">{{info.week}}</a>
+                        <a v-else class="detail-title-week-item-top detail-disable"
+                            href="javascript:void(0)">{{info.week}}</a>
+                        <span class="detail-title-week-item-bottom">{{handleDay(info.date)}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="detail-banner">
+                <img alt="" class="detail-banner-img" :src="daily.picture2">
+            </div>
+            <div class="detail-content">
+                <div class="detail-content-en">{{daily.content}}</div>
+                <div class="detail-content-zh">{{daily.note}}</div>
+            </div>
+        </div>
+    </div>
+    <script crossorigin="anonymous" integrity="sha384-OZmxTjkv7EQo5XDMPAmIkkvywVeXw59YyYh6zq8UKfkbor13jS+5p8qMTBSA1q+F"
+        src="https://lib.baomitu.com/vue/2.6.11/vue.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-+c6noR5inixEMnTNivnL9kxPYXU8BTs4mPNccIhm8/yAbBOLskB2bsNxP93FoIse"
+        src="https://lib.baomitu.com/fetch-jsonp/1.1.3/fetch-jsonp.min.js"></script>
+    <script>
+        const detailVM = new Vue({
+            el: '#detail',
+            data: {
+                daily: null,
+                month: 12
+            },
+            computed: {
+                today() {
+                    let now = new Date();
+                    this.month = now.getMonth() + 1;
+                    let todayStr = now.toLocaleDateString().split('/');
+                    todayStr[1].length == 1 && (todayStr[1] = '0' + todayStr[1]);
+                    todayStr[2].length == 1 && (todayStr[2] = '0' + todayStr[2]);
+                    return todayStr.join('-');
+                }
+            },
+            methods: {
+                getData(title) {
+                    fetchJsonp('https://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title=' + title).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        this.daily = data;
+                    })
+                },
+                handleDay(date) {
+                    let day = date.split('-')[2];
+                    return day[0] == '0' ? day[1] : day;
+                }
+            },
+            created() {
+                this.getData(this.today);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

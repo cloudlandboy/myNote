@@ -1,0 +1,561 @@
+
+<div style="text-align:center">
+    <iframe frameborder="no" style="margin:auto" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5264307&auto=1&height=66"></iframe>
+</div>
+<div id="app">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+            <div class="container">
+                <div class="row">
+                    <p
+                        style="text-align: center;background: linear-gradient(#FF7F00, #FF82AB);">
+                        <b style="font-size:28px;color:#FFF">
+                            <i>GODDESS</i>
+                        </b>
+                         - 
+                        <small>(无序)</small>
+                    </p>
+                    <!-- 遍历 -->
+                    <div class="col-md-3" v-for="(user,index) in goddess" style="text-align: center;">
+                        <p>
+                            <img v-bind:src="user.image" style="vertical-align:text-bottom;" height="200" />
+                        </p>
+                        <p>
+                            - {{index+1}} -
+                        </p>
+                        <p>
+                            {{user.name}}
+                        </p>
+                        <p>
+                            {{user.gender}}
+                        </p>
+                        <p>
+                            {{user.age}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+</div>
+
+<!-- 引入vue -->
+<script crossorigin="anonymous" integrity="sha384-8t+aLluUVnn5SPPG/NbeZCH6TWIvaXIm/gDbutRvtEeElzxxWaZN+G/ZIEdI/f+y" src="https://lib.baomitu.com/vue/2.6.10/vue.min.js"></script>
+<script>
+    const year = new Date().getFullYear();
+    // 创建vue实例
+    var app = new Vue({
+        el: "#app", // el即element，该vue实例要渲染的页面元素
+        data: { // 渲染页面需要的数据
+            goddess: [
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/87863ad4c4d6e93a.jpg', name: '翁美玲', gender: '女', age: year - 1959 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeetTe.jpg', name: '蓝洁瑛', gender: '女', age: year - 1963 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeDyRA.jpg', name: '赵雅芝', gender: '女', age: year - 1954 + 1 },
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/655f90ac240f8d26.jpg', name: '周慧敏', gender: '女', age: year - 1967 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeBlt.jpg', name: '关之琳', gender: '女', age: year - 1962 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeRYj.jpg', name: '邱淑贞', gender: '女', age: year - 1968 + 1 },
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/c889f7b09a6478ed.jpeg', name: '林青霞', gender: '女', age: year - 1954 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeTmT.jpg', name: '李若彤', gender: '女', age: year - 1967 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeerOf.jpg', name: '王祖贤', gender: '女', age: year - 1967 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeWfs.jpg', name: '张柏芝', gender: '女', age: year - 1980 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeecTg.jpg', name: '张曼玉', gender: '女', age: year - 1964 + 1 },
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/0821807f09267a9b.jpg', name: '蔡少芬', gender: '女', age: year - 1973 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qee560.jpg', name: '温碧霞', gender: '女', age: year - 1966 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeUFH.jpg', name: '万绮雯', gender: '女', age: year - 1970 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeDJ2R.jpg', name: '李丽珍', gender: '女', age: year - 1966 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QerKSA.jpg', name: '赵薇', gender: '女', age: year - 1976 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeaYd.jpg', name: '钟欣潼', gender: '女', age: year - 1981 + 1 },
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/32c501866339e345.png', name: '周秀娜', gender: '女', age: year - 1985 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qee4lq.jpg', name: '杨紫', gender: '女', age: year - 1992 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qee70U.png', name: '郑爽', gender: '女', age: year - 1991 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qee2kQ.jpg', name: '唐嫣', gender: '女', age: year - 1983 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeH7F.jpg', name: '佟丽娅', gender: '女', age: year - 1983 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeeIXV.jpg', name: '舒畅', gender: '女', age: year - 1987 + 1 },
+                { image: 'https://ftp.bmp.ovh/imgs/2019/12/22c88e047a214210.jpg', name: '杨幂', gender: '女', age: year - 1986 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qeehpn.jpg', name: '刘亦菲', gender: '女', age: year - 1987 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/Qelv5T.jpg', name: '韩雪', gender: '女', age: year - 1983 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QerRp9.jpg', name: '戚薇', gender: '女', age: year - 1984 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeDbMq.jpg', name: '赵丽颖', gender: '女', age: year - 1987 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QerLpd.jpg', name: '关晓彤', gender: '女', age: year - 1997 + 1 },
+                { image: 'https://s2.ax1x.com/2019/12/01/QeedfA.jpg', name: '宋祖儿', gender: '女', age: year - 1998 + 1 },
+            ]
+        }
+    });
+</script>
+
+<!-- 雪花特效 -->
+<script crossorigin="anonymous" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" src="https://lib.baomitu.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+(function ($) {
+    function getTransformProperty(element)
+    {
+        // Try transform first for forward compatibility
+        // In some versions of IE9, it is critical for msTransform to be in
+        // this list before MozTranform.
+        var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
+        var p;
+        while (p = properties.shift())
+        {
+            if (typeof element.style[p] != 'undefined')
+            {
+                return p;
+            }
+        }
+        
+        // Default to transform also
+        return 'transform';
+    }
+    
+    var _propsObj = null;
+    
+    var proxied = $.fn.css;
+    $.fn.css = function (arg, val)
+    {
+        // Temporary solution for current 1.6.x incompatibility, while
+        // preserving 1.3.x compatibility, until I can rewrite using CSS Hooks
+        if (_propsObj === null)
+        {
+            if (typeof $.cssProps != 'undefined')
+            {
+                _propsObj = $.cssProps;
+            }
+            else if (typeof $.props != 'undefined')
+            {
+                _propsObj = $.props;
+            }
+            else
+            {
+                _propsObj = {}
+            }
+        }
+        
+        // Find the correct browser specific property and setup the mapping using
+        // $.props which is used internally by jQuery.attr() when setting CSS
+        // properties via either the css(name, value) or css(properties) method.
+        // The problem with doing this once outside of css() method is that you
+        // need a DOM node to find the right CSS property, and there is some risk
+        // that somebody would call the css() method before body has loaded or any
+        // DOM-is-ready events have fired.
+        if
+        (
+            typeof _propsObj['transform'] == 'undefined'
+            &&
+            (
+                arg == 'transform'
+                ||
+                (
+                    typeof arg == 'object'
+                    && typeof arg['transform'] != 'undefined'
+                )
+            )
+        )
+        {
+            _propsObj['transform'] = getTransformProperty(this.get(0));
+        }
+        
+        // We force the property mapping here because jQuery.attr() does
+        // property mapping with jQuery.props when setting a CSS property,
+        // but curCSS() does *not* do property mapping when *getting* a
+        // CSS property.  (It probably should since it manually does it
+        // for 'float' now anyway... but that'd require more testing.)
+        //
+        // But, only do the forced mapping if the correct CSS property
+        // is not 'transform' and is something else.
+        if (_propsObj['transform'] != 'transform')
+        {
+            // Call in form of css('transform' ...)
+            if (arg == 'transform')
+            {
+                arg = _propsObj['transform'];
+                
+                // User wants to GET the transform CSS, and in jQuery 1.4.3
+                // calls to css() for transforms return a matrix rather than
+                // the actual string specified by the user... avoid that
+                // behavior and return the string by calling jQuery.style()
+                // directly
+                if (typeof val == 'undefined' && jQuery.style)
+                {
+                    return jQuery.style(this.get(0), arg);
+                }
+            }
+
+            // Call in form of css({'transform': ...})
+            else if
+            (
+                typeof arg == 'object'
+                && typeof arg['transform'] != 'undefined'
+            )
+            {
+                arg[_propsObj['transform']] = arg['transform'];
+                delete arg['transform'];
+            }
+        }
+        
+        return proxied.apply(this, arguments);
+    };
+})(jQuery);
+
+/*!
+/**
+ * Monkey patch jQuery 1.3.1+ to add support for setting or animating CSS
+ * scale and rotation independently.
+ * https://github.com/zachstronaut/jquery-animate-css-rotate-scale
+ * Released under dual MIT/GPL license just like jQuery.
+ * 2009-2012 Zachary Johnson www.zachstronaut.com
+ */
+(function ($) {
+    // Updated 2010.11.06
+    // Updated 2012.10.13 - Firefox 16 transform style returns a matrix rather than a string of transform functions.  This broke the features of this jQuery patch in Firefox 16.  It should be possible to parse the matrix for both scale and rotate (especially when scale is the same for both the X and Y axis), however the matrix does have disadvantages such as using its own units and also 45deg being indistinguishable from 45+360deg.  To get around these issues, this patch tracks internally the scale, rotation, and rotation units for any elements that are .scale()'ed, .rotate()'ed, or animated.  The major consequences of this are that 1. the scaled/rotated element will blow away any other transform rules applied to the same element (such as skew or translate), and 2. the scaled/rotated element is unaware of any preset scale or rotation initally set by page CSS rules.  You will have to explicitly set the starting scale/rotation value.
+    
+    function initData($el) {
+        var _ARS_data = $el.data('_ARS_data');
+        if (!_ARS_data) {
+            _ARS_data = {
+                rotateUnits: 'deg',
+                scale: 1,
+                rotate: 0
+            };
+            
+            $el.data('_ARS_data', _ARS_data);
+        }
+        
+        return _ARS_data;
+    }
+    
+    function setTransform($el, data) {
+        $el.css('transform', 'rotate(' + data.rotate + data.rotateUnits + ') scale(' + data.scale + ',' + data.scale + ')');
+    }
+    
+    $.fn.rotate = function (val) {
+        var $self = $(this), m, data = initData($self);
+                        
+        if (typeof val == 'undefined') {
+            return data.rotate + data.rotateUnits;
+        }
+        
+        m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
+        if (m) {
+            if (m[3]) {
+                data.rotateUnits = m[3];
+            }
+            
+            data.rotate = m[1];
+            
+            setTransform($self, data);
+        }
+        
+        return this;
+    };
+    
+    // Note that scale is unitless.
+    $.fn.scale = function (val) {
+        var $self = $(this), data = initData($self);
+        
+        if (typeof val == 'undefined') {
+            return data.scale;
+        }
+        
+        data.scale = val;
+        
+        setTransform($self, data);
+        
+        return this;
+    };
+
+    // fx.cur() must be monkey patched because otherwise it would always
+    // return 0 for current rotate and scale values
+    var curProxied = $.fx.prototype.cur;
+    $.fx.prototype.cur = function () {
+        if (this.prop == 'rotate') {
+            return parseFloat($(this.elem).rotate());
+            
+        } else if (this.prop == 'scale') {
+            return parseFloat($(this.elem).scale());
+        }
+        
+        return curProxied.apply(this, arguments);
+    };
+    
+    $.fx.step.rotate = function (fx) {
+        var data = initData($(fx.elem));
+        $(fx.elem).rotate(fx.now + data.rotateUnits);
+    };
+    
+    $.fx.step.scale = function (fx) {
+        $(fx.elem).scale(fx.now);
+    };
+    
+    /*
+    
+    Starting on line 3905 of jquery-1.3.2.js we have this code:
+    
+    // We need to compute starting value
+    if ( unit != "px" ) {
+        self.style[ name ] = (end || 1) + unit;
+        start = ((end || 1) / e.cur(true)) * start;
+        self.style[ name ] = start + unit;
+    }
+    
+    This creates a problem where we cannot give units to our custom animation
+    because if we do then this code will execute and because self.style[name]
+    does not exist where name is our custom animation's name then e.cur(true)
+    will likely return zero and create a divide by zero bug which will set
+    start to NaN.
+    
+    The following monkey patch for animate() gets around this by storing the
+    units used in the rotation definition and then stripping the units off.
+    
+    */
+    
+    var animateProxied = $.fn.animate;
+    $.fn.animate = function (prop) {
+        if (typeof prop['rotate'] != 'undefined') {
+            var $self, data, m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
+            if (m && m[5]) {
+                $self = $(this);
+                data = initData($self);
+                data.rotateUnits = m[5];
+            }
+            
+            prop['rotate'] = m[1];
+        }
+        
+        return animateProxied.apply(this, arguments);
+    };
+})(jQuery);
+
+(function ($) {    
+    var ww = 0;
+    var wh = 0;
+    var maxw = 0;
+    var minw = 0;
+    var maxh = 0;
+    var textShadowSupport = true;
+    var xv = 0;
+    var snowflakes = ["\u2744", "\u2745", "\u2746"];
+    var prevTime;
+    var absMax = 200;
+    var flakeCount = 0;
+    
+    $(init);
+
+    function init()
+    {
+        var detectSize = function ()
+        {
+            ww = $(window).width();
+            wh = $(window).height();
+            
+            maxw = ww + 300;
+            minw = -300;
+            maxh = wh + 300;
+        };
+        
+        detectSize();
+        
+        $(window).resize(detectSize);
+        
+        if (!$('body').css('textShadow'))
+        {
+            textShadowSupport = false;
+        }
+        
+        /* Should work in Windows 7 /*
+        if (/windows/i.test(navigator.userAgent))
+        {
+            snowflakes = ['*']; // Windows sucks and doesn't have Unicode chars installed
+            //snowflakes = ['T']; //No FF support for Wingdings
+        }
+        */
+        
+        // FF seems to just be able to handle like 50... 25 with rotation
+        // Safari seems fine with 150+... 75 with rotation
+        var i = 50;
+        while (i--)
+        {
+            addFlake(true);
+        }
+        
+        prevTime = new Date().getTime();
+        setInterval(move, 50);
+    }
+
+    function addFlake(initial)
+    {
+        flakeCount++;
+        
+        var sizes = [
+            {
+                r: 1.0,
+                css: {
+                    fontSize: 15 + Math.floor(Math.random() * 20) + 'px',
+                    textShadow: '9999px 0 0 rgba(238, 238, 238, 0.5)'
+                },
+                v: 2
+            },
+            {
+                r: 0.6,
+                css: {
+                    fontSize: 50 + Math.floor(Math.random() * 20) + 'px',
+                    textShadow: '9999px 0 2px #eee'
+                },
+                v: 6
+            },
+            {
+                r: 0.2,
+                css: {
+                    fontSize: 90 + Math.floor(Math.random() * 30) + 'px',
+                    textShadow: '9999px 0 6px #eee'
+                },
+                v: 12
+            },
+            {
+                r: 0.1,
+                css: {
+                    fontSize: 150 + Math.floor(Math.random() * 50) + 'px',
+                    textShadow: '9999px 0 24px #eee'
+                },
+                v: 20
+            }
+        ];
+    
+        var $nowflake = $('<span class="winternetz">' + snowflakes[Math.floor(Math.random() * snowflakes.length)] + '</span>').css(
+            {
+                /*fontFamily: 'Wingdings',*/
+                color: '#eee',
+                display: 'block',
+                position: 'fixed',
+                background: 'transparent',
+                width: 'auto',
+                height: 'auto',
+                margin: '0',
+                padding: '0',
+                textAlign: 'left',
+                zIndex: 9999
+            }
+        );
+        
+        if (textShadowSupport)
+        {
+            $nowflake.css('textIndent', '-9999px');
+        }
+        
+        var r = Math.random();
+    
+        var i = sizes.length;
+        
+        var v = 0;
+        
+        while (i--)
+        {
+            if (r < sizes[i].r)
+            {
+                v = sizes[i].v;
+                $nowflake.css(sizes[i].css);
+                break;
+            }
+        }
+    
+        var x = (-300 + Math.floor(Math.random() * (ww + 300)));
+        
+        var y = 0;
+        if (typeof initial == 'undefined' || !initial)
+        {
+            y = -300;
+        }
+        else
+        {
+            y = (-300 + Math.floor(Math.random() * (wh + 300)));
+        }
+    
+        $nowflake.css(
+            {
+                left: x + 'px',
+                top: y + 'px'
+            }
+        );
+        
+        $nowflake.data('x', x);
+        $nowflake.data('y', y);
+        $nowflake.data('v', v);
+        $nowflake.data('half_v', Math.round(v * 0.5));
+        
+        $('body').append($nowflake);
+    }
+    
+    function move()
+    {
+        if (Math.random() > 0.8)
+        {
+            xv += -1 + Math.random() * 2;
+            
+            if (Math.abs(xv) > 3)
+            {
+                xv = 3 * (xv / Math.abs(xv));
+            }
+        }
+        
+        // Throttle code
+        var newTime = new Date().getTime();
+        var diffTime = newTime - prevTime;
+        prevTime = newTime;
+        
+        if (diffTime < 55 && flakeCount < absMax)
+        {
+            addFlake();
+        }
+        else if (diffTime > 150)
+        {
+            $('span.winternetz:first').remove();
+            flakeCount--;
+        }
+        
+        $('span.winternetz').each(
+            function ()
+            {
+                var x = $(this).data('x');
+                var y = $(this).data('y');
+                var v = $(this).data('v');
+                var half_v = $(this).data('half_v');
+                
+                y += v;
+                
+                x += Math.round(xv * v);
+                x += -half_v + Math.round(Math.random() * v);
+                
+                // because flakes are rotating, the origin could be +/- the size of the flake offset
+                if (x > maxw)
+                {
+                    x = -300;
+                }
+                else if (x < minw)
+                {
+                    x = ww;
+                }
+                
+                if (y > maxh)
+                {
+                    $(this).remove();
+                    flakeCount--;
+                    
+                    addFlake();
+                }
+                else
+                {
+                    $(this).data('x', x);
+                    $(this).data('y', y);
+
+                    $(this).css(
+                        {
+                            left: x + 'px',
+                            top: y + 'px'
+                        }
+                    );
+                    
+                    // only spin biggest three flake sizes
+                    if (v >= 6)
+                    {
+                        $(this).animate({rotate: '+=' + half_v + 'deg'}, 0);
+                    }
+                }
+            }
+        );
+    }
+})(jQuery);</script>

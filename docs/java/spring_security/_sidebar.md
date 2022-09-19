@@ -1,0 +1,1 @@
+- Spring Security <sup class="version-number">springboot 2.6.10</sup>

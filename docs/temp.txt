@@ -1,0 +1,14 @@
+<!--显示图片 -->
+<button onclick="$('img').each(function(){this.src=this.src.replace('/java/springboot/home/cloudlandboy/Desktop/docs','')})">显示图片</button>
+
+<!--折叠  -->
+
+<details>
+    <summary>pom.xml</summary>
+</details>
+
+<small style="color:green"></small>
+
+https://cdn.tencentfs.clboy.cn/images/project/leyoumall/
+
+https://api.ixiaowai.cn/gqapi/gqapi.php

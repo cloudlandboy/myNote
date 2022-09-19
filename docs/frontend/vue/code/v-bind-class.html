@@ -1,0 +1,32 @@
+<style>
+    ._border {
+        width: 150px;
+        height: 150px;
+        border: 1px solid pink;
+    }
+
+    ._bg {
+        background: green;
+    }
+
+    .box {
+        color: orange;
+    }
+</style>
+<div id="main">
+    <div :class="[b,{_bg:c,box:d}]">
+        box
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.config.devtools = true;
+    new Vue({
+        el: '#main',
+        data: {
+            b: '_border',
+            c: false,
+            d: true
+        }
+    })
+</script>

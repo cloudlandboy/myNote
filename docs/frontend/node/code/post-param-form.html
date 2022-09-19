@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Node.js获取 POST 请求内容</title>
+	<style type="text/css" media="screen">
+		#post-form>p:last-child{
+			width: 200px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<form action="http://localhost:8888" method="post" accept-charset="utf-8" id="post-form">
+		<p>姓名：<input type="text" name="name"></p>
+		<p>性别：<input type="radio" name="gender" value="男">男 &emsp;<input type="radio" name="gender" value="女">女</p>
+		<p>生日：<input type="date" name="birthday"></p>
+		<p><input type="submit"></p>
+	</form>
+</body>
+</html>

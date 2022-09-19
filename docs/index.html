@@ -1,0 +1,94 @@
+<!--
+ * @Author: clboy
+ * @Date: 2022-09-17 19:21:23
+ * @LastEditors: clboy
+ * @LastEditTime: 2022-09-17 23:01:05
+ * @Description: spa网页入口
+ * 
+ * Copyright (c) 2022 by clboy syl@clboy.cn, All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>云梦</title>
+  <link rel="icon" href="resources//images/favicon.ico">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="keywords" content="云梦,自在如风的少年,云梦,syl,cloudlandboy,clboy,java笔记,java教程,java,java*" />
+  <meta name="description" content="java学习笔记">
+  <meta name="author" content="clboy">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="/resources/css/note.clboy.css">
+</head>
+
+<body>
+  <!-- <canvas class="fireworks" style="z-index: 2020;position: fixed;pointer-events: none;"></canvas> -->
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '云梦',
+      repo: 'https://github.com/cloudlandboy',
+      loadSidebar: true,
+      coverpage: true,
+      loadNavbar: true,
+      auto2top: true,
+      themeColor: '#FF5722',
+      subMaxLevel: 6,
+      routerMode: 'hash',
+      executeScript: true,
+      plugins: [function (hook) {
+        hook.afterEach(function (html, next) {
+          //重置gitalk的id，不然每次请求都是第一个刷新页面的id
+          gitalk.options.id = getPagePathMd5();
+          console.log(gitalk.options.id);
+          next(html);
+        })
+      }]
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.js"></script>
+  <script src="//unpkg.com/docsify-copy-code"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/emoji.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh"
+    src="https://lib.baomitu.com/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/emn178/js-md5/build/md5.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/external-script.min.js"></script>
+  <script>
+    const CLIENT_ID = '4183c30109a1adc7be5a';
+    const CLIENT_SECRET = '200f36563855fee2ce5e623d8c0e029baa070873';
+    const HOME_PATH_MD5 = '6666cd76f96956469e7be39d750cc7d9';
+
+    function getPagePathMd5() {
+      let routerMode = window.$docsify.routerMode || 'hash';
+      let path = HOME_PATH_MD5;
+      //history也可以匹配hash模式
+      if (routerMode === 'hash' || ('/' === location.pathname && location.hash.startsWith('#/'))) {
+        let queryIndex = location.hash.indexOf('?');
+        path = queryIndex < 0 ? location.hash.substring(1) : location.hash.substring(1, queryIndex);
+      } else if (location.pathname) {
+        path = location.pathname;
+      }
+      console.log('current path is：' + path);
+      return md5(path);
+    }
+
+    const gitalk = new Gitalk({
+      clientID: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      repo: 'myNote',
+      owner: 'cloudlandboy',
+      admin: ['cloudlandboy'],
+      id: getPagePathMd5(),
+      distractionFreeMode: false
+    });
+  </script>
+</body>
+
+</html>

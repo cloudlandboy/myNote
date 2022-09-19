@@ -1,0 +1,80 @@
+<style>
+    div.product{
+        float:left;
+        border:1px solid lightGray;
+        width:200px;
+        margin:10px;
+        cursor: pointer;
+    }
+    div.product:hover{
+        border:1px solid #c40000;
+
+    }
+    div.price{
+        color:#c40000;
+        font-weight:bold;
+        font-size:1.2em;
+        margin:10px;
+    }
+    div.productName{
+        color:gray;
+        font-size:0.8em;
+        margin:10px;
+    }
+    div.sale{
+        float:left;
+        width:100px;
+        border:1px solid lightgray;
+        border-width:1px 0px 0px 0px;
+        color:gray;
+        font-size:0.8em;
+        padding-left:10px;
+    }
+    div.review{
+        overflow:hidden;
+        border:1px solid lightgray;
+        border-width:1px 0px 0px 1px;
+        color:gray;
+        font-size:0.8em;
+        padding-left:10px;
+    }
+</style>
+<div id="tempalate" style="display:none">
+    <div class="product" v-on:click="increaseSale">
+        <div class="price">
+            ¥ {{product.price}}
+        </div>
+        <div class="productName">
+            {{product.name}}
+        </div>
+        <div class="sale"> 月成交 {{product.sale}} 笔</div>
+        <div class="review"> 评价 {{product.review}} </div>
+    </div>
+</div>
+<div id="main">
+    <product v-for="product in products" :product="product"></product>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data:{
+            products:[
+                {"name":"MAXFEEL休闲男士手包","sale":"18","review":5,"price":800},
+                {"name":"宾度 男士手包","sale":"35","review":10,"price":800},
+                {"name":"唯美诺新款男士手包","sale":"29","review":8,"price":800}
+            ]
+        },
+        components: {
+            'product': {
+                props:['product'],
+                template: document.getElementById('tempalate').innerHTML,
+                methods:{
+                    increaseSale:function(){
+                        this.product.sale++;
+                    }
+                }
+            }
+        }
+    })
+</script>

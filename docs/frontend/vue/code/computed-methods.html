@@ -1,0 +1,16 @@
+<div id="main">
+    输入字符串：<input type="text" v-model="str"><br>
+    反转字符串：{{getReverseStr()}}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data: {str: '我爱你'},
+        methods: {
+            getReverseStr() {
+                return this.str.split('').reverse().join('');
+            }
+        }
+    })
+</script>

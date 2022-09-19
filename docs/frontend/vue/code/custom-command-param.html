@@ -1,0 +1,21 @@
+<div id="main">
+    <div v-style="{c:'red',w:'10px',h:'10px'}"></div>
+    <div v-style="{c:'yellow',w:'20px',h:'20px'}"></div>
+    <div v-style="{c:'blue',w:'30px',h:'30px'}"></div>
+    <div v-style="{c:'green',w:'40px',h:'40px'}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.directive('style', (el, binding) => {
+        let data = binding.value;
+        el.style.borderRadius = "50%";
+        el.style.margin = "auto";
+        el.style.backgroundColor = data.c;
+        el.style.width = data.w;
+        el.style.height = data.h;
+        console.log(binding);
+    })
+    new Vue({
+        el: '#main',
+    })
+</script>

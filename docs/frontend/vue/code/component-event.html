@@ -1,0 +1,31 @@
+<style>
+    .product {
+        width: 200px;
+        height: 100px;
+        margin: 10px;
+        background: #B0E0E6;
+        float: left;
+    }
+</style>
+<div id="main">
+    <product name="MAXFEEL休闲男士手包" sale="10" ></product>
+    <product name="宾度 男士手包" sale="20" ></product>
+    <product name="唯美诺新款男士手包" sale="30" ></product>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        components: {
+            'product': {
+                props:['name','sale'],
+                template: `<div class="product" @click="increaseSale"><p>{{name}}</p><p>销量：{{sale}}</p></div>`,
+                methods:{
+                    increaseSale:function(){
+                        this.sale++;
+                    }
+                }
+            }
+        }
+    })
+</script>

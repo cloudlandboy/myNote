@@ -1,0 +1,17 @@
+<div id="main">
+    输入文本+50
+    <p>
+        正常绑定：<input type="text" v-model="a1">{{a1+50}}
+    </p>
+    <p>
+        加上.number修饰符：<input type="text" v-model.number="a2">{{a2+50}}
+    </p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data: {a1: '', a2: ''},
+
+    })
+</script>

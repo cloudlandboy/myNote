@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二维码生成</title>
+</head>
+
+<body>
+    <div>
+        <p style="width:320px;margin:auto">
+            <input placeholder="将生成的链接粘贴到此处" id="qr_text" autocomplete="off"
+                style="text-indent:10px;width:100%;height:28px"></input>
+        </p>
+        <p style="width:320px;margin:auto;padding:20px 0 0 20px" id="QRCode">
+            <img src="https://www.imageoss.com/images/2019/12/19/1576763482.png" id="defaultQR" width="300"
+                height="300">
+        </p>
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+        <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+        <script type="text/javascript">
+            $(() => {
+                const defaultQR = $("#defaultQR")[0];
+                document.getElementById("qr_text").oninput = function () {
+                    if ($.trim(this.value)) {
+                        $('#QRCode').empty().qrcode({
+                            text: $('#qr_text').val(),
+                            width: 300,
+                            height: 300,
+                        });
+                    } else {
+                        $('#QRCode').html(defaultQR);
+                    }
+                }
+            })
+        </script>
+    </div>
+</body>
+
+</html>

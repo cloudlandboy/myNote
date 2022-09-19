@@ -1,0 +1,4 @@
+- Hibernate
+  - [配置文件](java/hibernate/properties.md)
+  - [实体的状态](java/hibernate/status.md)
+  - [缓存](java/hibernate/cache.md)

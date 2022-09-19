@@ -1,0 +1,20 @@
+<div id="main">
+    <input type="text" :[attr]="val">
+    <button @click="changeAttr">点击切换属性</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.config.devtools = true;
+    new Vue({
+        el: '#main',
+        data: {
+            attr: 'value',
+            val: '这里输入姓名'
+        },
+        methods: {
+            changeAttr() {
+                this.attr = this.attr == 'placeholder' ? 'value' : 'placeholder'
+            }
+        }
+    })
+</script>

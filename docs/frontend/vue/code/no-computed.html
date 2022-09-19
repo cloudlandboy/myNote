@@ -1,0 +1,12 @@
+<div id="main">
+    单价：<input type="text" disabled value="10"><br>
+    数量:<input type="number" v-model.number="num"><br>
+    价格:￥<span style="color: red">{{num*10}}</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data: {num: 0},
+    })
+</script>

@@ -1,0 +1,36 @@
+<style>
+    .product {
+        width: 200px;
+        height: 100px;
+        margin: 10px;
+        background: #B0E0E6;
+        float: left;
+    }
+</style>
+<div id="main">
+    <product v-for="product in products" :product="product"></product>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data:{
+            products:[
+                {"name":"MAXFEEL休闲男士手包","sale":"18"},
+                {"name":"宾度 男士手包","sale":"35"},
+                {"name":"唯美诺新款男士手包","sale":"29"}
+            ]
+        },
+        components: {
+            'product': {
+                props:['product'],
+                template: `<div class="product" @click="increaseSale"><p>{{product.name}}</p><p>销量：{{product.sale}}</p></div>`,
+                methods:{
+                    increaseSale:function(){
+                        this.product.sale++;
+                    }
+                }
+            }
+        }
+    })
+</script>

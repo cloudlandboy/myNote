@@ -1,0 +1,23 @@
+<div id="main">
+    <p>
+        <img :src="img_src" height="120" alt="随机图片" title="随机图片">
+    </p>
+    <p>
+        <button @click="changeImg">点击切换图片</button>
+    </p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.config.devtools = true;
+    new Vue({
+        el: '#main',
+        data: {
+            img_src: 'https://s0.xinger.ink/acgimg/acgurl.php',
+        },
+        methods: {
+            changeImg() {
+                this.img_src = 'https://s0.xinger.ink/acgimg/acgurl.php?t=' + new Date().getTime();
+            },
+        }
+    });
+</script>

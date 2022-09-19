@@ -1,0 +1,34 @@
+<style>
+    table tr td {
+        border: 1px solid gray;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 300px;
+    }
+</style>
+<div id="main">
+    <table>
+        <tr v-for="(v,k) in node">
+            <td>{{k}}</td>
+            <td>{{v}}</td>
+        </tr>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    Vue.config.devtools = true;
+    new Vue({
+        el: '#main',
+        data: {node: null},
+        created() {
+            axios('./fetch-demo.json').then((res) => {
+                this.node = res.data;
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    })
+</script>

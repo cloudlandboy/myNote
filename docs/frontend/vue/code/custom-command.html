@@ -1,0 +1,15 @@
+<div id="main">
+    <span v-cbg>hello world</span>
+    <br>
+    <span>hello world</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.directive('cbg', (el) => {
+        el.style.color = 'pink';
+        el.style.backgroundColor = 'black';
+    })
+    new Vue({
+        el: '#main',
+    })
+</script>

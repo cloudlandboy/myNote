@@ -1,0 +1,31 @@
+<div id="main">
+
+    <ul style="list-style: none;padding: 0;">
+        <li v-for="stu in students">{{stu}}</li>
+    </ul>
+
+    <h2>索引指定别名 (或对象key)</h2>
+    <ul style="list-style: none;padding: 0;">
+        <li v-for="(stu,index) in students">{{index}}.{{stu}}</li>
+    </ul>
+    <ul style="list-style: none;padding: 0;">
+        <li v-for="(val,key) in linda">{{key}}:{{val}}</li>
+    </ul>
+    <ul style="list-style: none;padding: 0;">
+        <li v-for="(val,key,index) in linda">{{index}}.{{key}}:{{val}}</li>
+    </ul>
+
+    <h2>纯数字遍历</h2>
+    <span v-for="i in 10" style="padding: 10px;margin: 10px;background: orange;color: white">{{i}}</span>
+
+    <h2>与v-if使用</h2>
+    <span v-for="i in 10" v-if="i%2==0" style="padding: 10px;margin: 10px;background: orange;color: white">{{i}}</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    Vue.config.devtools = true;
+    new Vue({
+        el: '#main',
+        data: {students: ['张三', '李四', '王二麻子', '小红'], linda: {cname: '琳达', age: '24', gender: '女'}, checkdedStu: []},
+    });
+</script>

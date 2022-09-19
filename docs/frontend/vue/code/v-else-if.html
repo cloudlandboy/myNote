@@ -1,0 +1,19 @@
+<div id="main">
+    <p>{{count}}</p>
+    <button @click="toggle">点击切换显示</button>
+    <div v-if="count%2==0" style="height: 30px;background: orange;margin-top: 10px"></div>
+    <div v-else-if="count%3==0" style="height: 30px;background: green;margin-top: 10px"></div>
+    <div v-else style="height: 30px;background: red;margin-top: 10px"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data: {count: 1},
+        methods: {
+            toggle() {
+                this.count++;
+            }
+        }
+    })
+</script>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VUE事件监听之事件修饰符</title>
+    <style type="text/css" media="screen">
+        .box {
+            text-align: center;
+            border: 1px solid;
+        }
+
+        .grandFather {
+            width: 200px;
+            height: 200px;
+            border-color: red
+        }
+
+        .father {
+            width: 150px;
+            height: 150px;
+            border-color: yellow
+        }
+
+        .me {
+            width: 100px;
+            height: 100px;
+            border-color: blue
+        }
+
+        .son {
+            width: 50px;
+            height: 50px;
+            border-color: green
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="container">
+        <h2>无修饰符</h2>
+        <div class="box grandFather" @click="HandlerFunction">
+            grandFather
+            <div class="box father" @click="HandlerFunction">
+                father
+                <div class="box me" @click="HandlerFunction">
+                    me
+                    <div class="box son" @click="HandlerFunction">
+                        son
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>@click.stop="xxx"</h2>
+        <small>在me上的click后面加一个 .stop， 那么冒泡到了这里就结束了，就不会冒到father上面去了</small>
+        <div class="box grandFather" @click="HandlerFunction">
+            grandFather
+            <div class="box father" @click="HandlerFunction">
+                father
+                <div class="box me" @click.stop="HandlerFunction">
+                    stop-me
+                    <div class="box son" @click="HandlerFunction">
+                        son
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>@click.capture="xxx"</h2>
+        <small>
+            在father 上增加一个.capture，那么当冒泡发生的时候，就会优先让father捕捉事件。，点击son或者me的时候，都会优先触发它
+        </small>
+        <div class="box grandFather" @click="HandlerFunction">
+            grandFather
+            <div class="box father" @click.capture="HandlerFunction">
+                capture-father
+                <div class="box me" @click="HandlerFunction">
+                    me
+                    <div class="box son" @click="HandlerFunction">
+                        son
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>@click.self="xxx"</h2>
+        <small>
+            只有自己能触发，子元素无法触发.self
+        </small>
+        <div class="box grandFather" @click="HandlerFunction">
+            grandFather
+            <div class="box father" @click="HandlerFunction">
+                father
+                <div class="box me" @click.self="HandlerFunction">
+                    self-me
+                    <div class="box son" @click="HandlerFunction">
+                        son
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>@click.once="xxx"</h2>
+        <small>
+            只能提交一次 .once
+        </small>
+        <div class="box grandFather" @click="HandlerFunction">
+            grandFather
+            <div class="box father" @click.once="HandlerFunction">
+                once-father
+                <div class="box me" @click="HandlerFunction">
+                    me
+                    <div class="box son" @click="HandlerFunction">
+                        son
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>@click.prevent="xxx"</h2>
+        <small>
+            阻止提交 .prevent
+        </small>
+        <br>
+        <a href="http://www.baidu.com" target="_blank" @click="linkClick">未阻止</a>
+        <a href="http://www.baidu.com" target="_blank" @click.prevent="linkClick">已阻止</a>
+    </div>
+    <div class="container">
+        <h2>@submit.prevent="xxx"</h2>
+        <small>
+            阻止表单提交 .prevent
+        </small>
+        <br>
+        <form @submit="formSubmit" action="http://www.baidu.com">
+            <button type="submit">提交(未阻止)</button>
+        </form>
+        <form @submit.prevent="formSubmit" action="http://www.baidu.com">
+            <button type="submit">提交(已阻止)</button>
+        </form>
+    </div>
+    <div class="container">
+        <h2>&lt;input @keyup.13="onEnter"&gt;</h2>
+        <p>
+            <small>
+                只有keycode为13的才会触发（enter）
+            </small>
+        </p>
+        <input @keyup.13="onEnter">
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        methods: {
+            HandlerFunction() {
+                alert(event.currentTarget.className.replace('box ', ''));
+            },
+            linkClick() {
+                alert('链接被点击了');
+            },
+            formSubmit() {
+                alert('提交表单！');
+            },
+            onEnter() {
+                alert('你按下了确认键！');
+            }
+        }
+    })
+</script>
+</body>
+</html>

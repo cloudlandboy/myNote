@@ -1,0 +1,39 @@
+<div id="main">
+    <div class="menu">
+        <!--router-link 相当于就是超链,to 相当于就是 href -->
+        <router-link to="/user">用户管理</router-link>
+        <router-link to="/product">产品管理</router-link>
+        <router-link to="/order">订单管理</router-link>
+    </div>
+    <div class="content">
+        <!--通过<router-view>来指定一个锚点，当路由的路径匹配时，vue-router会自动把对应组件放到锚点位置进行渲染-->
+        <router-view></router-view>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js"></script>
+<script type="text/javascript">
+    //自定义指令
+    Vue.directive('tc', (el, binding) => {
+        el.style.color = binding.value;
+    })
+
+    //组件模板
+    const user = {template: `<p v-tc="'red'">用户管理页面的内容</p>`};
+    const second = {template: `<p v-tc="'green'">产品管理页面的内容</p>`};
+    const order = {template: `<p v-tc="'blue'">订单管理页面的内容</p>`};
+
+    // 创建 router 实例
+    const router = new VueRouter({
+        routes: [
+            {path: '/user', component: user},//path:路由的路径,以“/”开头,只有“/”表示默认渲染的
+            {path: '/product', component: second},//component:组件
+            {path: '/order', component: order}
+        ]
+    })
+
+    new Vue({
+        el: '#main',
+        router // (缩写) 相当于 router: router
+    })
+</script>

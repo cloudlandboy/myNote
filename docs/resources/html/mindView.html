@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://hizzgdev.github.io/jsmind/style/jsmind.css">
+    <title>思维导图</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu {
+            position: fixed;
+            z-index: 1997;
+            opacity: 0.7;
+            display: none;
+            overflow: hidden;
+            width: 100%;
+            padding-right: 48px;
+        }
+
+        #zoomOutBtn,
+        #zoomInBtn {
+            float: right;
+        }
+
+        #menu>.btn-outline-info {
+            width: 36px;
+        }
+
+        #menu>button {
+            margin: 4px;
+        }
+
+        #jsmind_container {
+            background: #E3EDCD;
+        }
+
+        .helpInfo {
+            list-style: none;
+        }
+
+        .helpInfo>li {
+            padding: 6px;
+        }
+
+        .helpInfo>li:last-child {
+            text-align: right;
+            font-size: .7em;
+        }
+
+        #jsmind_container img {
+            height: 50px;
+            width: 100px;
+        }
+
+        #jsmind_container jmnode:hover {
+            white-space: normal;
+            z-index: 1997 !important;
+            font-weight:600;
+            cursor: crosshair;
+            color: #EE3B3B;
+            background-color: #EEE0E5;
+        }
+
+        jmnode {
+            text-align: center;
+        }
+
+        #localFile {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="menu">
+        <button type="button" onclick="util.jm.expand_all()" class="btn btn-sm btn-primary">展开全部</button>
+        <button type="button" onclick="util.jm.collapse_all()" class="btn btn-sm btn-secondary">收起全部</button>
+        <button type="button" onclick="util.download()" class="btn btn-sm btn-success">下载JSON数据</button>
+        <button type="button" onclick="util.loadLocalData()" class="btn btn-sm btn-warning">加载本地JSON数据</button>
+        <button type="button" onclick="util.creatNew()" class="btn btn-sm btn-danger">新建</button>
+        <input type="file" id="localFile"></input>
+        <button type="button" onclick="util.help()" class="btn btn-sm btn-info">帮助</button>
+        <button type="button" onclick="util.zoomIn()" id="zoomInBtn" class="btn btn-sm btn-outline-info">+</button>
+        <button type="button" onclick="util.zoomOut()" id="zoomOutBtn" class="btn btn-sm btn-outline-info">-</button>
+    </div>
+    <div id="jsmind_container"></div>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://hizzgdev.github.io/jsmind/js/jsmind.js"></script>
+    <script type="text/javascript" src="https://hizzgdev.github.io/jsmind/js/jsmind.draggable.js"></script>
+    <script src="http://hizzgdev.github.io/jsmind/js/jsmind.screenshot.js"></script>
+    <script src="https://www.layuicdn.com/layer/layer.js"></script>
+    <script src="https://lib.baomitu.com/axios/0.19.0/axios.js"></script>
+    <script type="text/javascript">
+        const container = document.getElementById("jsmind_container");
+        container.style.height = window.innerHeight + "px";
+        const util = {
+            zoomOutBtn: document.getElementById("zoomOutBtn"),
+            zoomInBtn: document.getElementById("zoomInBtn"),
+            localFile: document.getElementById("localFile"),
+            dataLink: "https://note.clboy.cn/resources/minds/",
+            saveed: true,
+            mind: {
+                "meta": {
+                    "name": "clboy",
+                    "author": "clboy.cn",
+                    "version": "0.1"
+                },
+                "format": "node_tree",
+            },
+            options: {
+                container: 'jsmind_container',
+                editable: true,
+                theme: 'success',
+                mode: "side",
+                shortcut: {
+                    mapping: {
+                        addchild: jsMind.key.ctrl + 13
+                    }
+                }
+            }
+            ,
+            getQueryVariable(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+            ,
+            load(link) {
+                this.jm = new jsMind(this.options);
+                if (link == -2019) {
+                    this.creatNew();
+                    return;
+                }
+                if (!/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/.test(link)) {
+                    link = this.dataLink + link + ".json";
+                }
+                axios.get(link).then(({ data }) => {
+                    this.jm.options.editable = false;
+                    util.mind.data = data;
+                    this.show();
+                }).catch(() => {
+                    layer.msg("请求数据失败！");
+                });
+            }
+            ,
+            show() {
+                this.jm.show(this.mind);
+                $('#menu').show();
+            }
+            ,
+            download() {
+                var aEle = document.createElement("a");
+                let jsonData = this.jm.get_data(this.mind.format).data;
+                blob = new Blob([JSON.stringify(jsonData)]);
+                let fileName = jsonData.topic;
+                aEle.download = fileName.replace(fileName[0], fileName[0].toLowerCase()) + ".json";
+                aEle.href = URL.createObjectURL(blob);
+                aEle.click();// 设置点击事件
+                //认为已经保存
+                this.saveed = true;
+            }
+            ,
+            screen_shot() {
+                this.jm.screenshot.shootDownload();
+            }
+            ,
+            help() {
+                layer.open({
+                    title: '帮助', content: `
+                <ul class="helpInfo">
+                    <li>编辑节点：<span class="badge badge-info">F2</span></li>
+                    <li>新增子节点：<span class="badge badge-info">CTRL+ENTER</span></li>
+                    <li>新增同级节点：<span class="badge badge-info">ENTER</span></li>
+                    <li>删除：<span class="badge badge-info">DELETE</span></li>
+                    <li>删除图片：<span class="badge badge-info">可将图片更换为文字然后DELETE</span></li>
+                    <li>展开/收起：<span class="badge badge-info">空格</span></li>
+                    <li>查看大图：<span class="badge badge-info">图片上点击鼠标右键</span></li>
+                    <li><span class="badge badge-danger">图片可选择图床存储</span></li>
+                    <li>作者：clboy.cn，所用插件：JsMind<br/><br/>声明：数据来源互联网，手工录入</li>
+                </ul>`, type: 1, area: ['350px'],
+                })
+            }
+            ,
+            zoomIn() {
+                if (this.jm.view.zoomIn()) {
+                    this.zoomOutBtn.disabled = false;
+                } else {
+                    this.zoomInBtn.disabled = true;
+                };
+            }
+            ,
+            zoomOut() {
+                if (this.jm.view.zoomOut()) {
+                    this.zoomInBtn.disabled = false;
+                } else {
+                    this.zoomOutBtn.disabled = true;
+                };
+            }
+            ,
+            loadLocalData() {
+                this.localFile.click();
+            }
+            ,
+            creatNew() {
+                if (!this.saveed) {
+                    layer.confirm('你确定不保存吗？', {
+                        btn: ['保存', '丢去']
+                    }, function (index) {
+                        util.download();
+                        layer.close(index);
+                    }, function () {
+                        util.saveed = true;
+                        util.creatNew();
+                    });
+                } else {
+                    this.mind.data = {
+                        "id": "root",
+                        "topic": "Root"
+                    };
+                    this.jm.options.editable = true;
+                    this.show();
+                }
+            }
+        }
+        !function () {
+            util.localFile.onchange = function () {
+                let file = this.files[0];
+                let fileName = file.name.split('.');
+                fileName = fileName[fileName.length - 1];
+                if (!(fileName == 'json')) {
+                    layer.msg('不是.json文件');
+                    return;
+                }
+                const fileReader = new FileReader();
+                fileReader.readAsText(file);
+                fileReader.onload = () => {
+                    util.mind.data = JSON.parse(fileReader.result);
+                    util.show();
+                    util.jm.options.editable = true;
+                }
+            }
+            window.onbeforeunload = function (e) {
+                if (!util.saveed) {
+                    let message = "系统可能不会保存您所做的更改。";
+                    e = e || window.event;
+                    if (e) {
+                        e.returnValue = message;
+                    }
+                    return message;
+                }
+            };
+            $('#jsmind_container').on('contextmenu', 'img', (e) => {
+                let el = e.target;
+                layer.photos({
+                    anim: 5,
+                    photos:
+                    {
+                        "title": "大图展示",
+                        "id": "2020",
+                        "start": 0,
+                        "data": [
+                            {
+                                "alt": el.alt,
+                                "pid": el.alt,
+                                "src": el.src,
+                                "thumb": el.src
+                            }
+                        ]
+                    }
+                });
+                e.preventDefault();
+            });
+            $('#jsmind_container').on('change', 'jmnode>input', () => {
+                util.saveed = false;
+            })
+            let link = util.getQueryVariable("md");
+            if (!link) {
+                layer.prompt({
+                    title: '输入mindId，非本站数据输入请求地址(带http/https)，新建点取消即可',
+                    btnAlign: 'c',
+                    formType: 0,
+                    closeBtn: 0,
+                    btn2: function (index) {
+                        layer.close(index);
+                        util.load(-2019);
+                    }
+                }, function (text, index) {
+                    layer.close(index);
+                    let url = location.href.split("?")[0];
+                    location.href = url + "?md=" + escape(text);
+                });
+                return;
+            }
+            util.load(unescape(link));
+        }();
+    </script>
+</body>
+
+</html>

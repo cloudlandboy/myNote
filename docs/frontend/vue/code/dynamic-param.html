@@ -1,0 +1,19 @@
+<div id="main">
+    组件外的值：<input v-model="outName" ><br>
+    <product v-bind:name="outName"></product>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#main',
+        data:{
+          outName:'男士皮包'
+        },
+        components: {
+            'product':{
+                props:['name'],
+                template: '<div class="product" >组件内：{{name}}</div>'
+            }
+        }
+    })
+</script>
