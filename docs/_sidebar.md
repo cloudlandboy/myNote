@@ -1,7 +1,7 @@
 - **Java**
   - [Java基础](java/basic/_sidebar.md)
   - [JavaWeb](java/javaweb/_sidebar.md)
-  - [Mysql](java/mysql/_sidebar.md)
+  - [Mysql](mysql/_sidebar.md)
   - [Redis](java/redis/_sidebar.md)
   - [Hibernate](java/hibernate/_sidebar.md)
   - [WebService](java/webservice/_sidebar.md)
@@ -15,7 +15,7 @@
   - [文件储存](java/storage/_sidebar)
   - [第三方支付](java/payment/_sidebar)
   - [模板引擎](java/template/_sidebar.md)
-  - [Docker](java/docker/_sidebar)
+  - [Docker](docker/_sidebar)
   - [我的JAVA工具集](java/modules/_sidebar)
   - [我的JS工具集](frontend/modules/_sidebar)
 - 版本控制
