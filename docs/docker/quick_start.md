@@ -435,7 +435,7 @@ docker pull centos/mysql-57-centos7
 （2）创建容器
 
 ```
-docker run -di --name=tensquare_mysql -p 33306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+docker run -di --name=tensquare_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
 ```
 
 -p 代表端口映射，格式为  宿主机映射端口:容器运行端口
