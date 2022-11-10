@@ -917,7 +917,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 这次登录成功后会设置一个名为 `remember-me` 的cookie，并且有效期是两个星期
 
-![image-20221107113553865](./assets/image-20221107113553865.png)
+![image-20221107113553865](https://cdn.tencentfs.clboy.cn/images/2022/20221110153846294.png)
 
 这次我们关闭浏览器后，重新打开后访问 http://127.0.0.1:8080/ ，发现不需要登录就进入了，如果你的还是需要登录，请检查是不是使用的 **无痕窗口** 或者浏览器设置了 **退出时自动清理浏览数据**
 
@@ -982,3 +982,130 @@ http.logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler((req, res
 }));
 ```
 
+
+
+## 登录成功或失败处理
+
+由前面的学习我们知道，spring security默认在登录成功后会给重定向到首页或者登录之前访问的页面，登录失败会重定向回登录页
+
+退出登录默认会重定向到登录页，上面退出登录成功后处理在上面已经讲过了 `logoutSuccessHandler` 方法
+
+下面来看登录成功或失败的处理
+
+```java
+//设置登录页路径和登录处理的接口路径
+http.formLogin(form -> form.loginPage("/login.html").loginProcessingUrl("/auth")
+        .successHandler((req, res, auth) -> {
+            //登录成功处理逻辑，与successForwardUrl(String v) 和 defaultSuccessUrl(String v) 不可同时设置,后设置覆盖之前的
+        })
+        .failureHandler((req, res, ex) -> {
+            //登录失败处理逻辑,与failureUrl(String v) 和 failureForwardUrl(String v) 不可同时设置,后设置覆盖之前的
+        }));
+```
+
+现在一般的项目都是前后端分离的方式开发，后端返回json格式数据给前端，现在我们改造以下
+
+```java
+@AllArgsConstructor
+@EnableWebSecurity(debug = true)
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final ObjectMapper objectMapper;
+
+    /**
+     * 登录成功处理
+     */
+    private AuthenticationSuccessHandler loginSuccessHandler() {
+        return (req, res, auth) -> {
+            res.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            res.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Map<String, Object> result = CollectionUtils.newLinkedHashMap(3);
+            result.put("code", "0");
+            result.put("msg", "登录成功");
+            result.put("data", auth);
+            res.getWriter().write(objectMapper.writeValueAsString(result));
+        };
+    }
+
+    /**
+     * 登录失败处理程序
+     */
+    private AuthenticationFailureHandler loginFailureHandler() {
+        return (req, res, ex) -> {
+            res.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            res.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            res.setStatus(HttpStatus.UNAUTHORIZED.value());
+            Map<String, String> result = CollectionUtils.newLinkedHashMap(2);
+            result.put("code", "0");
+            result.put("msg", ex.getMessage());
+            res.getWriter().write(objectMapper.writeValueAsString(result));
+        };
+    }
+
+    /**
+     * 注销成功处理程序
+     */
+    private LogoutSuccessHandler logoutSuccessHandler() {
+        return (req, res, auth) -> {
+            res.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            res.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Map<String, String> result = CollectionUtils.newLinkedHashMap(2);
+            if (auth == null) {
+                result.put("code", "1");
+                result.put("msg", "非法请求");
+                res.setStatus(HttpStatus.FORBIDDEN.value());
+            } else {
+                result.put("code", "0");
+                result.put("msg", "退出登录成功");
+            }
+            res.getWriter().write(objectMapper.writeValueAsString(result));
+        };
+    }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests((requests) -> requests.mvcMatchers("/error").permitAll().anyRequest().authenticated());
+
+        //设置登录页路径和登录处理的接口路径
+        http.formLogin(form -> {
+            form.loginPage("/login.html");
+            form.loginProcessingUrl("/auth");
+            form.successHandler(loginSuccessHandler());
+            form.failureHandler(loginFailureHandler());
+        });
+        //设置退出登录处理接口
+        http.logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler()));
+
+
+        http.httpBasic();
+        http.csrf().disable();
+        http.rememberMe(rememberMe -> rememberMe.rememberMeParameter("auto-login"));
+
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //配置不需要spring security处理的请求路径，注意这里是请求路径而不是你静态资源目录路径，例如写 "/public/**" 是错误的,只会对PublicResourceController生效
+        web.ignoring().mvcMatchers("/login.html", "/css/**");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //这里设置的密码需要使用PasswordEncoder类型的编码器进行加密，同时需要将编码器注册到spring容器中供security使用
+        //System.out.println(passwordEncoder().encode("123456"));
+        auth.inMemoryAuthentication().withUser("admin").password("$2a$10$KbuV10kI1nqcM5PsScHqmOTAzQpqkxGo1j0aDXHZFb0U94x.ao1kS").roles("ADMIN");
+    }
+
+    /**
+     * 密码编码器
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+
+
+
+![image-20221108173006871](https://cdn.tencentfs.clboy.cn/images/2022/20221110153835332.png)
