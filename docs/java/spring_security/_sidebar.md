@@ -3,4 +3,5 @@
   - [过滤器和过滤器链](java/spring_security/filter.md)
   - [HTTP基础认证](java/spring_security/http_basic.md)
   - [spring security配置](java/spring_security/config_class.md)
-
+  - [自定义Filter](java/spring_security/custom_filter.md)
+  - [密码](java/spring_security/password.md)
