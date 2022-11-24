@@ -1109,3 +1109,82 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 ![image-20221108173006871](https://cdn.tencentfs.clboy.cn/images/2022/20221110153835332.png)
+
+
+
+## 多配置共存
+
+在上面的学习中，我们自定义了spring security的认证成功和失败的处理方法，统一改为json格式的响应类型
+
+这就限定了在开发前端的时候必须采用前后端分离的方式，使用ajax请求进行交互。我们之前写的登录页就没用了，之前的表单登录，在没自定义之前登录成功后security默认会重定向到配置的成功页，现在改为json之后，浏览器会直接将json显示在网页上
+
+我们可以再写一个security配置类，保留原来的表单登录
+
+`SpringSecurityFormLoginConfig`
+
+```java
+@Configuration
+@Order(value = 99)
+public class SpringSecurityFormLoginConfig extends WebSecurityConfigurerAdapter {
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        //指定 /tradition/** 下的请求使用该配置
+        http.antMatcher("/tradition/**");
+        http.authorizeRequests().anyRequest().authenticated();
+        //设置登录页路径和登录处理的接口路径
+        http.formLogin(form -> {
+            form.loginPage("/login.html");
+            form.loginProcessingUrl("/tradition/auth");
+            form.permitAll();
+        });
+        //设置退出登录处理接口
+        http.logout(logout -> logout.logoutUrl("/tradition/logout"));
+        http.httpBasic();
+        http.csrf().disable();
+        http.rememberMe(rememberMe -> rememberMe.rememberMeParameter("auto-login"));
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //这里设置的密码需要使用PasswordEncoder类型的编码器进行加密，同时需要将编码器注册到spring容器中供security使用
+        //System.out.println(passwordEncoder().encode("123456"));
+        auth.inMemoryAuthentication().withUser("admin").password("$2a$10$KbuV10kI1nqcM5PsScHqmOTAzQpqkxGo1j0aDXHZFb0U94x.ao1kS").roles("ADMIN");
+    }
+}
+```
+
+?> 之前的 `SpringSecurityConfig` 没有任何改动
+
+- 创建多个配置后，我们需要放置 `@Order` 注解来告诉spring boot每个配置的优先级。
+
+- `SpringSecurityConfig` 继承了 `WebSecurityConfigurerAdapter` 上的注解，可以自己再写一个覆盖掉
+
+  ```java
+  @Order(100)
+  public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigurer<WebSecurity>
+  ```
+
+- 确保将最通用的配置放在最后
+
+- 本例用因为是在 `configure(AuthenticationManagerBuilder auth)` 方法中配置的 `UserDetailsService` 所以需要在每个配置类中都配置一遍，你可以自己构建 然后注册到spring容器中，这样就可以供所有配置共享
+
+  ```java
+  @Configuration
+  @Order(value = 99)
+  public class SpringSecurityFormLoginConfig extends WebSecurityConfigurerAdapter {
+  
+      //... 省略其他代码
+  
+      @Bean
+      public UserDetailsService userDetailsService() {
+          //这里设置的密码需要使用PasswordEncoder类型的编码器进行加密，同时需要将编码器注册到spring容器中供security使用
+          //System.out.println(passwordEncoder().encode("123456"));
+          UserDetails userDetails = User.withUsername("admin").roles("ADMIN")
+                  .password("$2a$10$KbuV10kI1nqcM5PsScHqmOTAzQpqkxGo1j0aDXHZFb0U94x.ao1kS")
+                  .build();
+          return new InMemoryUserDetailsManager(userDetails);
+      }
+  }
+  ```

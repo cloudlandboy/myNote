@@ -364,3 +364,58 @@ public void delegatingPasswordEncoderTest() throws Exception {
     System.out.println(passwordEncoder.matches(password, encodedPasswordBySha256)); //false
 }
 ```
+
+
+
+## 升级密码
+
+> 假设之前数据库存储的密码都是使用MD5存储，后续想改为 `BCrypt` 。
+>
+> 那么我们就应该使用 `DelegatingPasswordEncoder`
+>
+> 然后我们可以在用户登录成功之后判断当前密码是否是BCrypt格式，如果不是则使用用户输入的密码重新使用 `BCrypt` 加密，最后更新到数据库
+
+`PasswordEncoder` 接口已经提供了判断是否需要升级的方法
+
+```java
+/**
+ * 如果密码需要升级则返回true，否则返回false
+ */
+default boolean upgradeEncoding(String encodedPassword) {
+	return false;
+}
+
+/**
+ * 这是DelegatingPasswordEncoder对其的实现
+ */
+@Override
+public boolean upgradeEncoding(String prefixEncodedPassword) {
+   String id = extractId(prefixEncodedPassword);
+   if (!this.idForEncode.equalsIgnoreCase(id)) {
+      return true;
+   }
+   else {
+      String encodedPassword = extractEncodedPassword(prefixEncodedPassword);
+      return this.idToPasswordEncoder.get(id).upgradeEncoding(encodedPassword);
+   }
+}
+```
+
+
+
+另外security框架还提供了一个接口用于更新密码
+
+```java
+package org.springframework.security.core.userdetails;
+public interface UserDetailsPasswordService {
+
+   /**
+    * 修改指定用户的密码
+    * user：要修改密码的user
+    * newPassword：要更改的密码，由配置的PasswordEncoder编码
+    * return：更新密码后的UserDetails
+    */
+   UserDetails updatePassword(UserDetails user, String newPassword);
+
+}
+```
