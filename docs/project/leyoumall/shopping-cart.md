@@ -256,7 +256,7 @@ addCart(){
 
 #### 获取数量，添加购物车
 
-```
+``` js
 addCart() {
     ly.verifyUser().then(res => {
         // 已登录发送信息到后台，保存到redis中
@@ -514,7 +514,7 @@ deleteCart(index){
 
 定义变量，并监听
 
-```
+``` js
 data: {
     ly: ly,
     carts: [],// 购物车数据
@@ -960,7 +960,7 @@ public List<SpecParam> querySpecsByIds(List<Long> ids) {
 
 > SpecParamMapper
 
-```
+``` java
 public interface SpecParamMapper extends Mapper<SpecParam>, SelectByIdListMapper<SpecParam, Long> {
 
 }

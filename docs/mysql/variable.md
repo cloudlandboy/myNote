@@ -15,7 +15,7 @@
 
 1. 查看所有系统变量
 
-   ``` mysql
+   ``` sql
    # 全局
    show global variables;
    
@@ -25,13 +25,13 @@
 
 2. 查看满足条件的部分系统变量
 
-   ``` mysql
+   ``` sql
    show global |【session】 variables like '%char%';
    ```
 
 3. 查看指定的系统变量的值（`带.`）
 
-   ``` mysql
+   ``` sql
    select @@global |【@@session】.系统变量名;
    ```
 
@@ -39,13 +39,13 @@
 
    - 方式一 
 
-     ``` mysql
+     ``` sql
      set global|【session】系统变量名=值;
      ```
 
    - 方式二（`带.`）
 
-     ``` mysql
+     ``` sql
      set @@global|【@@session】.系统变量名=值;
      ```
 
@@ -53,7 +53,7 @@
 
 **例如：**
 
-``` mysql
+``` sql
 # 查看所有全局变量
 SHOW GLOBAL VARIABLES;
 # 查看满足条件的部分系统变量
@@ -67,7 +67,7 @@ SET GLOBAL autocommit=0;
 
 
 
-``` mysql
+``` sql
 # 查看所有会话变量
 SHOW SESSION VARIABLES;
 # 查看满足条件的部分会话变量
@@ -92,7 +92,7 @@ SET SESSION tx_isolation='read-committed';
 
 赋值操作符：`=`或`:=`
 
-``` mysql
+``` sql
 SET @变量名=值;
 SET @变量名:=值;
 SELECT @变量名:=值;
@@ -102,7 +102,7 @@ SELECT @变量名:=值;
 
 - 方式一
 
-  ``` mysql
+  ``` sql
   SET @变量名=值;
   SET @变量名:=值;
   SELECT @变量名:=值;
@@ -110,14 +110,14 @@ SELECT @变量名:=值;
 
 - 方式二
 
-  ``` mysql
+  ``` sql
   SELECT 字段 INTO @变量名
   FROM 表;
   ```
 
 **查看变量的值**
 
-``` mysql
+``` sql
 SELECT @变量名;
 ```
 
@@ -131,7 +131,7 @@ SELECT @变量名;
 
 **声明**
 
-``` mysql
+``` sql
 DECLARE
 	变量名 类型;
 	...
@@ -149,7 +149,7 @@ END
 
 - 方式一
 
-  ``` mysql
+  ``` sql
   SET 局部变量名=值;
   SET 局部变量名:=值;
   SELECT 局部变量名:=值;
@@ -157,7 +157,7 @@ END
 
 - 方式二
 
-  ``` mysql
+  ``` sql
   SELECT 字段 INTO 具备变量名
   FROM 表;
   ```
@@ -166,7 +166,7 @@ END
 
 **查看变量的值**
 
-``` mysql
+``` sql
 SELECT 局部变量名;
 ```
 
@@ -176,7 +176,7 @@ SELECT 局部变量名;
 
 1. 声明两个用户变量，求和并打印
 
-   ``` mysql
+   ``` sql
    SET @m=1;
    SET @n=1;
    SET @sum=@m+@n;

@@ -10,7 +10,7 @@
 
 ## 创建语法
 
-```
+``` sql
 CREATE FUNCTION 函数名(参数列表) RETURNS 返回类型
 BEGIN
 	函数体
@@ -27,7 +27,7 @@ END
 
 ## 调用语法
 
-```
+``` sql
 SELECT 函数名(参数列表);
 ```
 
@@ -37,7 +37,7 @@ SELECT 函数名(参数列表);
 
 返回公司的员工个数
 
-``` mysql
+``` sql
 USE myemployees;
 DELIMITER //
 CREATE FUNCTION myf1() RETURNS INT
@@ -51,7 +51,7 @@ BEGIN
 END //
 ```
 
-``` mysql
+``` sql
 SELECT myf1();
 ```
 
@@ -61,7 +61,7 @@ SELECT myf1();
 
 根据员工名，返回它的工资
 
-``` mysql
+``` sql
 DELIMITER //
 CREATE FUNCTION myf2(empName VARCHAR(20)) RETURNS DOUBLE
 BEGIN
@@ -75,7 +75,7 @@ BEGIN
 END //
 ```
 
-``` mysql
+``` sql
 SELECT myf2('Kochhar');
 
 SELECT @sal;
@@ -83,7 +83,7 @@ SELECT @sal;
 
 根据部门名，返回该部门的平均工资
 
-``` mysql
+``` sql
 DELIMITER //
 CREATE FUNCTION myf3(deptName VARCHAR(20)) RETURNS DOUBLE
 BEGIN
@@ -96,7 +96,7 @@ BEGIN
 END //
 ```
 
-``` mysql
+``` sql
 SELECT myf3('IT');
 ```
 
@@ -104,7 +104,7 @@ SELECT myf3('IT');
 
 ## 查看函数
 
-``` mysql
+``` sql
 SHOW CREATE FUNCTION myf3;
 ```
 
@@ -112,7 +112,7 @@ SHOW CREATE FUNCTION myf3;
 
 ### 删除函数
 
-``` mysql
+``` sql
 DROP FUNCTION myf3;
 ```
 
@@ -120,7 +120,7 @@ DROP FUNCTION myf3;
 
 创建函数，实现传入两个float，返回二者之和
 
-``` mysql
+``` sql
 DELIMITER //
 CREATE OR REPLACE FUNCTION myf3(num1 FLOAT,num2 FLOAT) RETURNS FLOAT(3,1)
 BEGIN
@@ -130,7 +130,7 @@ BEGIN
 END //
 ```
 
-``` mysql
+``` sql
 SELECT myf3(15.5,15.3);	--> 30.8
 ```
 

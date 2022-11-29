@@ -69,7 +69,7 @@ YAML（YAML Ain't Markup Language）
 
 ### Map属性Key特殊字符
 
-```
+``` yaml
 acme:
   map:
     "[/key1]": "value1"

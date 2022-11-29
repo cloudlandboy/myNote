@@ -114,7 +114,7 @@ public class PublicResourceController {
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.mvcMatchers("/public/**").permitAll().anyRequest().authenticated());
+        http.authorizeRequests((requests) -> requests.antMatchers("/public/**").permitAll().anyRequest().authenticated());
         http.formLogin();
         http.httpBasic();
     }
@@ -171,7 +171,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers("/public/**", "static/**", "/favicon.ico");
+        web.ignoring().antMatchers("/public/**", "static/**", "/favicon.ico");
     }
 }
 ```
@@ -398,7 +398,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //配置不需要spring security处理的请求路径，注意这里是请求路径而不是你静态资源目录路径，例如写 "/public/**" 是错误的,只会对PublicResourceController生效
-        web.ignoring().mvcMatchers("/login.html", "/css/**");
+        web.ignoring().antMatchers("/login.html", "/css/**");
     }
 }
 ```
@@ -826,7 +826,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //配置不需要spring security处理的请求路径，注意这里是请求路径而不是你静态资源目录路径，例如写 "/public/**" 是错误的,只会对PublicResourceController生效
-        web.ignoring().mvcMatchers("/login.html", "/css/**");
+        web.ignoring().antMatchers("/login.html", "/css/**");
     }
 }
 ```
@@ -893,7 +893,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //配置不需要spring security处理的请求路径，注意这里是请求路径而不是你静态资源目录路径，例如写 "/public/**" 是错误的,只会对PublicResourceController生效
-        web.ignoring().mvcMatchers("/login.html", "/css/**");
+        web.ignoring().antMatchers("/login.html", "/css/**");
     }
 
     @Override
@@ -1086,7 +1086,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //配置不需要spring security处理的请求路径，注意这里是请求路径而不是你静态资源目录路径，例如写 "/public/**" 是错误的,只会对PublicResourceController生效
-        web.ignoring().mvcMatchers("/login.html", "/css/**");
+        web.ignoring().antMatchers("/login.html", "/css/**");
     }
 
     @Override

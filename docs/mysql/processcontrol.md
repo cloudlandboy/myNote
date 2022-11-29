@@ -20,7 +20,7 @@
 
 **语法一**：
 
-```
+``` sql
 case 表达式或字段
 when 值1 then 语句1;
 when 值2 then 语句2；
@@ -31,7 +31,7 @@ end [case];
 
 **语法二**：
 
-```
+``` sql
 case 
 when 条件1 then 语句1;
 when 条件2 then 语句2；
@@ -44,7 +44,7 @@ end [case];
 
 创建函数，实现传入成绩，如果成绩>90,返回A，如果成绩>80,返回B，如果成绩>60,返回C，否则返回D
 
-```mysql
+``` sql
 DELIMITER //
 CREATE OR REPLACE FUNCTION test_case(score DOUBLE) RETURNS CHAR
 BEGIN
@@ -63,7 +63,7 @@ END CASE;
 END //
 ```
 
-```mysql
+``` sql
 SELECT test_case(95);
 
 SELECT test_case(85);
@@ -83,7 +83,7 @@ SELECT test_case(55);
 
 **语法：**
 
-```
+``` sql
 if 条件1 then 语句1;
 elseif 条件2 then 语句2;
 ...
@@ -93,7 +93,7 @@ end if;
 
 创建函数，实现传入成绩，如果成绩>90,返回A，如果成绩>80,返回B，如果成绩>60,返回C，否则返回D
 
-```mysql
+``` sql
 DELIMITER //
 CREATE OR REPLACE FUNCTION test_if(score DOUBLE) RETURNS CHAR 
 BEGIN 
@@ -111,7 +111,7 @@ BEGIN
 END //
 ```
 
-``` mysql
+``` sql
 SELECT test_if(95);
 
 SELECT test_if(85);
@@ -123,7 +123,7 @@ SELECT test_if(55);
 
 创建存储过程，如果工资<2000,则删除，如果5000>工资>2000,则涨工资1000，否则涨工资500
 
-```mysql
+``` sql
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_if2(IN salary DOUBLE)
 BEGIN
@@ -138,7 +138,7 @@ BEGIN
 END //
 ```
 
-```mysql
+``` sql
 CALL test_if2(3300.00);
 ```
 
@@ -168,7 +168,7 @@ end while [标签];
 
 批量插入，根据次数插入到admin表中多条记录
 
-```mysql
+``` sql
 USE girls;
 
 DELIMITER //
@@ -185,13 +185,13 @@ END WHILE;
 END //
 ```
 
-```mysql
+``` sql
 CALL test_while(10);
 ```
 
 批量插入，根据次数插入到admin表中多条记录，如果次数>20则停止 <span style="color:red">（需要加标签）</span>
 
-````mysql
+```` sql
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_while(IN total INT)
 BEGIN
@@ -208,7 +208,7 @@ END WHILE a;
 END //
 ````
 
-```mysql
+``` sql
 TRUNCATE TABLE admin;
 CALL test_while(100);
 ```
@@ -217,7 +217,7 @@ CALL test_while(100);
 
 批量插入，根据次数插入到admin表中多条记录，只插入偶数次
 
-```mysql
+``` sql
 DELIMITER //
 CREATE OR REPLACE PROCEDURE test_while(IN total INT)
 BEGIN
@@ -236,7 +236,7 @@ END //
 
 ```
 
-```mysql
+``` sql
 TRUNCATE TABLE admin;
 CALL test_while(20);
 ```

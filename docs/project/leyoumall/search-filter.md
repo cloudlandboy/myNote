@@ -385,7 +385,7 @@ if (!CollectionUtils.isEmpty(categoryDatas) && categoryDatas.size() == 1) {
 }
 ```
 
-```
+``` java
 private List<Map<String, Object>> getSpecAggregation(Long cid, QueryBuilder basicQuery) {
     return null;
 }
@@ -534,7 +534,7 @@ private List<Map<String,Object>> getParamAggResult(Long id, QueryBuilder basicQu
 
 由于这里需要处理的代码较多，可能耗时较长导致网关超时，在leyou-gateway配置超时时间
 
-```
+``` yaml
 hystrix:
   command:
     default:

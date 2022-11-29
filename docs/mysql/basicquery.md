@@ -11,7 +11,7 @@
 
 语法：
 
-``` mysql
+``` sql
 select 查询列表 from 表名;
 ```
 

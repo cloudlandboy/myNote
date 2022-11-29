@@ -6,7 +6,7 @@
 
 获取参数值的字符个数
 
-``` mysql
+``` sql
 SELECT LENGTH('john');
 SELECT LENGTH('张三丰hahaha');
 ```
@@ -15,7 +15,7 @@ SELECT LENGTH('张三丰hahaha');
 
  拼接字符串
 
-``` mysql
+``` sql
 SELECT CONCAT(last_name,'_',first_name) 姓名 FROM employees;
 ```
 
@@ -23,7 +23,7 @@ SELECT CONCAT(last_name,'_',first_name) 姓名 FROM employees;
 
 将字符串转换为大写
 
-``` mysql
+``` sql
 SELECT UPPER('john');
 ```
 
@@ -31,11 +31,11 @@ SELECT UPPER('john');
 
 将字符串转换为小写
 
-``` mysql
+``` sql
 SELECT LOWER('joHn');
 ```
 
-``` mysql
+``` sql
 # 示例：将姓变大写，名变小写，然后拼接
 SELECT CONCAT(UPPER(last_name),LOWER(first_name))  姓名 FROM employees;
 ```
@@ -48,19 +48,19 @@ SUBSTR(s, start, length)：从字符串 s 的 start 位置截取长度为 length
 
 截取字符串（注意：索引从1开始）
 
-``` mysql
+``` sql
 SELECT SUBSTR('李莫愁爱上了陆展元',7)  out_put;
 ```
 
-``` mysql
+``` sql
 SELECT SUBSTRING('李莫愁爱上了陆展元',7)  out_put;
 ```
 
-``` mysql
+``` sql
 SELECT SUBSTR('李莫愁爱上了陆展元',1,3)  out_put;
 ```
 
-``` mysql
+``` sql
 # 案例：姓名中首字符大写，其他字符小写然后用_拼接，显示出来
 
 SELECT CONCAT(UPPER(SUBSTR(last_name,1,1)),'_',LOWER(SUBSTR(last_name,2)))  out_put
@@ -73,7 +73,7 @@ FROM employees;
 
 返回子串第一次出现的索引，如果找不到返回0
 
-``` mysql
+``` sql
 SELECT INSTR('杨不殷六侠悔爱上了殷六侠','殷八侠') AS out_put;
 ```
 
@@ -87,7 +87,7 @@ RTRIM(s)：去掉字符串 s **结尾**处的空格
 
  去掉字符串开始和结尾处的空格
 
-``` mysql
+``` sql
 SELECT LENGTH(TRIM('    张翠山    ')) AS out_put;
 ```
 
@@ -99,11 +99,11 @@ SELECT LENGTH(TRIM('    张翠山    ')) AS out_put;
 
 如果长度小于原字符串，则只取前len个字符
 
-``` mysql
+``` sql
 SELECT LPAD('殷素素',5,'*') AS out_put;	--> **殷素素
 ```
 
-``` mysql
+``` sql
 SELECT LPAD('殷素素',2,'*') AS out_put;	--> 殷素
 ```
 
@@ -115,11 +115,11 @@ SELECT LPAD('殷素素',2,'*') AS out_put;	--> 殷素
 
 如果长度小于原字符串，则只取前len个字符
 
-``` mysql
+``` sql
 SELECT RPAD('殷素素',5,'*') AS out_put;	--> 殷素素**
 ```
 
-``` mysql
+``` sql
 SELECT RPAD('殷素素',2,'*') AS out_put;	--> 殷素
 ```
 
@@ -127,7 +127,7 @@ SELECT RPAD('殷素素',2,'*') AS out_put;	--> 殷素
 
 用字符串 s2 替代字符串 s 中的字符串 s1
 
-``` mysql
+``` sql
 SELECT REPLACE('张无忌爱上了周芷若','周芷若','赵敏') AS out_put;	-->张无忌爱上了赵敏
 ```
 
@@ -141,11 +141,11 @@ ROUND(x,d)：保留d位小数
 
 四舍五入
 
-``` mysql
+``` sql
 SELECT ROUND(-1.55);	--> -2
 ```
 
-``` mysql
+``` sql
 SELECT ROUND(1.567,2);	--> 1.57
 ```
 
@@ -153,11 +153,11 @@ SELECT ROUND(1.567,2);	--> 1.57
 
 向上取整
 
-``` mysql
+``` sql
 SELECT CEIL(-1.02);	--> -1
 ```
 
-``` mysql
+``` sql
 SELECT CEIL(1.02);	--> 2
 ```
 
@@ -165,11 +165,11 @@ SELECT CEIL(1.02);	--> 2
 
 向下取整
 
-``` mysql
+``` sql
 SELECT FLOOR(-1.58);	--> -2
 ```
 
-``` mysql
+``` sql
 SELECT FLOOR(1.58);	--> 1
 ```
 
@@ -177,7 +177,7 @@ SELECT FLOOR(1.58);	--> 1
 
 返回数值 x 保留到小数点后 y 位的值（与 ROUND 最大的区别是`不会`进行四舍五入）
 
-``` mysql
+``` sql
 SELECT TRUNCATE(1.567,2);    --> 1.56
 ```
 
@@ -185,23 +185,23 @@ SELECT TRUNCATE(1.567,2);    --> 1.56
 
 返回 x 除以 y 以后的余数　
 
-``` mysql
+``` sql
 SELECT MOD(10,-3);	--> 1
 ```
 
 等价于
 
-``` mysql
+``` sql
 SELECT 10%-3;	--> 1
 ```
 
 余数的符号取决于被除数的符号
 
-``` mysql
+``` sql
 SELECT MOD(-10,3);	--> -1
 ```
 
-``` mysql
+``` sql
 SELECT MOD(-10,-3);	--> -1
 ```
 
@@ -213,7 +213,7 @@ SELECT MOD(-10,-3);	--> -1
 
 返回当前系统时间(注：日期+时间)
 
-``` mysql
+``` sql
 SELECT NOW();	--> 2019-10-05 09:56:57
 ```
 
@@ -221,13 +221,13 @@ SELECT NOW();	--> 2019-10-05 09:56:57
 
 返回当前系统日期，不包含时间
 
-``` mysql
+``` sql
 SELECT CURDATE();	--> 2019-10-05
 ```
 
 ### CURTIME()
 
-``` mysql
+``` sql
 SELECT CURTIME();	-->09:56:57
 ```
 
@@ -235,15 +235,15 @@ SELECT CURTIME();	-->09:56:57
 
 返回年份
 
-``` mysql
+``` sql
 SELECT YEAR(NOW());	-->2019
 ```
 
-``` mysql
+``` sql
 SELECT YEAR('1998-1-1');	-->1998
 ```
 
-``` mysql
+``` sql
 SELECT  YEAR(hiredate) 入职时间 FROM employees;
 ```
 
@@ -251,7 +251,7 @@ SELECT  YEAR(hiredate) 入职时间 FROM employees;
 
 返回日期d中的月份值，1 到 12
 
-``` mysql
+``` sql
 SELECT MONTH(NOW());	--> 10
 ```
 
@@ -259,7 +259,7 @@ SELECT MONTH(NOW());	--> 10
 
  返回日期当中的月份名称，如 November
 
-``` mysql
+``` sql
 SELECT MONTHNAME(NOW());	--> October
 ```
 
@@ -267,13 +267,13 @@ SELECT MONTHNAME(NOW());	--> October
 
 将字符通过指定的格式转换成日期
 
-``` mysql
+``` sql
 SELECT STR_TO_DATE('1998-3-2','%Y-%c-%d') AS out_put;	--> 1998-03-02
 ```
 
 查询入职日期为1992-4-3的员工信息
 
-``` mysql
+``` sql
 SELECT * FROM employees WHERE hiredate = '1992-4-3';
 
 # 或者
@@ -285,13 +285,13 @@ SELECT * FROM employees WHERE hiredate = STR_TO_DATE('4-3 1992','%c-%d %Y');
 
 将日期通过指定的格式转换成字符
 
-``` mysql
+``` sql
 SELECT DATE_FORMAT(NOW(),'%Y年%m月%d日') AS out_put;	--> 2019年10月05日
 ```
 
 查询有奖金的员工名和入职日期(xx月/xx日 xx年)
 
-``` mysql
+``` sql
 SELECT last_name,DATE_FORMAT(hiredate,'%m月/%d日 %y年') 入职日期
 FROM employees
 WHERE commission_pct IS NOT NULL;
@@ -303,7 +303,7 @@ WHERE commission_pct IS NOT NULL;
 
 返回数据库的版本号
 
-``` mysql
+``` sql
 SELECT VERSION();
 ```
 
@@ -311,7 +311,7 @@ SELECT VERSION();
 
  返回当前数据库名
 
-``` mysql
+``` sql
 SELECT DATABASE();
 ```
 
@@ -319,7 +319,7 @@ SELECT DATABASE();
 
 返回当前用户
 
-``` mysql
+``` sql
 SELECT USER();
 ```
 
@@ -329,11 +329,11 @@ SELECT USER();
 
 如果表达式 expr 成立，返回结果 v1；否则，返回结果 v2。
 
-``` mysql
+``` sql
 SELECT IF(1 > 0,'正确','错误');	--> 正确
 ```
 
-``` mysql
+``` sql
 SELECT
 	last_name,
 	commission_pct,
@@ -345,7 +345,7 @@ FROM
 
 ### CASE
 
-```
+``` sql
 CASE expression
     WHEN condition1 THEN result1
     WHEN condition2 THEN result2
@@ -357,7 +357,7 @@ END
 
 CASE 表示函数开始，END 表示函数结束。如果 condition1 成立，则返回 result1, 如果 condition2 成立，则返回 result2，当全部不成立则返回 result，而当有一个成立之后，后面的就不执行了。
 
-```
+``` sql
 case 要判断的字段或表达式
 when 常量1 then 要显示的值1或语句1;
 when 常量2 then 要显示的值2或语句2;
@@ -366,7 +366,7 @@ else 要显示的值n或语句n;
 end
 ```
 
-``` mysql
+``` sql
 SELECT CASE 
 　　WHEN 1 > 0
 　　THEN '1 > 0'
@@ -385,7 +385,7 @@ SELECT CASE
 3. 部门号=50，显示的工资为1.3倍
 4. 其他部门，显示的工资为原工资
 
-``` mysql
+``` sql
 SELECT salary 原始工资,department_id,
 CASE department_id
 WHEN 30 THEN salary*1.1
@@ -403,7 +403,7 @@ FROM employees;
 3. 如果工资>10000，显示C级别
 4. 否则，显示D级别
 
-``` mysql
+``` sql
 SELECT salary,
 CASE 
 WHEN salary>20000 THEN 'A'

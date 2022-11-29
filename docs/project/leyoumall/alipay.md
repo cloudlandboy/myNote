@@ -72,7 +72,7 @@ alipay.logPath=/home/cloudlandboy/Project/leyou/aliPayLog
 
 ### 配置类
 
-```
+``` java
 package com.leyou.order.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

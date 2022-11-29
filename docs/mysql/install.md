@@ -53,31 +53,31 @@
 
 查看 mysql 中有哪些个数据库: 
 
-``` mysql
+``` sql
 show databases;
 ```
 
  使用一个数据库: 
 
-``` mysql
+``` sql
 use 数据库名称;
 ```
 
 查看当前使用数据库中的表：
 
-``` mysql
+``` sql
 show tables;
 ```
 
 查看指定数据库中的表：
 
-``` mysql
+``` sql
 show tables from 库名;
 ```
 
 新建一个数据库: 
 
-``` mysql
+``` sql
 #创建数据库 数据库中数据的编码采用的是安装数据库时指定的默认编码 utf8
 CREATE DATABASE 数据库名;
 
@@ -87,13 +87,13 @@ CREATE DATABASE 数据库名 CHARACTER SET utf8;
 
 查看当前选择的数据库:
 
-``` mysql
+``` sql
 select database();
 ```
 
 创建表:
 
-``` mysql
+``` sql
 create table stuinfo(
     id int,
     name varchar(20));
@@ -101,19 +101,19 @@ create table stuinfo(
 
 查看表结构:
 
-``` mysql
+``` sql
 desc 表名;
 ```
 
 查看表中的所有记录: 
 
-``` mysql
+``` sql
 select * from 表名;
 ```
 
 向表中插入记录：
 
-``` mysql
+``` sql
 insert into 表名(列名1,列名,...,列名n) values(列1值,列2值,...,列n值);
 ```
 

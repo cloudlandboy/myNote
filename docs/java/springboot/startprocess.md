@@ -529,7 +529,7 @@ spring.banner.location=xxx.txt
 
 也可以使用图片(将其像素解析转换成assii编码之后打印)，默认是在类路径下找名为`banner`后缀为`"gif", "jpg", "png"`的图片
 
-```
+``` java
 static final String[] IMAGE_EXTENSION = new String[]{"gif", "jpg", "png"};
 ```
 

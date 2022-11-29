@@ -848,7 +848,7 @@ public class AuthServiceImpl implements AuthService {
 
 把nginx进行reload：
 
-```
+``` shell
 nginx -s reload
 ```
 

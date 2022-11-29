@@ -30,7 +30,7 @@
 
 1. 查询前五条员工信息
 
-   ``` mysql
+   ``` sql
    SELECT * FROM  employees LIMIT 0,5;
    # 或者
    SELECT * FROM  employees LIMIT 5;
@@ -40,13 +40,13 @@
 
 2. 查询第11条~第25条
 
-   ``` mysql
+   ``` sql
    SELECT * FROM  employees LIMIT 10,15;
    ```
 
 3. 有奖金的员工信息，并且工资较高的前10名显示出来
 
-   ``` mysql
+   ``` sql
    SELECT 
        * 
    FROM

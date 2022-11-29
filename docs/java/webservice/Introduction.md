@@ -125,7 +125,7 @@ public class Hello {
 
 例如：
 
-```
+``` shell
 wsimport -s /home/test/wsimport http://192.168.115.87:8080/hello?wsdl
 ```
 

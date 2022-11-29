@@ -10,7 +10,7 @@
 
 ### 接口路径
 
-```
+``` http
 GET /check/{data}/{type}
 ```
 
@@ -44,7 +44,7 @@ GET /check/{data}/{type}
 
 ### 接口路径
 
-```
+``` http
 POST /code
 ```
 
@@ -74,7 +74,7 @@ POST /code
 
 ### 接口路径
 
-```
+``` http
 POST /register
 ```
 
@@ -109,7 +109,7 @@ form表单格式
 
 ### 接口路径
 
-```
+``` http
 GET /query
 ```
 

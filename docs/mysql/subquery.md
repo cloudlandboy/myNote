@@ -10,7 +10,7 @@
 
 ### 按出现位置
 
-```
+``` sql
 select后面：
 		仅仅支持标量子查询
 from后面：
@@ -61,7 +61,7 @@ exists后面：
 
    ① 查询Abel的工资
 
-   ``` mysql
+   ``` sql
    SELECT salary
    FROM employees
    WHERE last_name = 'Abel'
@@ -69,7 +69,7 @@ exists后面：
 
    ②查询员工的信息，满足 salary>①结果
 
-   ``` mysql
+   ``` sql
    SELECT *
    FROM employees
    WHERE salary>(
@@ -87,7 +87,7 @@ exists后面：
 
    ① 查询141号员工的job_id
 
-   ``` mysql
+   ``` sql
    SELECT job_id
    FROM employees
    WHERE employee_id = 141
@@ -95,7 +95,7 @@ exists后面：
 
    ② 查询143号员工的salary
 
-   ``` mysql
+   ``` sql
    SELECT salary
    FROM employees
    WHERE employee_id = 143
@@ -103,7 +103,7 @@ exists后面：
 
    ③ 查询员工的姓名，job_id 和工资，要求job_id=①并且salary>②
 
-   ``` mysql
+   ``` sql
    SELECT last_name,job_id,salary
    FROM employees
    WHERE job_id = (
@@ -124,14 +124,14 @@ exists后面：
 
    ① 查询公司的 最低工资
 
-   ``` mysql
+   ``` sql
    SELECT MIN(salary)
    FROM employees
    ```
 
    ② 查询last_name,job_id和salary，要求salary=①
 
-   ``` mysql
+   ``` sql
    SELECT last_name,job_id,salary
    FROM employees
    WHERE salary=(
@@ -146,7 +146,7 @@ exists后面：
 
    ① 查询50号部门的最低工资
 
-   ``` mysql
+   ``` sql
    SELECT  MIN(salary)
    FROM employees
    WHERE department_id = 50
@@ -154,7 +154,7 @@ exists后面：
 
    ② 查询每个部门的最低工资
 
-   ``` mysql
+   ``` sql
    SELECT MIN(salary),department_id
    FROM employees
    GROUP BY department_id
@@ -162,7 +162,7 @@ exists后面：
 
    ③ 在②基础上筛选，满足min(salary)>①
 
-   ``` mysql
+   ``` sql
    SELECT MIN(salary),department_id
    FROM employees
    GROUP BY department_id
@@ -179,7 +179,7 @@ exists后面：
 
    <del>
 
-   ``` mysql
+   ``` sql
    SELECT MIN(salary),department_id
    FROM employees
    GROUP BY department_id
@@ -208,7 +208,7 @@ exists后面：
 
    ①查询location_id是1400或1700的`部门编号`
 
-   ``` mysql
+   ``` sql
    SELECT DISTINCT department_id
    FROM departments
    WHERE location_id IN(1400,1700)
@@ -216,7 +216,7 @@ exists后面：
 
    ② 查询员工姓名，要求部门号是①列表中的某一个
 
-   ``` mysql
+   ``` sql
    SELECT last_name
    FROM employees
    WHERE department_id IN(
@@ -232,7 +232,7 @@ exists后面：
 
    ① 查询job_id为‘IT_PROG’部门任一工资
 
-   ``` mysql
+   ``` sql
    SELECT DISTINCT salary
    FROM employees
    WHERE job_id = 'IT_PROG';
@@ -240,7 +240,7 @@ exists后面：
 
    ② 查询员工号、姓名、job_id 以及salary，salary<(①)的任意一个
 
-   ``` mysql
+   ``` sql
    SELECT last_name,employee_id,job_id,salary
    FROM employees
    WHERE salary<ANY(
@@ -253,7 +253,7 @@ exists后面：
 
    或者(小于最大值，就肯定满足任意一个)
 
-   ``` mysql
+   ``` sql
    SELECT last_name,employee_id,job_id,salary
    FROM employees
    WHERE salary<(
@@ -268,7 +268,7 @@ exists后面：
 
 3. 返回其它部门中比job_id为‘IT_PROG’部门所有工资都低的员工   的员工号、姓名、job_id 以及salary
 
-   ``` mysql
+   ``` sql
    SELECT last_name,employee_id,job_id,salary
    FROM employees
    WHERE salary<ALL(
@@ -281,7 +281,7 @@ exists后面：
 
    或者（小于最小的）
 
-   ``` mysql
+   ``` sql
    SELECT last_name,employee_id,job_id,salary
    FROM employees
    WHERE salary<(
@@ -298,7 +298,7 @@ exists后面：
 
 1. 查询员工编号最小并且工资最高的员工信息
 
-   ``` mysql
+   ``` sql
    SELECT * 
    FROM employees
    WHERE (employee_id,salary)=(
@@ -309,7 +309,7 @@ exists后面：
 
    或者
 
-   ``` mysql
+   ``` sql
    SELECT *
    FROM employees
    WHERE employee_id=(
@@ -327,7 +327,7 @@ exists后面：
 
 1. 查询每个部门的员工个数
 
-   ``` mysql
+   ``` sql
    SELECT d.*,(
    	SELECT COUNT(*)
    	FROM employees e
@@ -338,7 +338,7 @@ exists后面：
 
    或者(使用外连接)
 
-   ``` mysql
+   ``` sql
    SELECT
    	d.*,
    	count( e.employee_id ) 个数 
@@ -353,7 +353,7 @@ exists后面：
 
 2. 查询员工号=102的部门名
 
-   ``` mysql
+   ``` sql
    SELECT department_id,( 
        SELECT department_name 
        FROM departments d 
@@ -367,7 +367,7 @@ exists后面：
 
    或者
 
-   ``` mysql
+   ``` sql
    	SELECT department_name,e.department_id
    	FROM departments d
    	INNER JOIN employees e
@@ -383,7 +383,7 @@ exists后面：
 
 1. 查询每个部门的平均工资的工资等级
 
-   ``` mysql
+   ``` sql
    SELECT  ag_dep.*,g.`grade_level`
    FROM (
    	SELECT AVG(salary) ag,department_id
@@ -402,7 +402,7 @@ exists后面：
 
 1. 查询有员工的部门名
 
-   ``` mysql
+   ``` sql
    SELECT department_name
    FROM departments d
    WHERE EXISTS(
@@ -414,7 +414,7 @@ exists后面：
 
 2. 查询没有女朋友的男神信息
 
-   ``` mysql
+   ``` sql
    SELECT bo.*
    FROM boys bo
    WHERE NOT EXISTS(
@@ -425,7 +425,7 @@ exists后面：
    
    ```
 
-   ``` mysql
+   ``` sql
    SELECT bo.*
    FROM boys bo
    WHERE bo.id NOT IN(

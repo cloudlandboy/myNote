@@ -125,31 +125,31 @@
 
 （1）yum 包更新到最新
 
-```
+``` shell
 sudo yum update
 ```
 
 （2）安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的
 
-```
+``` shell
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 ```
 
 （3）设置yum源为阿里云
 
-```
+``` shell
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 ```
 
 （4）安装docker
 
-```
+``` shell
 sudo yum install docker-ce
 ```
 
 （5）安装后查看docker版本
 
-```
+``` shell
 docker -v
 ```
 
@@ -161,7 +161,7 @@ ustc是老牌的linux镜像服务提供者了，还在遥远的ubuntu 5.04版本
 
 编辑该文件：
 
-```
+``` shell
 vi /etc/docker/daemon.json  
 ```
 
@@ -179,43 +179,43 @@ vi /etc/docker/daemon.json 
 
 启动docker：
 
-```
+``` shell
 systemctl start docker
 ```
 
 停止docker：
 
-```
+``` shell
 systemctl stop docker
 ```
 
 重启docker：
 
-```
+``` shell
 systemctl restart docker
 ```
 
 查看docker状态：
 
-```
+``` shell
 systemctl status docker
 ```
 
 开机启动：
 
-```
+``` shell
 systemctl enable docker
 ```
 
 查看docker概要信息
 
-```
+``` shell
 docker info
 ```
 
 查看docker帮助文档
 
-```
+``` shell
 docker --help
 ```
 
@@ -225,7 +225,7 @@ docker --help
 
 ### 3.1.1 查看镜像
 
-```
+``` shell
 docker images
 ```
 
@@ -245,7 +245,7 @@ SIZE：镜像大小
 
 如果你需要从网络中查找需要的镜像，可以通过以下命令搜索
 
-```
+``` shell
 docker search 镜像名称
 ```
 
@@ -263,13 +263,13 @@ AUTOMATED：自动构建，表示该镜像由Docker Hub自动构建流程创建�
 
 拉取镜像就是从中央仓库中下载镜像到本地
 
-```
+``` shell
 docker pull 镜像名称
 ```
 
 例如，我要下载centos7镜像
 
-```
+``` shell
 docker pull centos:7
 ```
 
@@ -277,13 +277,13 @@ docker pull centos:7
 
 按镜像ID删除镜像
 
-```
+``` shell
 docker rmi 镜像ID
 ```
 
 删除所有镜像
 
-```
+``` shell
 docker rmi `docker images -q`
 ```
 
@@ -293,25 +293,25 @@ docker rmi `docker images -q`
 
 查看正在运行的容器
 
-```
+``` shell
 docker ps
 ```
 
 查看所有容器
 
-```
+``` shell
 docker ps –a
 ```
 
 查看最后一次运行的容器
 
-```
+``` shell
 docker ps –l
 ```
 
 查看停止的容器
 
-```
+``` shell
 docker ps -f status=exited
 ```
 
@@ -335,7 +335,7 @@ docker ps -f status=exited
 
 （1）交互式方式创建容器
 
-```
+``` shell
 docker run -it --name=容器名称 镜像名称:标签 /bin/bash
 ```
 
@@ -343,19 +343,19 @@ docker run -it --name=容器名称 镜像名称:标签 /bin/bash
 
 退出当前容器
 
-```
+``` shell
 exit
 ```
 
 （2）守护式方式创建容器：
 
-```
+``` shell
 docker run -di --name=容器名称 镜像名称:标签
 ```
 
 登录守护式容器方式：
 
-```
+``` shell
 docker exec -it 容器名称 (或者容器ID)  /bin/bash
 ```
 
@@ -363,13 +363,13 @@ docker exec -it 容器名称 (或者容器ID)  /bin/bash
 
 停止容器：
 
-```
+``` shell
 docker stop 容器名称（或者容器ID）
 ```
 
 启动容器：
 
-```
+``` shell
 docker start 容器名称（或者容器ID）
 ```
 
@@ -377,13 +377,13 @@ docker start 容器名称（或者容器ID）
 
 如果我们需要将文件拷贝到容器内可以使用cp命令
 
-```
+``` shell
 docker cp 需要拷贝的文件或目录 容器名称:容器目录
 ```
 
 也可以将文件从容器内拷贝出来
 
-```
+``` shell
 docker cp 容器名称:容器目录 需要拷贝的文件或目录
 ```
 
@@ -392,7 +392,7 @@ docker cp 容器名称:容器目录 需要拷贝的文件或目录
 我们可以在创建容器的时候，将宿主机的目录与容器内的目录进行映射，这样我们就可以通过修改宿主机某个目录的文件从而去影响容器。
 创建容器 添加-v参数 后边为   宿主机目录:容器目录，例如：
 
-```
+``` shell
 docker run -di -v /usr/local/myhtml:/usr/local/myhtml --name=mycentos3 centos:7
 ```
 
@@ -404,13 +404,13 @@ docker run -di -v /usr/local/myhtml:/usr/local/myhtml --name=mycentos3 centos:7
 
 我们可以通过以下命令查看容器运行的各种数据
 
-```
+``` shell
 docker inspect 容器名称（容器ID） 
 ```
 
 也可以直接执行下面的命令直接输出IP地址
 
-```
+``` shell
 docker inspect --format='{{.NetworkSettings.IPAddress}}' 容器名称（容器ID）
 ```
 
@@ -418,7 +418,7 @@ docker inspect --format='{{.NetworkSettings.IPAddress}}' 容器名称（容器ID
 
 删除指定的容器：
 
-```
+``` shell
 docker rm 容器名称（容器ID）
 ```
 
@@ -428,13 +428,13 @@ docker rm 容器名称（容器ID）
 
 （1）拉取mysql镜像
 
-```
+``` shell
 docker pull centos/mysql-57-centos7
 ```
 
 （2）创建容器
 
-```
+``` shell
 docker run -di --name=tensquare_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
 ```
 
@@ -450,7 +450,7 @@ docker run -di --name=tensquare_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456
 
 （1）拉取镜像
 
-```
+``` shell
 docker pull tomcat:7-jre7
 ```
 
@@ -458,7 +458,7 @@ docker pull tomcat:7-jre7
 
 创建容器  -p表示地址映射
 
-```
+``` shell
 docker run -di --name=mytomcat -p 9000:8080 
 -v /usr/local/webapps:/usr/local/tomcat/webapps tomcat:7-jre7
 ```
@@ -467,13 +467,13 @@ docker run -di --name=mytomcat -p 9000:8080
 
 （1）拉取镜像	
 
-```
+``` shell
 docker pull nginx
 ```
 
 （2）创建Nginx容器
 
-```
+``` shell
 docker run -di --name=mynginx -p 80:80 nginx
 ```
 
@@ -481,13 +481,13 @@ docker run -di --name=mynginx -p 80:80 nginx
 
 （1）拉取镜像
 
-```
+``` shell
 docker pull redis
 ```
 
 （2）创建容器
 
-```
+``` shell
 docker run -di --name=myredis -p 6379:6379 redis
 ```
 
@@ -497,7 +497,7 @@ docker run -di --name=myredis -p 6379:6379 redis
 
 我们可以通过以下命令将容器保存为镜像
 
-```
+``` shell
 docker commit mynginx mynginx_i
 ```
 
@@ -505,7 +505,7 @@ docker commit mynginx mynginx_i
 
 我们可以通过以下命令将镜像保存为tar 文件
 
-```
+``` shell
 docker  save -o mynginx.tar mynginx_i
 ```
 
@@ -513,7 +513,7 @@ docker  save -o mynginx.tar mynginx_i
 
 首先我们先删除掉mynginx_img镜像  然后执行此命令进行恢复
 
-```
+``` shell
 docker load -i mynginx.tar
 ```
 
@@ -551,7 +551,7 @@ Dockerfile是由一系列命令和参数构成的脚本，这些命令应用于�
 
 （1）创建目录
 
-```
+``` shell
 mkdir –p /usr/local/dockerjdk8
 ```
 
@@ -559,7 +559,7 @@ mkdir –p /usr/local/dockerjdk8
 
 （3）创建文件Dockerfile  `vi Dockerfile`
 
-```
+``` shell
 #依赖镜像名称和ID
 FROM centos:7
 #指定镜像创建者信息
@@ -579,7 +579,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 
 （4）执行命令构建镜像
 
-```
+``` shell
 docker build -t='jdk1.8' .
 ```
 
@@ -587,7 +587,7 @@ docker build -t='jdk1.8' .
 
 （5）查看镜像是否建立完成
 
-```
+``` shell
 docker images
 ```
 
@@ -599,13 +599,13 @@ docker images
 
 （1）拉取私有仓库镜像（此步省略）
 
-```
+``` shell
 docker pull registry
 ```
 
 （2）启动私有仓库容器
 
-```
+``` shell
 docker run -di --name=registry -p 5000:5000 registry
 ```
 
@@ -613,7 +613,7 @@ docker run -di --name=registry -p 5000:5000 registry
 
 （4）修改daemon.json
 
-```
+``` shell
 vi /etc/docker/daemon.json
 ```
 
@@ -627,7 +627,7 @@ vi /etc/docker/daemon.json
 
 （5）重启docker 服务
 
-```
+``` shell
 systemctl restart docker
 ```
 
@@ -635,19 +635,19 @@ systemctl restart docker
 
 （1）标记此镜像为私有仓库的镜像
 
-```
+``` shell
 docker tag jdk1.8 192.168.184.141:5000/jdk1.8
 ```
 
 （2）再次启动私服容器
 
-```
+``` shell
 docker start registry
 ```
 
 （3）上传标记的镜像
 
-```
+``` shell
 docker push 192.168.184.141:5000/jdk1.8
 ```
 

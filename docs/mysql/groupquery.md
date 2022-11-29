@@ -2,7 +2,7 @@
 
 ## 语法
 
-``` 
+``` sql
 select 分组函数，分组后的字段
 from 表
 【where 筛选条件】
@@ -35,7 +35,7 @@ from 表
 
 1. 查询每个工种的员工平均工资
 
-   ``` mysql
+   ``` sql
    SELECT AVG(salary),job_id
    FROM employees
    GROUP BY job_id;
@@ -43,7 +43,7 @@ from 表
 
 2. 查询每个位置的部门个数
 
-   ``` mysql
+   ``` sql
    SELECT COUNT(*),location_id
    FROM departments
    GROUP BY location_id;
@@ -53,7 +53,7 @@ from 表
 
 1. 查询邮箱中包含a字符的 每个部门的最高工资
 
-   ``` mysql
+   ``` sql
    SELECT MAX(salary),department_id
    FROM employees
    WHERE email LIKE '%a%'
@@ -64,7 +64,7 @@ from 表
 
 2. 查询有奖金的每个领导手下员工的平均工资
 
-   ``` mysql
+   ``` sql
    SELECT
    	AVG( salary ),
    	manager_id 
@@ -82,7 +82,7 @@ from 表
 
    ① 首先查询每个部门的员工个数
 
-   ``` mysql
+   ``` sql
    SELECT COUNT(*),department_id
    FROM employees
    GROUP BY department_id;
@@ -90,7 +90,7 @@ from 表
 
    ② 筛选刚才①结果
 
-   ``` mysql
+   ``` sql
    SELECT COUNT(*),department_id
    FROM employees
    
@@ -103,7 +103,7 @@ from 表
 
 2. 每个工种有奖金的员工的最高工资>12000的工种编号和最高工资
 
-   ``` mysql
+   ``` sql
    SELECT
    	MAX( salary ) 最高工资,
    	job_id 工种编号 
@@ -121,7 +121,7 @@ from 表
 
 3. 领导编号>102的每个领导手下的最低工资大于5000的领导编号和最低工资
 
-   ``` mysql
+   ``` sql
    SELECT
    	manager_id 领导编号,
    	MIN( salary ) 最低工资 
@@ -141,7 +141,7 @@ from 表
 
 1. 每个工种有奖金的员工的最高工资>6000的工种编号和最高工资,按最高工资升序
 
-   ``` mysql
+   ``` sql
    SELECT
    	job_id 工种编号,
    	MAX( salary ) 最高工资 
@@ -163,7 +163,7 @@ from 表
 
 1. 查询每个工种每个部门的最低工资,并按最低工资降序
 
-   ``` mysql
+   ``` sql
    SELECT
    	MIN( salary ) 最低工资,
    	department_id 部门,

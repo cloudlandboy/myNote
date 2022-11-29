@@ -38,7 +38,7 @@ Elasticsearch官网：https://www.elastic.co/cn/products/elasticsearch
 
 需要虚拟机JDK1.8及以上，为了方便直接安装openjdk
 
-```shell
+``` shell
 yum install java-1.8.0-openjdk -y
 ```
 
@@ -50,19 +50,19 @@ yum install java-1.8.0-openjdk -y
 
 创建用户：
 
-```sh
+``` shell
 useradd leyou
 ```
 
 设置密码：
 
-```
+``` shell
 passwd leyou
 ```
 
 切换用户：
 
-```
+``` shell
 su leyou
 ```
 
@@ -80,7 +80,7 @@ su leyou
 
 解压缩：
 
-```
+``` shell
 tar -xvf elasticsearch-7.5.0-linux-x86_64.tar.gz
 ```
 
@@ -88,7 +88,7 @@ tar -xvf elasticsearch-7.5.0-linux-x86_64.tar.gz
 
 我们把目录重命名：
 
-```
+``` shell
 mv elasticsearch-7.5.0 elasticsearch
 ```
 
@@ -151,7 +151,7 @@ mv elasticsearch-7.5.0 elasticsearch
 
 进入elasticsearch的根目录，然后创建：
 
-```
+``` shell
 mkdir data
 ```
 
@@ -163,7 +163,7 @@ mkdir data
 vim config/elasticsearch.yml
 ```
 
-```
+``` shell
 network.host: 0.0.0.0 # 绑定到0.0.0.0，允许任何ip来访问
 ```
 
@@ -221,7 +221,7 @@ network.host: 0.0.0.0 # 绑定到0.0.0.0，允许任何ip来访问
 
 修改elasticsearch.yml文件，在最下面添加如下配置：
 
-```
+``` shell
 bootstrap.system_call_filter: false
 ```
 
@@ -245,7 +245,7 @@ bootstrap.system_call_filter: false
 
 然后修改配置文件:
 
-```
+``` shell
 vim /etc/security/limits.conf
 ```
 
@@ -275,7 +275,7 @@ vim /etc/security/limits.conf
 
 继续修改配置：
 
-```
+``` shell
 vim /etc/security/limits.d/90-nproc.conf 
 ```
 
@@ -301,7 +301,7 @@ vim /etc/security/limits.d/90-nproc.conf
 
 vm.max_map_count：限制一个进程可以拥有的VMA(虚拟内存区域)的数量，继续修改配置文件， ：
 
-```
+``` shell
 vim /etc/sysctl.conf 
 ```
 
@@ -313,7 +313,7 @@ vm.max_map_count=655360
 
 然后执行命令：
 
-```
+``` shell
 sysctl -p
 ```
 
@@ -484,7 +484,7 @@ rm -rf elasticsearch-analysis-ik-7.5.0.zip
 
 在kibana控制台输入下面的请求：
 
-```
+``` http
 POST _analyze
 {
   "analyzer": "ik_max_word",
@@ -685,7 +685,7 @@ kibana的控制台，可以对http请求进行简化，示例：
 
 Get请求可以帮我们查看索引信息，格式：
 
-```
+``` http
 GET /索引名
 ```
 
@@ -705,7 +705,7 @@ GET /索引名
 
 > 语法
 
-```
+``` http
 DELETE /索引名
 ```
 
@@ -741,7 +741,7 @@ DELETE /索引名
 
 请求方式依然是PUT 
 
-```
+``` http
 PUT /索引库名/_mapping/类型名称
 {
   "properties": {
@@ -771,7 +771,7 @@ PUT /索引库名/_mapping/类型名称
 
 发起请求：
 
-```json
+``` http
 PUT test_store/_mapping/goods
 {
   "properties": {
@@ -800,7 +800,7 @@ PUT test_store/_mapping/goods
 
 解决
 
-```
+``` http
 PUT test_store/_mapping/goods?include_type_name=true
 {
   "properties": {
@@ -823,7 +823,7 @@ PUT test_store/_mapping/goods?include_type_name=true
 
 可以用下面的方式替代（后面都不再使用7以前的语法）
 
-```
+``` http
 PUT test_store/_mapping
 {
   "properties": {
@@ -852,13 +852,13 @@ PUT test_store/_mapping
 
 > 语法：
 
-```
+``` http
 GET /索引名/_mapping
 ```
 
 > 示例：
 
-```
+``` http
 GET /test_store/_mapping
 ```
 
@@ -960,7 +960,7 @@ index的默认值就是true，也就是说你不进行任何配置，所有字�
 
 > 语法：
 
-```
+``` http
 POST /索引库名/_doc
 {
     "key":"value"
@@ -969,7 +969,7 @@ POST /索引库名/_doc
 
 > 示例：
 
-```json
+``` http
 POST test_store/_doc
 {
   "goods": {
@@ -1004,7 +1004,7 @@ POST test_store/_doc
 
 通过kibana查看数据：
 
-```js
+``` http
 GET test_store/_search
 {
   "query": {
@@ -1040,7 +1040,7 @@ GET test_store/_search
 
 如果我们想要自己新增的时候指定id，可以这么做：
 
-```
+``` http
 PUT /索引名/_doc/id值
 {
     ...
@@ -1050,7 +1050,7 @@ PUT /索引名/_doc/id值
 
 示例：
 
-```json
+``` http
 PUT test_store/_doc/123
 {
   "goods": {
@@ -1093,7 +1093,7 @@ PUT test_store/_doc/123
 
 测试一下：
 
-```json
+``` http
 put /test_store/_doc/3
 {
     "goods": {
@@ -1172,7 +1172,7 @@ stock和saleable都被成功映射了。
 
 比如，我们把id为3的数据进行修改：
 
-```json
+``` http
 put /test_store/_doc/3
 {
     "goods": {
@@ -1213,13 +1213,13 @@ put /test_store/_doc/3
 
 > 语法
 
-```
+``` http
 DELETE /索引名/_doc/id值
 ```
 
 > 示例：
 
-```
+``` http
 DELETE /test_store/_doc/3
 ```
 
@@ -1243,7 +1243,7 @@ DELETE /test_store/_doc/3
 
 > 基本语法
 
-```json
+``` http
 GET /索引名/_search
 {
     "query":{
@@ -1266,7 +1266,7 @@ GET /索引名/_search
 
 > 示例：
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1340,7 +1340,7 @@ GET /test_store/_search
 
 我们先加入一条数据，便于测试：
 
-```json
+``` http
 PUT /test_store/_doc/3
 {
     "goods": {
@@ -1359,7 +1359,7 @@ PUT /test_store/_doc/3
 
 `match`类型查询，会把查询条件进行分词，然后进行查询,多个词条之间是or的关系
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1413,7 +1413,7 @@ GET /test_store/_search
 
 某些情况下，我们需要更精确查找，我们希望这个关系变成`and`，可以这样做：
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1471,7 +1471,7 @@ GET /test_store/_search
 
 `match` 查询支持 `minimum_should_match` 最小匹配参数， 这让我们可以指定必须匹配的词项数用来表示一个文档是否相关。我们可以将其设置为某个具体数字，更常用的做法是将其设置为一个`百分数`，因为我们无法控制用户搜索时输入的单词数量：
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1497,7 +1497,7 @@ GET /test_store/_search
 
 `multi_match`与`match`类似，不同的是它可以在多个字段中查询
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1511,7 +1511,7 @@ GET /test_store/_search
 
 新增一条记录
 
-```
+``` http
 POST test_store/_doc
 {
   "goods": {
@@ -1533,7 +1533,7 @@ POST test_store/_doc
 
 `term` 查询被用于精确值 匹配，这些精确值可能是数字、时间、布尔或者那些**未分词**的字符串
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1602,7 +1602,7 @@ GET /test_store/_search
 
 `terms` 查询和 term 查询一样，但它允许你指定多值进行匹配。如果这个字段包含了指定值中的任何一个值，那么这个文档满足条件：
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1690,7 +1690,7 @@ GET /test_store/_search
 
 示例：
 
-```json
+``` http
 GET /test_store/_search
 {
   "_source": ["goods.title","goods.price"], 
@@ -1764,7 +1764,7 @@ GET /test_store/_search
 
 示例：
 
-```json
+``` http
 GET /test_store/_search
 {
   "_source": {
@@ -1780,7 +1780,7 @@ GET /test_store/_search
 
 与下面的结果将是一样的：
 
-```json
+``` http
 GET /test_store/_search
 {
   "_source": {
@@ -1802,7 +1802,7 @@ GET /test_store/_search
 
 `bool`把各种其它查询通过`must`（与）、`must_not`（非）、`should`（或）的方式进行组合
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1860,7 +1860,7 @@ GET /test_store/_search
 
 `range` 查询找出那些落在指定区间内的数字或者时间
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1889,7 +1889,7 @@ GET /test_store/_search
 
 我们新增一个商品：
 
-```json
+``` http
 PUT /test_store/_doc/4
 {
   "goods": {
@@ -1904,7 +1904,7 @@ PUT /test_store/_doc/4
 
 `fuzzy` 查询是 `term` 查询的模糊等价。它允许用户搜索词条与实际词条的拼写出现偏差，但是偏差的编辑距离不得超过2：
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1919,7 +1919,7 @@ GET /test_store/_search
 
 我们可以通过`fuzziness`来指定允许的编辑距离：
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1943,7 +1943,7 @@ apple和apkla有两个单词不一样，但是依然能够查询到
 
 所有的查询都会影响到文档的评分及排名。如果我们需要在查询结果中进行过滤，并且不希望过滤条件影响评分，那么就不要把过滤条件作为查询条件来用。而是使用`filter`方式：
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -1965,7 +1965,7 @@ GET /test_store/_search
 
 如果一次查询只有过滤，没有查询条件，不希望进行评分，我们可以使用`constant_score`取代只有 filter 语句的 bool 查询。在性能上是完全相同的，但对于提高查询简洁性和清晰度有很大帮助。
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -1989,7 +1989,7 @@ GET /test_store/_search
 
 `sort` 可以让我们按照不同的字段进行排序，并且通过`order`指定排序的方式
 
-```json
+``` http
 GET /test_store/_search
 {
   "query": {
@@ -2013,7 +2013,7 @@ GET /test_store/_search
 
 假定我们想要结合使用 price和 _score（得分） 进行查询，并且匹配的结果首先按照价格排序，然后按照相关性得分排序：
 
-```json
+``` http
 GET /test_store/_search
 {
     "query":{
@@ -2089,7 +2089,7 @@ bucket aggregations 只负责对数据进行分组，并不进行计算，因此
 
 创建索引：
 
-```json
+``` http
 PUT /cars
 {
   "settings": {
@@ -2119,7 +2119,7 @@ PUT /cars
 
 导入数据
 
-```json
+``` http
 POST /cars/_bulk
 { "index": {}}
 { "transactions":{"price" : 10000, "color" : "red", "make" : "honda", "sold" : "2014-10-28" }}
@@ -2145,7 +2145,7 @@ POST /cars/_bulk
 
 首先，我们按照 汽车的颜色`color`来划分`桶`
 
-```json
+``` http
 GET /cars/_search
 {
     "size" : 0,
@@ -2228,7 +2228,7 @@ GET /cars/_search
 
 现在，我们为刚刚的聚合结果添加 求价格平均值的度量：
 
-```json
+``` http
 GET /cars/_search
 {
     "size" : 0,
@@ -2319,7 +2319,7 @@ GET /cars/_search
 
 比如：我们想统计每种颜色的汽车中，分别属于哪个制造商，按照`make`字段再进行分桶
 
-```json
+``` http
 GET /cars/_search
 {
     "size" : 0,
@@ -2482,7 +2482,7 @@ interval：阶梯间隔，比如200
 
 比如，我们对汽车的价格进行分组，指定间隔interval为5000：
 
-```json
+``` http
 GET /cars/_search
 {
   "size":0,
@@ -2574,7 +2574,7 @@ GET /cars/_search
 
 示例：
 
-```json
+``` http
 GET /cars/_search
 {
   "size":0,
@@ -2635,7 +2635,7 @@ GET /cars/_search
 
 包含`from`，不包含`to`
 
-```
+``` http
 GET /test_high_client/_search
 {
   "aggs": {

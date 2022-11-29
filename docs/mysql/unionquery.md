@@ -27,11 +27,11 @@ union 【all】
 
 1. 查询部门编号>90或邮箱包含a的员工信息
 
-   ``` mysql
+   ``` sql
    SELECT * FROM employees WHERE email LIKE '%a%' OR department_id>90;
    ```
 
-   ``` mysql
+   ``` sql
    SELECT * FROM employees  WHERE email LIKE '%a%'
    UNION
    SELECT * FROM employees  WHERE department_id>90;

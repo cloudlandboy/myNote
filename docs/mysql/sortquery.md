@@ -8,7 +8,7 @@ ORDER BY
 
 ## 语法
 
-``` mysql
+``` sql
 select 查询列表
 
 from 表名
@@ -37,7 +37,7 @@ order by 排序的字段或表达式;
 
 2. 查询部门编号>=90的员工信息，并按员工编号降序
 
-   ``` mysql
+   ``` sql
    SELECT *
    FROM employees
    WHERE department_id>=90
@@ -48,7 +48,7 @@ order by 排序的字段或表达式;
 
 1. 查询员工信息 按年薪降序
 
-   ```mysql
+   ``` sql
    SELECT *,salary*12*(1+IFNULL(commission_pct,0))
    FROM employees
    ORDER BY salary*12*(1+IFNULL(commission_pct,0)) DESC;
@@ -60,7 +60,7 @@ order by 排序的字段或表达式;
 
 1. 查询员工信息 按年薪升序
 
-   ``` mysql
+   ``` sql
    SELECT *,salary*12*(1+IFNULL(commission_pct,0)) 年薪
    FROM employees
    ORDER BY 年薪 ASC;
@@ -70,7 +70,7 @@ order by 排序的字段或表达式;
 
 1. 查询员工名，并且按名字的长度降序
 
-   ``` mysql
+   ``` sql
    SELECT LENGTH(last_name),last_name 
    FROM employees
    ORDER BY LENGTH(last_name) DESC;
@@ -80,7 +80,7 @@ order by 排序的字段或表达式;
 
 1. 查询员工信息，要求先按工资降序，再按employee_id升序
 
-   ``` mysql
+   ``` sql
    SELECT *
    FROM employees
    ORDER BY salary DESC,employee_id ASC;

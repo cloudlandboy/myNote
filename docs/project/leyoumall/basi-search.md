@@ -4,7 +4,7 @@
 
 切换到leyou用户
 
-```
+``` shell
 su leyou
 ```
 

@@ -16,7 +16,7 @@
 
 ## 创建视图
 
-``` mysql
+``` sql
 create view 视图名
 as
 查询语句;
@@ -24,7 +24,7 @@ as
 
 1. 创建视图emp_v1,要求查询电话号码以‘011’开头的员工姓名和工资、邮箱
 
-   ``` mysql
+   ``` sql
    CREATE VIEW emp_v1 AS SELECT
    	last_name,
    	salary,
@@ -37,7 +37,7 @@ as
 
 2. 创建视图emp_v2，要求查询部门的最高工资高于12000的部门信息
 
-   ``` mysql
+   ``` sql
    # 创建视图，查询每个部门的最高工资,筛选出高于12000的
    DROP VIEW emp_v2;
    CREATE VIEW emp_v2 AS SELECT
@@ -79,7 +79,7 @@ as
 
 4. 查询各部门的平均工资级别
 
-   ``` mysql
+   ``` sql
    # 查询各部门的平均工资
    CREATE VIEW emp_v4 AS SELECT
    AVG( salary ) avg_salary,
@@ -102,7 +102,7 @@ as
 
 5. 查询平均工资最低的部门信息
 
-   ``` mysql
+   ``` sql
    SELECT
    	d.*,
    	ev4.avg_salary 
@@ -118,7 +118,7 @@ as
 
 ### 方式一
 
-```
+``` sql
 create or replace view  视图名
 as
 查询语句;
@@ -126,7 +126,7 @@ as
 
 ### 方式二
 
-```
+``` sql
 alter view 视图名
 as 
 查询语句;
@@ -136,11 +136,11 @@ as
 
 ## 删除视图
 
-```
+``` sql
 drop view 视图名,视图名,...
 ```
 
-``` mysql
+``` sql
 DROP VIEW emp_v1,emp_v2,emp_v3,emp_v4;
 ```
 
@@ -148,13 +148,13 @@ DROP VIEW emp_v1,emp_v2,emp_v3,emp_v4;
 
 ## 查看视图
 
-```
+``` sql
 DESC 视图名;
 
 SHOW CREATE VIEW 视图名;
 ```
 
-``` mysql
+``` sql
 CREATE VIEW emp_v1 AS SELECT
 * 
 FROM
@@ -185,7 +185,7 @@ SHOW CREATE VIEW emp_v1;
 
 1. <details> <summary>张飞能否成功插入？</summary>不能，原表中没有annual salary那一列 </details>
 
-   ``` mysql
+   ``` sql
    # 创建视图，查询员工的姓名，邮箱和年薪
    
    CREATE 
@@ -204,7 +204,7 @@ SHOW CREATE VIEW emp_v1;
 
 2. <details> <summary>张飞能否成功插入？</summary>能，并且原表中也存在 </details>
 
-   ``` mysql
+   ``` sql
    # 创建视图，查询员工的姓名和邮箱
    
    CREATE 
@@ -220,19 +220,19 @@ SHOW CREATE VIEW emp_v1;
 
 3. <details> <summary>能否将张飞修改为张无忌？</summary>能 </details>
 
-   ``` mysql
+   ``` sql
    UPDATE myv1 SET last_name = '张无忌' WHERE last_name='张飞';
    ```
 
 4. <details> <summary>能否干掉张无忌？</summary>能 </details>
 
-   ``` mysql
+   ``` sql
    DELETE FROM myv1 WHERE last_name = '张无忌';
    ```
 
 5. <details> <summary>能否将10号部门的最高薪水改为9000？</summary>不能 ，包含group by和分组函数</details>
 
-   ``` mysql
+   ``` sql
    #　创建视图，查询每个部门的最高工资
    CREATE 
    	OR REPLACE VIEW myv1 AS SELECT
@@ -249,7 +249,7 @@ SHOW CREATE VIEW emp_v1;
 
 6. <details> <summary>能否更改？</summary>不能，常量视图 </details>
 
-   ``` mysql
+   ``` sql
    CREATE OR REPLACE VIEW myv2
    AS
    SELECT 'john' NAME;
@@ -260,7 +260,7 @@ SHOW CREATE VIEW emp_v1;
 
 7. <details> <summary>能够将最高工资列修改为100000？</summary>不能，select中包含子查询 </details>
 
-   ``` mysql
+   ``` sql
    CREATE OR REPLACE VIEW myv3 AS 
    SELECT department_id,( SELECT MAX( salary ) FROM employees ) 最高工资 
    FROM
@@ -273,7 +273,7 @@ SHOW CREATE VIEW emp_v1;
 
 8. <details> <summary>修改和插入能成功吗？</summary>可以更新，但是不能插入 </details>
 
-   ``` mysql
+   ``` sql
    # 创建视图，查询员工名与部门名
    CREATE 
    	OR REPLACE VIEW myv4 AS SELECT
@@ -291,7 +291,7 @@ SHOW CREATE VIEW emp_v1;
 
 9. <details> <summary>能修改吗？</summary>不能，from一个不能更新的视图，myv3中select使用了子查询 </details>
 
-   ``` mysql
+   ``` sql
    CREATE 
    	OR REPLACE VIEW myv5 AS SELECT
    	* 
@@ -304,7 +304,7 @@ SHOW CREATE VIEW emp_v1;
 
 10. <details> <summary>能修改吗？</summary>不能，where子句的子查询引用了from子句中的表</details>
 
-    ``` mysql
+    ``` sql
     # 查询所有的领导信息
     CREATE OR REPLACE VIEW myv6
     AS

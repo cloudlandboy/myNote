@@ -141,7 +141,7 @@ SPU中会有一些特殊属性，用来区分不同的SKU，我们称为SKU特�
 
 规格参数分组表：tb_spec_group
 
-```mysql
+``` sql
 CREATE TABLE `tb_spec_group` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cid` bigint(20) NOT NULL COMMENT '商品分类id，一个分类下有多个规格组',
@@ -165,7 +165,7 @@ CREATE TABLE `tb_spec_group` (
 
 规格参数表：tb_spec_param
 
-```mysql
+``` sql
 CREATE TABLE `tb_spec_param` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cid` bigint(20) NOT NULL COMMENT '商品分类id',
@@ -576,7 +576,7 @@ public interface SpecParamMapper extends Mapper<SpecParam> {
 
 SPU表：
 
-```mysql
+``` sql
 CREATE TABLE `tb_spu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'spu id',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
@@ -599,7 +599,7 @@ CREATE TABLE `tb_spu` (
 
 我们做了表的垂直拆分，将SPU的详情放到了另一张表：tb_spu_detail
 
-```mysql
+``` sql
 CREATE TABLE `tb_spu_detail` (
   `spu_id` bigint(20) NOT NULL,
   `description` text COMMENT '商品描述信息',
@@ -693,7 +693,7 @@ json结构，其中都是键值对：
 
 ## SKU表
 
-```mysql
+``` sql
 CREATE TABLE `tb_sku` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'sku id',
   `spu_id` bigint(20) NOT NULL COMMENT 'spu id',
@@ -714,7 +714,7 @@ CREATE TABLE `tb_sku` (
 
 还有一张表，代表库存：
 
-```mysql
+``` sql
 CREATE TABLE `tb_stock` (
   `sku_id` bigint(20) NOT NULL COMMENT '库存对应的商品sku id',
   `seckill_stock` int(9) DEFAULT '0' COMMENT '可秒杀库存',

@@ -51,7 +51,7 @@ update 表 set 郭襄的余额=郭襄的余额+500 where name='郭襄'
 
 事务没有明显的开启和结束的标记，比如insert、update、delete语句
 
-``` mysql
+``` sql
 # 执行完表中id列为1的那一行数据就直接被删除了
 delete from 表 where id =1;
 ```
@@ -64,7 +64,7 @@ delete from 表 where id =1;
 
 
 
-``` mysql
+``` sql
 # 查看自动提交是否开启
 SHOW VARIABLES LIKE 'autocommit';
 
@@ -78,7 +78,7 @@ SHOW ENGINES;
 
 1. 开启事务
 
-   ``` mysql
+   ``` sql
    # 关闭自动提交
    set autocommit=0;
    
@@ -94,7 +94,7 @@ SHOW ENGINES;
 
 4. 结束事务
 
-   ``` mysql
+   ``` sql
    commit;提交事务
    # 或者
    rollback;回滚事务
@@ -140,13 +140,13 @@ SHOW ENGINES;
 
 **查看隔离级别**
 
-``` mysql
+``` sql
 select @@tx_isolation;
 ```
 
 **设置隔离级别**
 
-``` mysql
+``` sql
 # 设置当前 mySQL 连接的隔离级别: 
 set transaction isolation level read committed;
 
@@ -158,7 +158,7 @@ set global transaction isolation level read committed;
 
 1. 事务的使用步骤
 
-   ``` mysql
+   ``` sql
    # 开启事务
    SET autocommit=0;
    START TRANSACTION;
@@ -175,7 +175,7 @@ set global transaction isolation level read committed;
 
 2. 事务对于delete和truncate的处理的区别
 
-   ```mysql
+   ``` sql
    SET autocommit=0;
    START TRANSACTION;
    
@@ -185,7 +185,7 @@ set global transaction isolation level read committed;
 
    TRUNCATE 无法回滚
 
-   ``` mysql
+   ``` sql
    SET autocommit=0;
    START TRANSACTION;
    
@@ -195,7 +195,7 @@ set global transaction isolation level read committed;
 
 3. savepoint 的使用
 
-   ``` mysql
+   ``` sql
    SET autocommit=0;
    START TRANSACTION;
    DELETE FROM account WHERE id=25;

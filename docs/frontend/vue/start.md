@@ -754,7 +754,7 @@ Vue.config.keyCodes.f1 = 112
 
 > 语法：
 
-```
+``` vue
 v-for="item in items"
 ```
 
@@ -854,7 +854,7 @@ var app = new Vue({
 
 > 语法
 
-```
+``` vue
 v-for="(item,index) in items"
 ```
 

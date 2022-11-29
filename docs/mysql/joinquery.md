@@ -4,7 +4,7 @@
 
 又称多表查询，当查询的字段来自于多个表时，就会用到连接查询
 
-```
+``` sql
 select 字段1，字段2
 
 from 表1，表2,...;
@@ -49,7 +49,7 @@ from 表1，表2,...;
 
 1. 查询女神名和对应的男神名
 
-   ``` mysql
+   ``` sql
    SELECT NAME,boyName 
    FROM
    	boys,
@@ -62,7 +62,7 @@ from 表1，表2,...;
 
 2. 查询员工名和对应的部门名
 
-   ``` mysql
+   ``` sql
    SELECT
    	last_name,
    	department_name 
@@ -84,7 +84,7 @@ from 表1，表2,...;
 
 1. 查询员工名、工种号、工种名
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name,
    	e.job_id,
@@ -100,7 +100,7 @@ from 表1，表2,...;
 
 1. 查询有奖金的员工名、部门名
 
-   ``` mysql
+   ``` sql
    SELECT
    	last_name,
    	department_name,
@@ -117,7 +117,7 @@ from 表1，表2,...;
 
 2. 查询城市名中第二个字符为o的部门名和城市名
 
-   ``` mysql
+   ``` sql
    SELECT
    	department_name,
    	city 
@@ -135,7 +135,7 @@ from 表1，表2,...;
 
 1. 查询每个城市的部门个数
 
-   ``` mysql
+   ``` sql
    SELECT
    	COUNT(*) 个数,
    	city 
@@ -152,7 +152,7 @@ from 表1，表2,...;
 
 2. 查询有奖金的每个部门的部门名和部门的领导编号和该部门的最低工资
 
-   ``` mysql
+   ``` sql
    SELECT
    	department_name,
    	d.`manager_id`,
@@ -172,7 +172,7 @@ from 表1，表2,...;
 
 3. 查询每个工种的工种名和员工的个数，并且按员工个数降序
 
-   ``` mysql
+   ``` sql
    SELECT
    	job_title,
    	COUNT(*) 
@@ -191,7 +191,7 @@ from 表1，表2,...;
 
 4. 查询员工名、部门名和所在的城市，并且城市名以s开头，按部门名称降序
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	d.department_name 部门名,
@@ -226,7 +226,7 @@ from 表1，表2,...;
 
 1. 查询员工的工资和工资级别
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.salary 工资,
    	j.grade_level 工资级别 
@@ -242,7 +242,7 @@ from 表1，表2,...;
 
 2. 查询员工的工资和工资级别并筛选出级别为A的
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.salary 工资,
    	j.grade_level 工资级别 
@@ -261,7 +261,7 @@ from 表1，表2,...;
 
 ### 语法
 
-``` mysql
+``` sql
 	select 查询列表
 	from 表 别名1,表 别名2
 	where 等值的连接条件
@@ -273,7 +273,7 @@ from 表1，表2,...;
 
 1. 查询员工名和上级的名称
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	m.last_name 上级名称 
@@ -316,7 +316,7 @@ from 表1，表2,...;
 
 1. 查询员工名、部门名
 
-   ``` mysql
+   ``` sql
    SELECT
    	last_name,
    	department_name 
@@ -329,7 +329,7 @@ from 表1，表2,...;
 
 2. 查询名字中包含e的员工名和工种名（添加筛选）
 
-   ``` mysql
+   ``` sql
    SELECT
    	last_name,
    	job_title 
@@ -344,7 +344,7 @@ from 表1，表2,...;
 
 3. 查询部门个数>3的城市名和部门个数，（添加分组+筛选）
 
-   ``` mysql
+   ``` sql
    SELECT
    	COUNT( department_id ) 部门个数,
    	city 城市名 
@@ -361,7 +361,7 @@ from 表1，表2,...;
 
 4. 查询哪个部门的员工个数>3的部门名和员工个数，并按个数降序（添加排序）
 
-   ``` mysql
+   ``` sql
    SELECT
    	COUNT(*) 员工个数,
    	d.department_name 部门名称 
@@ -381,7 +381,7 @@ from 表1，表2,...;
 
 5. 查询员工名、部门名、工种名，并按部门名降序（添加三表连接）
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	d.department_name 部门号,
@@ -398,7 +398,7 @@ from 表1，表2,...;
 
 1. 查询员工的工资级别
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	e.salary 薪水,
@@ -413,7 +413,7 @@ from 表1，表2,...;
 
 2. 查询工资级别的个数>20的个数，并且按工资级别降序
 
-   ``` mysql
+   ``` sql
    SELECT
    	j.grade_level 工资级别,
    	COUNT( * ) 个数 
@@ -435,7 +435,7 @@ from 表1，表2,...;
 
 1. 查询员工的名字、上级的名字
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	m.last_name 上级名 
@@ -448,7 +448,7 @@ from 表1，表2,...;
 
 2. 查询姓名中包含字符k的员工的名字、上级的名字
 
-   ``` mysql
+   ``` sql
    SELECT
    	e.last_name 员工名,
    	m.last_name 上级名 
@@ -465,7 +465,7 @@ from 表1，表2,...;
 
 ### 语法
 
-```
+``` sql
 select 查询列表
 from 表1 别名
 left|right|full【outer】 join 表2 别名 on 连接条件
@@ -502,7 +502,7 @@ limit 子句;
 
 1. 查询哪个部门没有员工
 
-   ``` mysql
+   ``` sql
    SELECT
    	d.* 
    FROM
@@ -516,7 +516,7 @@ limit 子句;
 
 1. 查询哪个部门没有员工(调换位置使用RIGHT JOIN)
 
-   ``` mysql
+   ``` sql
    SELECT
    	d.* 
    FROM
@@ -550,7 +550,7 @@ beauty表中有其他的数据与boys表没有关系(就是这些女神还是单
 
 交叉联接返回左表中的所有行，左表中的每一行与右表中的所有行组合。交叉联接也称作笛卡尔积。    
 
-``` mysql
+``` sql
  SELECT b.*,bo.*
  FROM beauty b
  CROSS JOIN boys bo;

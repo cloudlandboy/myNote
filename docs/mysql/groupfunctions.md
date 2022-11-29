@@ -6,7 +6,7 @@
 
 ​	求和
 
-```mysql
+``` sql
 SELECT SUM(salary) FROM employees;
 ```
 
@@ -14,7 +14,7 @@ SELECT SUM(salary) FROM employees;
 
 ​	平均值
 
-``` mysql
+``` sql
 SELECT AVG(salary) FROM employees;
 ```
 
@@ -24,7 +24,7 @@ SELECT AVG(salary) FROM employees;
 
 ​	最大值
 
-``` mysql
+``` sql
 SELECT MAX(salary) FROM employees;
 ```
 
@@ -34,7 +34,7 @@ SELECT MAX(salary) FROM employees;
 
 ​	最小值
 
-``` mysql
+``` sql
 SELECT MIN(salary) FROM employees;
 ```
 
@@ -44,15 +44,15 @@ SELECT MIN(salary) FROM employees;
 
 ​	计算个数
 
-``` mysql
+``` sql
 SELECT COUNT(salary) FROM employees;
 ```
 
-``` mysql
+``` sql
 SELECT COUNT(*) FROM employees;
 ```
 
-``` mysql
+``` sql
 SELECT COUNT(1) FROM employees;
 ```
 
@@ -64,7 +64,7 @@ SELECT COUNT(1) FROM employees;
 
 
 
-``` mysql
+``` sql
 SELECT
 	SUM( salary ) 和,
 	AVG( salary ) 平均,
@@ -77,7 +77,7 @@ FROM
 
 平均工资保留两位小数(四舍五入)
 
-``` mysql
+``` sql
 SELECT
 	SUM( salary ) 和,
 	ROUND( AVG( salary ), 2 ) 平均,
@@ -94,7 +94,7 @@ FROM
 
 先试图将字符转换成数值，如果转换成功，则继续运算；否则转换成0，再做运算
 
-``` mysql
+``` sql
 SELECT
 	SUM( last_name ),
 	AVG( last_name ) 
@@ -106,7 +106,7 @@ FROM
 
 与排序差不多
 
-``` mysql
+``` sql
 SELECT
 	MAX( last_name ),
 	MIN( last_name ) 
@@ -118,13 +118,13 @@ FROM
 
 ### 日期
 
-``` mysql
+``` sql
 SELECT SUM(hiredate) ,AVG(hiredate) FROM employees;
 ```
 
 
 
-``` mysql
+``` sql
 SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 ```
 
@@ -146,7 +146,7 @@ SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 
 1. 查询员工表中的最大入职时间和最小入职时间的相差天数 （DIFFRENCE）
 
-   ``` mysql
+   ``` sql
    SELECT
    	MAX( hiredate ) 最大,
    	MIN( hiredate ) 最小,
@@ -157,7 +157,7 @@ SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 
    使用DATEDIFF(d1,d2)函数，计算日期 d1～d2 之间相隔的天数
 
-   ``` mysql
+   ``` sql
    SELECT DATEDIFF(MAX(hiredate),MIN(hiredate)) DIFFRENCE;
    ```
 
@@ -165,7 +165,7 @@ SELECT MAX(hiredate),MIN(hiredate) FROM employees;
 
 2. 查询部门编号为90的员工个数
 
-   ``` mysql
+   ``` sql
    SELECT
    	COUNT(*) 
    FROM

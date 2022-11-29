@@ -10,7 +10,7 @@ DML(Data Manipulation Language –数据操纵语言) 可以在下列条件下�
 
 运行以下脚本创建表my_employees
 
-``` mysql
+``` sql
 USE myemployees;
 CREATE TABLE my_employees(
 	Id INT(10),
@@ -29,7 +29,7 @@ CREATE TABLE users(
 
 显示表my_employees的结构
 
-```mysql
+``` sql
 DESC my_employees;
 ```
 
@@ -39,7 +39,7 @@ DESC my_employees;
 
 ### 语法
 
-``` 
+``` sql
 insert into 表名(字段名,...) values(值,...);
 ```
 
@@ -63,7 +63,7 @@ insert into 表名(字段名,...) values(值,...);
 
 语法
 
-```
+``` sql
 insert into 表名 set 字段=值,字段=值,...;
 ```
 
@@ -96,7 +96,7 @@ insert into 表名 set 字段=值,字段=值,...;
 | 4    | Newman     | Chad      | Cnewman  | 750    |
 | 5    | Ropeburn   | Audrey    | Aropebur | 155    |
 
-``` mysql
+``` sql
 INSERT INTO my_employees
 VALUES
 	( 1, 'patel', 'Ralph', 'Rpatel', 895 ),
@@ -108,7 +108,7 @@ VALUES
 
 或者
 
-``` mysql
+``` sql
 # 先删除表数据
 DELETE FROM my_employees;
 # 再插入
@@ -122,7 +122,7 @@ SELECT 5,'Ropeburn','Audrey','Aropebur',1550;
 
 向users表中插入数据
 
-``` mysql
+``` sql
 INSERT INTO users
 VALUES
 	( 1, 'Rpatel', 10 ),
@@ -136,19 +136,19 @@ VALUES
 
 ### 语法
 
-```
+``` sql
 update 表名 set 字段=值,字段=值 【where 筛选条件】;
 ```
 
 1. 将3号员工的last_name修改为“drelxer”
 
-   ``` mysql
+   ``` sql
    UPDATE my_employees SET last_name='drelxer' WHERE id = 3;
    ```
 
 2. 将所有工资少于900的员工的工资修改为1000
 
-   ``` mysql
+   ``` sql
    UPDATE my_employees SET salary=1000 WHERE salary<900;
    ```
 
@@ -156,7 +156,7 @@ update 表名 set 字段=值,字段=值 【where 筛选条件】;
 
 ### 语法
 
-``` 
+``` sql
 update 表1 别名 
 left|right|inner join 表2 别名 
 on 连接条件  
@@ -170,7 +170,7 @@ set 字段=值,字段=值
 
 ### 语法
 
-```
+``` sql
 delete from 表名 【where 筛选条件】【limit 条目数】
 ```
 
@@ -178,7 +178,7 @@ delete from 表名 【where 筛选条件】【limit 条目数】
 
 ### 语法
 
-```
+``` sql
 delete 别名1,别名2 from 表1 别名 
 inner|left|right join 表2 别名 
 on 连接条件
@@ -187,7 +187,7 @@ on 连接条件
 
 1. 将userid 为Bbiri的user表和my_employees表的记录全部删除
 
-   ``` mysql
+   ``` sql
    DELETE u,e 
    FROM
    	users u
@@ -212,7 +212,7 @@ on 连接条件
 
 ### 语法
 
-```
+``` sql
 truncate table 表名
 ```
 

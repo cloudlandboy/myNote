@@ -214,7 +214,7 @@ public class LeyouUserApplication {
 
 ## 数据结构
 
-```mysql
+``` sql
 CREATE TABLE `tb_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL COMMENT '用户名',
@@ -322,7 +322,7 @@ public class UserController {
 
 **接口路径：**
 
-```
+``` http
 GET /check/{data}/{type}
 ```
 
@@ -406,7 +406,7 @@ public class LeyouUserServiceApplication {
 
 > 配置文件
 
-```
+``` yaml
 server:
   port: 7005
 spring:
@@ -1011,7 +1011,7 @@ ps -ef | grep redis
 
 连接redis，默认连接本机6379端口
 
-```
+``` shell
 redis-cli
 ```
 
@@ -1100,7 +1100,7 @@ esac
 
 不知道在哪里使用下面命令查看
 
-```
+``` shell
 which redis-server
 which redis-cli
 ```
@@ -1657,7 +1657,7 @@ public class User {
 
 **接口路径**
 
-```
+``` http
 GET /query
 ```
 

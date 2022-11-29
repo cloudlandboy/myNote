@@ -133,7 +133,7 @@ b)     使用公用的RabbitMQ服务，在192.168.50.22
 
 首先创建一个文件夹，我这里放在`/usr/local/leyou/rabbitmq`
 
-```
+``` shell
 cd /usr/local/leyou/
 mkdir rabbitmq
 ```
@@ -164,7 +164,7 @@ RabbitMQ：[rabbitmq-server-3.8.1-1.el7.noarch.rpm](https://github.com/rabbitmq/
 
 上传后安装：
 
-```
+``` shell
 rpm -ivh rabbitmq-server-3.8.1-1.el7.noarch.rpm
 ```
 
@@ -184,7 +184,7 @@ yum install socat
 
 ### 启动、停止
 
-```
+``` shell
 service rabbitmq-server start
 
 service rabbitmq-server stop
@@ -196,7 +196,7 @@ service rabbitmq-server restart
 
 ### 开启web界面管理工具
 
-```
+``` shell
 rabbitmq-plugins enable rabbitmq_management
 
 service rabbitmq-server restart
@@ -208,7 +208,7 @@ service rabbitmq-server restart
 
 ### 设置开机启动
 
-```
+``` shell
 chkconfig rabbitmq-server on
 ```
 

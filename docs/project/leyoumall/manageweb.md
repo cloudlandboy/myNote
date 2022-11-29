@@ -860,7 +860,7 @@ public class LeyouCorsConfiguration {
 
 ### 数据库表
 
-```mysql
+``` sql
 CREATE TABLE `tb_brand` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '品牌id',
   `name` varchar(50) NOT NULL COMMENT '品牌名称',
@@ -874,7 +874,7 @@ CREATE TABLE `tb_brand` (
 
 这里需要注意的是，品牌和商品分类之间是多对多关系。因此我们有一张中间表，来维护两者间关系：
 
-```mysql
+``` sql
 CREATE TABLE `tb_category_brand` (
   `category_id` bigint(20) NOT NULL COMMENT '商品类目id',
   `brand_id` bigint(20) NOT NULL COMMENT '品牌id',

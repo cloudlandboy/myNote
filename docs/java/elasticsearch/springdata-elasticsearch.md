@@ -347,7 +347,7 @@ public void testAddDocument() throws Exception {
 
 去页面查询看看：
 
-```
+``` http
 GET /item/_search
 ```
 
@@ -374,7 +374,7 @@ GET /item/_search
 
 再次去页面查询：
 
-```json
+``` http
 GET item/_search
 ```
 
@@ -753,7 +753,7 @@ public void testAgg() {
 
 先使用kibana添加两条数据
 
-```
+``` http
 PUT item/_bulk
 {"index": {"_id": "4"}}
 {"title" : "小米CC9e","category" : "手机","brand" : "小米","price" : 999.00,"images" : "http://image.leyou.com/123.jpg"}
@@ -812,7 +812,7 @@ public void testSubAggregation() throws Exception {
 
 通过kibana工具查询：
 
-```
+``` http
 GET item/_search
 {
   "size": 0, 

@@ -307,7 +307,7 @@ service fdfs_storaged start  # 启动fdfs_storaged服务，停止用stop
 
 设置storage服务开机启动：
 
-```
+``` shell
 chkconfig fdfs_storaged on
 ```
 
@@ -586,7 +586,7 @@ systemctl enable nginx
 
 如果提示`Failed to execute operation: Access denied`，执行下面后再重新执行上面
 
-```
+``` shell
 systemctl daemon-reexec
 ```
 

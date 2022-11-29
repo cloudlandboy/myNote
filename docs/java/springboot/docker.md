@@ -91,7 +91,7 @@ Docker支持将软件编译成一个镜像；然后在镜像中各种软件做�
 
 修改 /etc/docker/daemon.json ，写入如下内容（如果文件不存在请新建该文件）
 
-```
+``` shell
 vim /etc/docker/daemon.json
 
 #　内容：

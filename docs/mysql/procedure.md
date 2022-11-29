@@ -19,7 +19,7 @@
 
 ## 创建语法
 
-```
+``` sql
 CREATE PROCEDURE 存储过程名(参数列表)
 BEGIN
 
@@ -65,7 +65,7 @@ END
 
 插入到admin表中五条记录
 
-``` mysql
+``` sql
 USE girls;
 
 DELIMITER $
@@ -79,11 +79,11 @@ END $
 
 ## 调用语法
 
-``` 
+``` sql
 CALL 存储过程名(实参列表);
 ```
 
-``` mysql
+``` sql
 CALL myp1();
 ```
 
@@ -93,7 +93,7 @@ CALL myp1();
 
 创建存储过程实现 根据女神名，查询对应的男神信息
 
-``` mysql
+``` sql
 DELIMITER $
 CREATE PROCEDURE myp2(IN beautyName VARCHAR(20))
 BEGIN
@@ -104,13 +104,13 @@ BEGIN
 END $
 ```
 
-``` mysql
+``` sql
 CALL myp2('赵敏');
 ```
 
 创建存储过程实现，判断用户是否登录成功
 
-``` mysql
+``` sql
 DELIMITER $
 CREATE PROCEDURE myp3(IN username VARCHAR(20),IN PASSWORD VARCHAR(20))
 BEGIN
@@ -127,7 +127,7 @@ END $
 
 
 
-``` mysql
+``` sql
 CALL myp3('john','8888');
 CALL myp3('john','1234');
 ```
@@ -138,7 +138,7 @@ CALL myp3('john','1234');
 
 根据输入的女神名，返回对应的男神名
 
-``` mysql
+``` sql
 DELIMITER $
 CREATE PROCEDURE myp4(IN beautyName VARCHAR(20),OUT boyName VARCHAR(20))
 BEGIN
@@ -150,7 +150,7 @@ BEGIN
 END $
 ```
 
-``` mysql
+``` sql
 # 调用 使用自定义变量接收
 CALL myp4('赵敏',@name);
 SELECT @name;
@@ -158,7 +158,7 @@ SELECT @name;
 
 根据输入的女神名，返回对应的男神名和魅力值
 
-``` mysql
+``` sql
 DELIMITER $
 CREATE PROCEDURE myp5(IN beautyName VARCHAR(20),OUT boyName VARCHAR(20),OUT usercp INT) 
 BEGIN
@@ -171,7 +171,7 @@ BEGIN
 END $
 ```
 
-``` mysql
+``` sql
 CALL myp5('小昭',@name,@cp);
 SELECT @name,@cp;
 ```
@@ -182,7 +182,7 @@ SELECT @name,@cp;
 
 传入a和b两个值，最终a和b都翻倍并返回
 
-``` mysql
+``` sql
 DROP PROCEDURE IF EXISTS myp5;
 
 DELIMITER $
@@ -195,7 +195,7 @@ BEGIN
 END $
 ```
 
-``` mysql
+``` sql
 SET @m=10;
 SET @n=20;
 CALL myp5(@m,@n);
@@ -206,7 +206,7 @@ SELECT @m,@n;
 
 ## 查看存储过程的信息
 
-``` mysql
+``` sql
 SHOW CREATE PROCEDURE myp5;
 ```
 

@@ -309,7 +309,7 @@ java11
 ```
 `Logger.java`
 
-```
+``` java
 public interface Logger {
 
     void debug(String msg);

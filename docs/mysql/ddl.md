@@ -10,29 +10,29 @@
 
 ### 创建库
 
-```mysql
+``` sql
 create database 【if not exists】 库名【 character set 字符集名】;
 ```
 
-``` mysql
+``` sql
 CREATE DATABASE IF NOT EXISTS books;
 ```
 
 ### 修改库
 
-```
+``` sql
 alter database 库名 character set 字符集名;
 ```
 
 ### 修改库名
 
-``` mysql
+``` sql
 RENAME DATABASE books TO 新库名;
 ```
 
 ### 修改库的字符集
 
-``` mysql
+``` sql
 ALTER DATABASE books CHARACTER SET gbk;
 ```
 
@@ -40,7 +40,7 @@ ALTER DATABASE books CHARACTER SET gbk;
 
 ### 删除库
 
-```
+``` sql
 drop database 【if exists】 库名;
 ```
 
@@ -50,7 +50,7 @@ drop database 【if exists】 库名;
 
 ### 创建表
 
-```
+``` sql
 create table 表名(
 	列名 列的类型【(长度) 约束】,
 	列名 列的类型【(长度) 约束】,
@@ -62,7 +62,7 @@ create table 表名(
 
 **创建表Book表**
 
-``` mysql
+``` sql
 CREATE TABLE book ( 
 	id INT, #编号
 	bName VARCHAR ( 20 ), #图书名
@@ -74,13 +74,13 @@ CREATE TABLE book (
 
 **查看book表结构**
 
-``` mysql
+``` sql
 DESC book;
 ```
 
 **创建表author**
 
-``` mysql
+``` sql
 CREATE TABLE IF NOT EXISTS author(
 	id INT,
 	au_name VARCHAR(20),
@@ -94,37 +94,37 @@ CREATE TABLE IF NOT EXISTS author(
 
 ### 添加列
 
-```
+``` sql
 alter table 表名 add column 列名 类型 【first|after 字段名】;
 ```
 
 ### 修改列的类型或约束
 
-```
+``` sql
 alter table 表名 modify column 列名 新类型 【新约束】;
 ```
 
 ### 修改列名
 
-```
+``` sql
 alter table 表名 change column 旧列名 新列名 类型;
 ```
 
 ### 删除列
 
-```
+``` sql
 alter table 表名 drop column 列名;
 ```
 
 ### 修改表名
 
-```
+``` sql
 alter table 表名 rename 【to】 新表名;
 ```
 
 ### 删除表
 
-```
+``` sql
 drop table【if exists】 表名;
 ```
 
@@ -132,13 +132,13 @@ drop table【if exists】 表名;
 
 ### 复制表的结构
 
-```
+``` sql
 create table 表名 like 旧表;
 ```
 
 ### 复制表的结构+数据
 
-```
+``` sql
 create table 表名 
 select 查询列表 from 旧表【where 筛选】;
 ```
@@ -147,7 +147,7 @@ select 查询列表 from 旧表【where 筛选】;
 
 1. 向author表插入数据
 
-   ``` mysql
+   ``` sql
    INSERT INTO author
    VALUES
    	( 1, '村上春树', '日本' ),
@@ -158,20 +158,20 @@ select 查询列表 from 旧表【where 筛选】;
 
 2. 创建表copy，复制author表的结构
 
-   ```mysql
+   ``` sql
    CREATE TABLE copy LIKE author;
    ```
 
 3. 创建表copy2，复制author表的结构和数据
 
-   ```mysql
+   ``` sql
    CREATE TABLE copy2 
    SELECT * FROM author;
    ```
 
 4. 创建表copy3，复制author表的`部分数据`
 
-   ```mysql
+   ``` sql
    CREATE TABLE copy3
    SELECT id,au_name
    FROM author 
@@ -180,7 +180,7 @@ select 查询列表 from 旧表【where 筛选】;
 
 5. 创建表copy4，复制author表的`部分字段`
 
-   ``` mysql
+   ``` sql
    CREATE TABLE copy4 
    SELECT id,au_name
    FROM author
@@ -232,7 +232,7 @@ tinyint、smallint、mediumint、int/integer、bigint
 
 **如何设置无符号**
 
-``` mysql
+``` sql
 CREATE TABLE tab_int(
 	t1 INT,
 	t2 INT unsigned 
@@ -241,7 +241,7 @@ CREATE TABLE tab_int(
 
 **显示长度**
 
-``` mysql
+``` sql
 CREATE TABLE tab_int(
 	t1 INT(7) ZEROFILL,
 	t2 INT(7) ZEROFILL 
@@ -276,7 +276,7 @@ Enum：又称为枚举类型哦，要求插入的值必须属于列表中指定�
 
 Set：和Enum类型类似，里面可以保存0~64个成员。和Enum类型最大的区别是：SET类型一次可以选取多个成员，而Enum只能选一个
 
-``` mysql
+``` sql
 CREATE TABLE tab_char(
 	c1 ENUM('a','b','c')
 );
@@ -288,7 +288,7 @@ INSERT INTO tab_char VALUES('m');	--> 会插入空字符 ''
 INSERT INTO tab_char VALUES('A');	-->  会插入 'a'
 ```
 
-``` mysql
+``` sql
 CREATE TABLE tab_set(
 	s1 SET('a','b','c','d')
 );
@@ -353,7 +353,7 @@ timestamp 日期+时间 ，比较容易受时区、语法模式、版本的影�
 
 ### 创建表时添加约束
 
-```
+``` sql
 CREATE TABLE 表名(
 	字段名 字段类型 列级约束,
 	字段名 字段类型,
@@ -367,13 +367,13 @@ CREATE TABLE 表名(
 
 只支持：默认、非空、主键、唯一
 
-```mysql
+``` sql
 # 创建一个数据库
 CREATE DATABASE students;
 USE students;
 ```
 
-``` mysql
+``` sql
 CREATE TABLE stuinfo (
 	id INT PRIMARY KEY,#主键
 	stuName VARCHAR ( 20 ) NOT NULL UNIQUE,#非空并且唯一
@@ -398,7 +398,7 @@ SHOW INDEX FROM stuinfo;
 
 【constraint 约束名】 约束类型(字段名) 
 
-``` mysql
+``` sql
 DROP TABLE IF EXISTS stuinfo;
 CREATE TABLE stuinfo (
 	id INT,
@@ -417,7 +417,7 @@ CREATE TABLE stuinfo (
 
 ### 通用写法
 
-``` mysql
+``` sql
 CREATE TABLE IF NOT EXISTS stuinfo (
 		id INT PRIMARY KEY,
 		stuname VARCHAR ( 20 ),
@@ -433,17 +433,17 @@ CREATE TABLE IF NOT EXISTS stuinfo (
 
 - 添加列级约束
 
-```
+``` sql
 alter table 表名 modify column 字段名 字段类型 新约束;
 ```
 
 - 添加表级约束
 
-```
+``` sql
 alter table 表名 add 【constraint 约束名】 约束类型(字段名) 【外键的引用】;
 ```
 
-``` mysql
+``` sql
 DROP TABLE IF EXISTS stuinfo;
 CREATE TABLE stuinfo(
 	id INT,
@@ -457,7 +457,7 @@ CREATE TABLE stuinfo(
 
 1. 添加非空约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20)  NOT NULL;
    ```
 
@@ -465,7 +465,7 @@ CREATE TABLE stuinfo(
 
 2. 添加默认约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN age INT DEFAULT 18;
    ```
 
@@ -475,13 +475,13 @@ CREATE TABLE stuinfo(
 
    ① 列级约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN id INT PRIMARY KEY;
    ```
 
    ② 表级约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo ADD PRIMARY KEY(id);
    ```
 
@@ -491,13 +491,13 @@ CREATE TABLE stuinfo(
 
    ① 列级约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN seat INT UNIQUE;
    ```
 
    ② 表级约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo ADD UNIQUE(seat);
    ```
 
@@ -505,7 +505,7 @@ CREATE TABLE stuinfo(
 
 5. 添加外键
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo 
    ADD CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id); 
    ```
@@ -514,7 +514,7 @@ CREATE TABLE stuinfo(
 
 1. 删除非空约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20) NULL;
    ```
 
@@ -522,7 +522,7 @@ CREATE TABLE stuinfo(
 
 2. 删除默认约束
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo MODIFY COLUMN age INT ;
    ```
 
@@ -530,7 +530,7 @@ CREATE TABLE stuinfo(
 
 3. 删除主键
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo DROP PRIMARY KEY;
    ```
 
@@ -538,7 +538,7 @@ CREATE TABLE stuinfo(
 
 4. 删除唯一
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo DROP INDEX seat;
    ```
 
@@ -546,7 +546,7 @@ CREATE TABLE stuinfo(
 
 5. 删除外键
 
-   ``` mysql
+   ``` sql
    ALTER TABLE stuinfo DROP FOREIGN KEY fk_stuinfo_major;
    ```
 
@@ -566,7 +566,7 @@ CREATE TABLE stuinfo(
 
 ### 创建表时设置自增长列
 
-``` 
+``` sql
 create table 表(
 	字段名 字段类型 约束 auto_increment
 )
@@ -574,13 +574,13 @@ create table 表(
 
 ### 修改表时设置自增长列
 
-```
+``` sql
 alter table 表 modify column 字段名 字段类型 约束 auto_increment
 ```
 
 ### 删除自增长列
 
-```
+``` sql
 alter table 表 modify column 字段名 字段类型 约束 
 ```
 
