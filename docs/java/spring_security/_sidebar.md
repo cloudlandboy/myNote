@@ -7,4 +7,6 @@
   - [密码和编码器](java/spring_security/password.md)
   - [Spring Security核心组件](java/spring_security/core.md)
   - [Spring Security定制化](java/spring_security/customization.md)
-
+  - [认证流程和源码解析](java/spring_security/authentication_process.md)
+  - [构建基于JWT的认证](java/spring_security/jwt_auth.md)
+  - [多因子认证(MFA)](java/spring_security/mfa.md)

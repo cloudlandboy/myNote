@@ -171,7 +171,7 @@ username=guest&password=123456
 
 ## 定制化UserDetailsService
 
-使用自带的 `jdbcAuthentication` 还是有一定的局限性，比如我想认证成功之后响应更多的信息，对权限查询sql进行优化，使用mybatis或jpa操作数据库等等
+使用自带的 `jdbcAuthentication` 还是有一定的局限性，比如我想让 `Authentication` 中表示主体的属性 *Principal(UserDetails)* 包含更多的用户信息，对权限查询sql进行优化，使用mybatis或jpa操作数据库等等
 
 ### 依赖和配置
 
@@ -417,9 +417,9 @@ public void eraseCredentials() {
 }
 ```
 
-也就是说spring security在认证完成之后会调用该方法将 `password` 置位 null
+也就是说spring security在认证完成之后会调用该方法将 `password` 置为 null
 
-### UserDetailsPasswordService
+## UserDetailsPasswordService
 
 在 **密码和编码器** 章节有提到过密码升级，当时使用的是 `inMemoryAuthentication` 
 
