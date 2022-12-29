@@ -462,7 +462,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             authToken.setAccessToken(jwtHelper.createAccessToken((CustomUser) auth.getPrincipal()));
             //refreshToken应该在服务端也保存一份，在刷新token的时候除了验证token是否合法、过期外
             //  还要验证此token在服务端是否存在(目的是为了保证refreshToken只能使用一次)
-            //  不然已颁发的token只要没过期就无法使其失效了
+            //  不然已颁发的token只要没过期就无法使其失效了(这也是JWT的缺点，还是要配合服务端存储)
             String refreshToken = jwtHelper.createRefreshToken((CustomUser) auth.getPrincipal());
             //我们这里为了方便直接放到内存中
             REFRESH_TOKEN_SET.add(refreshToken);
