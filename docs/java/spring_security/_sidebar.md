@@ -11,3 +11,4 @@
   - [构建基于JWT的认证](java/spring_security/jwt_auth.md)
   - [多因子认证(MFA)](java/spring_security/mfa.md)
   - [授权](java/spring_security/authorization.md)
+  - [OAuth2](java/spring_security/oauth2.md)

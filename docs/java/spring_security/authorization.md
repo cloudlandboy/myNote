@@ -469,7 +469,7 @@ Security filter chain: [
 ]
 ```
 
-在spring security的过滤器链中最后一个就是用于授权的，该过滤器中有一个 `attemptAuthorization` 方法用于授权
+在spring security的过滤器链中最后一个过滤器 `FilterSecurityInterceptor` 就是用于授权的，主要授权逻辑如下：
 
 ```java
 

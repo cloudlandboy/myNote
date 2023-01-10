@@ -1,6 +1,6 @@
 # spring security配置
 
-> 由前面的教程中，我们知道创建一个类继承 `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter` 抽象类，重写该类的一些方法，即可对spring security进行定制化配置。最后在配置类添加上 `@EnableWebSecurity` 注解使其生效
+> 由前面的教程中，我们知道创建一个类继承 `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter` 抽象类，重写该类的一些方法，即可对spring security进行定制化配置。最后在配置类添加上 `@Configuration` 或者  `@EnableWebSecurity` 注解使其生效
 
 
 
@@ -83,15 +83,66 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
    
 
-## WebSecurity配置
+## WebSecurity类
 
-> 前面的配置都是对 `HttpSecurity` 进行配置，WebSecurityConfigurerAdapter还提供了 `configure(WebSecurity web)` 方法可以对 `WebSecurity` 进行配置
->
-> `WebSecurity` 是对请求的过滤器链进行配置，如果只对 `HttpSecurity` 进行配置，即使有些请求不需要认证登录就可以访问，也会经过一系列过滤器。这样在访问一个静态资源的时候或公开的接口时性能是不是有所影响
+WebSecurityConfigurerAdapter还提供了 `configure(WebSecurity web)` 方法可以对 `WebSecurity` 进行配置
+
+WebSecurity实例就是Spring Security在web环境中整个的配置，只会有一个实例，由 `WebSecurityConfiguration` 配置类创建
+
+这个配置类是在 `@EnableWebSecurity` 注解中导入的
+
+`WebSecurity` 根据配置来构建过滤器链和 `FilterChainProxy` 过滤器 ， 以下是伪代码：
+
+```java
+public final class WebSecurity{
+
+	private boolean debugEnabled;
+    
+    private final List<RequestMatcher> ignoredRequests = new ArrayList<>();
+
+	private final List<SecurityBuilder> filterChainBuilders = new ArrayList<>();
+
+	protected Filter performBuild(){
+		List<SecurityFilterChain> filterChains = new ArrayList<>();
+        
+        // 为配置的ignoredRequests创建空的过滤器链
+        for (RequestMatcher ignoredRequest : this.ignoredRequests) {
+            SecurityFilterChain empty = new DefaultSecurityFilterChain(ignoredRequest);
+            filterChains.add(empty);
+        }
+        
+		for(SecurityBuilder filterChainBuilder filterChainBuilders){
+			filterChains.add(filterChainBuilder.build());
+		}
+
+		FilterChainProxy filterChainProxy = new FilterChainProxy(filterChains);
+
+		if(this.debugEnabled){
+			return new DebugFilter(filterChainProxy);
+		}
+
+		return filterChainProxy;
+	}
+    
+	public void addSecurityFilterChainBuilder(SecurityBuilder filterChainBuilder) {
+		this.filterChainBuilders.add(filterChainBuilder);
+	}
+}
+```
+
+我们写的每一个 WebSecurityConfigurerAdapter 配置类都会创建一个  `HttpSecurity` 实例，HttpSecurity 实现了 `SecurityBuilder`
+
+用来构建过滤器链，也就是伪代码中的 `filterChainBuilder`
+
+WebSecurityConfigurerAdapter 构建好  `HttpSecurity` 实例后会调用 WebSecurity 的 `addSecurityFilterChainBuilder` 方法添加到
+
+`filterChainBuilders` 中
 
 
 
-创建controller，该controller的所有接口都不需要登录即可访问
+## 忽略请求配置
+
+接下来我们创建一个controller，并且想让该controller的所有接口都不需要登录即可访问
 
 ```java
 @RestController
@@ -114,6 +165,9 @@ public class PublicResourceController {
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 配置该HttpSecurity(过滤器链构建器) 构建的过滤器链匹配的请求地址
+        // 默认也是AnyRequestMatcher.INSTANCE，匹配所有请求，所以可以省略不写
+        http.requestMatcher(AnyRequestMatcher.INSTANCE);
         http.authorizeRequests((requests) -> requests.antMatchers("/public/**").permitAll().anyRequest().authenticated());
         http.formLogin();
         http.httpBasic();
@@ -121,12 +175,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-启动项目并开启debug模式，访问这个接口，不需要登录就可以调用成功，回到控制台查看日志输出，搜索 `Spring Security Debugger` ，包含该字眼的行都是spring security打印的日志
+启动项目并开启debug模式，访问这个接口，不需要登录就可以调用成功，回到控制台查看日志输出，搜索 `Spring Security Debugger` 
+
+包含该字眼的行都是spring security打印的日志
 
 ```
 Request received for GET '/public/my_ip':
-
-org.apache.catalina.connector.RequestFacade@7248de2
 
 servletPath:/public/my_ip
 pathInfo:null
@@ -155,9 +209,11 @@ Security filter chain: [
 ]
 ```
 
-可以看出日志中输出了请求的相关信息和经过的一系列过滤器，上面有些认证相关的过滤器其实完全没必要处理该请求
+可以看出日志中输出了请求的相关信息和经过的一系列过滤器
 
-我们可以在 `configure(WebSecurity web)` 方法中配置忽略某些请求路径
+!> 上面有些认证相关的过滤器其实完全没必要处理该请求，每次访问 `/public/**` 的请求都要经过这么一堆过滤器，对性能也有所损耗
+
+我们可以在 `configure(WebSecurity web)` 方法中配置忽略某些请求路径，在上面 WebSecurity的伪代码中也看到了，其会为忽略的请求创建空的过滤器链
 
 ```java
 @EnableWebSecurity(debug = true)
@@ -197,7 +253,7 @@ Security filter chain: [] empty (bypassed by security='none')
 
 ## 用户名密码配置
 
-默认情况下spring security的用户名为 `user` 密码为每次启动时随机生成的然后打印在控制台当中，当然我们也可以自己配置
+默认情况下spring security的用户名为 `user` 密码为每次启动时随机生成的然后打印在控制台当中，当然我们也可以在配置文件中配置好
 
 ```yaml
 logging:
@@ -765,7 +821,7 @@ Set-Cookie: baz=3
 
 
 
-### 无状态登录
+#### 无状态登录
 
 由于现在我们大部分项目都是前后端分离的，登录都是使用 `token` 的方式，每次请求都是携带在请求头里携带这个 `token` 后台验证token转换登录用户信息的。 
 
@@ -777,7 +833,7 @@ Set-Cookie: baz=3
 
 ## rememberMe记住我
 
-我们在登录大部分网站的时候都会看到，页面上都会有一个 `记住我` 或者 `下次自动登录的复选框` 。勾选上之后即使session过期也能够不需要再次输入用户名密码直接登录，当然它这个可不是把你的用户名密码保存到浏览器缓存里那么简单，那样也不安全
+我们在登录大部分网站的时候都会看到，页面上都会有一个 `记住我` 或者 `下次自动登录的复选框` 。勾选上之后即使session过期也能够在不需要再次输入用户名密码的情况下直接登录，当然它这个可不是把你的用户名密码保存到浏览器缓存里那么简单，那样也不安全
 
 ![image-20221104160456325](https://cdn.tencentfs.clboy.cn/images/2022/20221107143613465.png)
 
@@ -864,7 +920,7 @@ UserDetailsService is required.
 java.lang.IllegalStateException: UserDetailsService is required.
 ```
 
-这个 `UserDetailsService`  是一个接口，目的是根据用户名获取用户详细信息。一般会配合数据库使用
+这个 `UserDetailsService`  是一个接口，目的是根据用户名获取用户详细信息。
 
 ```java
 public interface UserDetailsService {
@@ -874,7 +930,7 @@ public interface UserDetailsService {
 }
 ```
 
-我们暂时不使用数据库，由于我们用户名密码是通过配置文件设置的，这种不会生成 `UserDetailsService` ，我们改用代码的方式配置
+由于我们用户名密码是通过配置文件设置的，这种情况下生成的 `UserDetailsService` 程序拿不到，我们改为代码方式配置
 
 ```java
 @EnableWebSecurity(debug = true)
@@ -899,7 +955,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //这里设置的密码需要使用PasswordEncoder类型的编码器进行加密，同时需要将编码器注册到spring容器中供security使用
-        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN");
+ auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN");
     }
 
     /**
@@ -912,6 +968,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 
 ```
+
+?> spring security使用 `UsernamePasswordAuthenticationFilter` 和 `BasicAuthenticationFilter` 处理表单登录认证和basic格式认证，在认证成功后会调用 `RememberMeServices` 来处理记住我，如果在配置http.rememberMe时未设置userDetailsService，就会从AuthenticationManagerBuilder中获取默认的。根据配置文件自动生成的 `UserDetailsService` 不会设置给AuthenticationManagerBuilder。感兴趣的可以自己查看源码
+
+
 
 重启登录
 
@@ -1003,7 +1063,7 @@ http.formLogin(form -> form.loginPage("/login.html").loginProcessingUrl("/auth")
         }));
 ```
 
-现在一般的项目都是前后端分离的方式开发，后端返回json格式数据给前端，现在我们改造以下
+现在一般的项目都是前后端分离的方式开发，后端返回json格式数据给前端，现在我们改造如下：
 
 ```java
 @AllArgsConstructor
@@ -1114,11 +1174,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ## 多配置共存
 
-在上面的学习中，我们自定义了spring security的认证成功和失败的处理方法，统一改为json格式的响应类型
+上面将WebSecurity提到过我们写的每一个 `WebSecurityConfigurerAdapter` 配置类就会创建一个 HttpSecurity实例，也就是过滤器链
+
+现在我们自定义了spring security的认证成功和失败的处理方法，统一改为json格式的响应类型
 
 这就限定了在开发前端的时候必须采用前后端分离的方式，使用ajax请求进行交互。我们之前写的登录页就没用了，之前的表单登录，在没自定义之前登录成功后security默认会重定向到配置的成功页，现在改为json之后，浏览器会直接将json显示在网页上
 
-我们可以再写一个security配置类，保留原来的表单登录
+我们可以再写一个security配置类，该配置类构建的过滤器链对 `/tradition/**` 请求生效，用它来保留原来的表单登录
 
 `SpringSecurityFormLoginConfig`
 
@@ -1148,7 +1210,7 @@ public class SpringSecurityFormLoginConfig extends WebSecurityConfigurerAdapter 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //这里设置的密码需要使用PasswordEncoder类型的编码器进行加密，同时需要将编码器注册到spring容器中供security使用
+        //因为是不同的过滤器链
         //System.out.println(passwordEncoder().encode("123456"));
         auth.inMemoryAuthentication().withUser("admin").password("$2a$10$KbuV10kI1nqcM5PsScHqmOTAzQpqkxGo1j0aDXHZFb0U94x.ao1kS").roles("ADMIN");
     }
@@ -1168,7 +1230,7 @@ public class SpringSecurityFormLoginConfig extends WebSecurityConfigurerAdapter 
 
 - 确保将最通用的配置放在最后
 
-- 本例用因为是在 `configure(AuthenticationManagerBuilder auth)` 方法中配置的 `UserDetailsService` 所以需要在每个配置类中都配置一遍，你可以自己构建 然后注册到spring容器中，这样就可以供所有配置共享
+- 本例因为是在 `configure(AuthenticationManagerBuilder auth)` 方法中配置的  `UserDetailsService` 所以需要在每个配置类中都配置一遍，你可以自己构建然后注册到spring容器中，这样就可以供所有配置类共享
 
   ```java
   @Configuration

@@ -29,7 +29,7 @@
 
 
 
-以下是 spring security filter 的伪代码，实际上security的一系列验证流程是由多个filter组成的过滤器链完成
+以下是 spring security filter 的伪代码，实际上security的一系列验证流程是由 **多个filter组成的过滤器链** 完成
 
 ![mpv-shot0001](https://cdn.tencentfs.clboy.cn/images/2022/20221103113301968.jpg)
 
@@ -41,4 +41,55 @@
 logging:
   level:
     org.springframework.security: debug
+```
+
+
+
+Spring Security的入口是 `FilterChainProxy`  过滤器，这个过滤器处理所有请求，根据请求路径匹配该路径应该执行的过滤器链
+
+```java
+package org.springframework.security.web;
+
+public class FilterChainProxy extends GenericFilterBean {
+    
+    private List<SecurityFilterChain> filterChains;
+    
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+          throws IOException, ServletException {
+
+       try {
+          doFilterInternal(request, response, chain);
+       }
+        
+    }
+
+    private void doFilterInternal(ServletRequest request, ServletResponse response, FilterChain chain)
+          throws IOException, ServletException {
+       // 包装请求和响应
+       FirewalledRequest firewallRequest = this.firewall.getFirewalledRequest((HttpServletRequest) request);
+       HttpServletResponse firewallResponse = this.firewall.getFirewalledResponse((HttpServletResponse) response);
+       // 根据请求匹配过滤器链
+       List<Filter> filters = getFilters(firewallRequest);
+       if (filters == null || filters.size() == 0) {
+          firewallRequest.reset();
+          chain.doFilter(firewallRequest, firewallResponse);
+          return;
+       }
+
+       // 执行过滤器链
+       VirtualFilterChain virtualFilterChain = new VirtualFilterChain(firewallRequest, chain, filters);
+       virtualFilterChain.doFilter(firewallRequest, firewallResponse);
+    }
+
+    // 调用过滤器链的matches方法判断此过滤器链是否匹配该请求
+    private List<Filter> getFilters(HttpServletRequest request) {
+       for (SecurityFilterChain chain : this.filterChains) {
+          if (chain.matches(request)) {
+             return chain.getFilters();
+          }
+       }
+       return null;
+    }
+}
 ```

@@ -66,7 +66,7 @@ public class UserResourceController {
 
 
 
-### 引入spring security认证
+### 引入spring security
 
 > 在项目pom文件中引入 `spring-boot-starter-security`
 
@@ -85,19 +85,65 @@ public class UserResourceController {
 
 接下来什么也不需要改动，重启项目后再次访问：[http://localhost:8080/users/hello](http://localhost:8080/users/hello)
 
-不出意外的你会看到 **Please sign in** 标题的表单，也就是说此时你需要登录后才能继续操作
+?> 只要你引入了spring security的依赖，`spring-boot-autoconfigure` 包中关于spring security的相关自动配置类便会生效
 
-默认用户名是：`user` ，密码在项目启动时控制台有输出，登录后就再次看到了 **hello world!** 
+```java
+/**
+ * spring-boot-autoconfigure 在 spring.factories 中标识 该配置类需要自动装配
+ * 该类又将SpringBootWebSecurityConfiguration、WebSecurityEnablerConfiguration等配置类导入
+ */
+@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
+@EnableConfigurationProperties(SecurityProperties.class)
+@Import({ SpringBootWebSecurityConfiguration.class, WebSecurityEnablerConfiguration.class,
+      SecurityDataConfiguration.class, ErrorPageSecurityFilterConfiguration.class })
+public class SecurityAutoConfiguration {
+
+   @Bean
+   @ConditionalOnMissingBean(AuthenticationEventPublisher.class)
+   public DefaultAuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher publisher) {
+      return new DefaultAuthenticationEventPublisher(publisher);
+   }
+
+}
+```
+
+```java
+/**
+ * @EnableWebSecurity注解启用spring security的相关功能
+ */
+@Configuration(proxyBeanMethods = false)
+@ConditionalOnMissingBean(name = BeanIds.SPRING_SECURITY_FILTER_CHAIN)
+@ConditionalOnClass(EnableWebSecurity.class)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@EnableWebSecurity
+class WebSecurityEnablerConfiguration {
+}
+```
+
+不出意外的你会看到 **Please sign in** 标题的表单，也就是说此时你访问项目中的路径都会被重定向到登录页需要登录后才能继续操作
+
+如果你是在postman等工具中测试会看到响应的状态码为 `401`
+
+
+
+spring security默认创建的用户登录名是：`user` ，密码是在项目启动时随机生成的，控制台有输出
+
+登录后就再次看到了 **hello world!** 
 
 ![image-20221031150426598](https://cdn.tencentfs.clboy.cn/images/2022/20221103113236089.png)
 
 
 
-### 测试授权
+### 授权测试
 
-> 授权需要写一个配置类进行配置，配置类继承 `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter` 重写 `configure(HttpSecurity http)` 方法
->
-> 给配置类添加 `@EnableWebSecurity` 注解
+需要写一个配置类对security进行配置，配置类继承 ：
+
+`org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter` 
+
+重写 `configure(HttpSecurity http)` 方法
+
+给配置类添加 `@EnableWebSecurity` 或者 `@Configuration` 注解
 
 ```java
 @EnableWebSecurity

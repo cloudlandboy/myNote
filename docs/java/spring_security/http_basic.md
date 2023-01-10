@@ -170,7 +170,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 Authorization: <type> <credentials>
 ```
 
-- type：验证类型，常见的是就是 `Basic`
+- type：验证类型，常见的就是 `Basic`
 
 - credentials：凭证
 
