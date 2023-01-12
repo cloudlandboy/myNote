@@ -4,11 +4,11 @@
 
 ![1525674644660](https://cdn.tencentfs.clboy.cn/images/2021/20210911203231058.png)
 
-我们使用Spring Cloud Netflix中的`Eureka`实现了服务注册中心以及服务注册与发现；
+我们使用Spring Cloud Netflix中的 `Eureka` 实现了服务注册中心以及服务注册与发现；
 
-而服务间通过`Ribbon`或`Feign`实现服务的消费以及均衡负载。
+而服务间通过 `Ribbon` 或 `Feign` 实现服务的消费以及均衡负载。
 
-为了使得服务集群更为健壮，使用`Hystrix`的融断机制来避免在微服务架构中个别服务出现异常时引起的故障蔓延。
+为了使得服务集群更为健壮，使用 `Hystrix` 的熔断机制来避免在微服务架构中个别服务出现异常时引起的故障蔓延。
 
 在该架构中，我们的服务集群包含：内部服务Service A和Service B，他们都会注册与订阅服务至Eureka Server，而Open Service是一个对外的服务，通过均衡负载公开至服务调用方。我们把焦点聚集在对外服务这块，直接暴露我们的服务地址，这样的实现是否合理，或者是否有更好的实现方式呢？
 
@@ -32,21 +32,32 @@
 
 为了解决上面这些问题，我们需要将权限控制这样的东西从我们的服务单元中抽离出去，而最适合这些逻辑的地方就是处于对外访问最前端的地方，我们需要一个更强大一些的均衡负载器的 服务网关。
 
-服务网关是微服务架构中一个不可或缺的部分。通过服务网关统一向外系统提供REST API的过程中，除了具备`服务路由`、`均衡负载`功能之外，它还具备了`权限控制`等功能。Spring Cloud Netflix中的Zuul就担任了这样的一个角色，为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。
+服务网关是微服务架构中一个不可或缺的部分。通过服务网关统一向外系统提供REST API的过程中，除了具备 *服务路由*、*均衡负载* 功能之外，它还具备了 *权限控制* 等功能。
+
+Spring Cloud Netflix中的 **Zuul** 就担任了这样的一个角色，为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。
 
 
 
 ## 简介
 
- ![百度百科](https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=7a4e5e3e133853438ccf8027ab28d743/0e2442a7d933c8959e273529d21373f082020002.jpg)
-
-Zuul：维基百科
-
 电影《捉鬼敢死队》中的怪兽，Zuul，在纽约引发了巨大骚乱。
 
 事实上，在微服务架构中，Zuul就是守门的大Boss！一夫当关，万夫莫开！
 
-![1525675168152](https://cdn.tencentfs.clboy.cn/images/2021/20210911203231524.png)
+Zuul是Netflix开源的微服务网关，它可以和Eureka、Ribbon、Hystrix等组件配合使用。
+Zuul的核心是一系列的过滤器，这些过滤器可以完成以下功能。
+
+- 身份认证与安全：识别每个资源的验证要求，并拒绝那些与要求不符的请求。
+- 审查与监控：在边缘位置追踪有意义的数据和统计结果，从而带来精确的生产视图。
+- 动态路由：动态地将请求路由到不同的后端集群。
+- 压力测试：逐渐增加指向集群的流量，以了解性能。
+- 负载分配：为每一种负载类型分配对应容量，并弃用超出限定值的请求。
+- 静态响应处理：在边缘位置直接建立部分响应，从而避免其转发到内部集群。
+- 多区域弹性：跨越AWS Region进行请求路由，旨在实现 ELB（Elastic Load Balancing）
+使用的多样化，以及让系统的边缘更贴近系统的使用者。
+
+SpringCloud对Zuul进行了整合与增强。目前，Zuul使用的默认HTTP客户端是Apache HTTP Client，也可以使用RestClient或者okhttp3.0kHttpCLient。如果想要使用RestClient，
+可以设置ribbon.restcLient.enabled=true；想要使用okhttp3.0kHttpClient，可以设置ribbon.okhttp.enabled=true
 
 
 
@@ -58,19 +69,41 @@ Zuul：维基百科
 
 
 
-## 快速入门
 
-### 新建工程
 
-1. 填写基本信息，项目名为`springcloud-zuul`：
-
-2. 添加Zuul依赖：
-
-   ![1574929547498](https://cdn.tencentfs.clboy.cn/images/2021/20210911203245782.png)
+## 创建网关项目
 
 
 
-### 编写配置
+使用 Spring Initializr 创建项目，填写基本信息，项目名为 `spring-cloud-zuul`：
+
+添加Zuul依赖：
+
+![1574929547498](https://cdn.tencentfs.clboy.cn/images/2021/20210911203245782.png)
+
+
+
+### maven依赖
+
+查看pom文件，主要就是添加了 `spring-cloud-starter-netflix-zuul` 的依赖
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+
+
+### 配置文件
 
 ```yaml
 server:
@@ -82,9 +115,9 @@ spring:
 
 
 
-### 编写引导类
+### @EnableZuulProxy
 
-通过`@EnableZuulProxy `注解开启Zuul的功能：
+通过 `@EnableZuulProxy ` 注解开启Zuul的功能：
 
 ```java
 @SpringBootApplication
@@ -124,9 +157,9 @@ zuul:
       url: http://127.0.0.1:8081 # 映射路径对应的实际url地址
 ```
 
-我们将符合`path` 规则的一切请求，都代理到 `url`参数指定的地址
+我们将符合`path` 规则的一切请求，都代理到 `url` 参数指定的地址
 
-本例中，我们将 `/service-provider/**`开头的请求，代理到http://127.0.0.1:8081
+本例中，我们将 `/service-provider/**` 开头的请求，代理到http://127.0.0.1:8081
 
 
 
@@ -136,17 +169,15 @@ zuul:
 
 访问的路径中需要加上配置规则的映射路径
 
-服务的请求地址是：<http://localhost:8081/user/1>
+服务接口的实际请求地址是：<http://localhost:8081/user/1>
 
-现在我们请求网关地址：<http://localhost:20001/service-provider/user/1>
+现在我们通过网关代理后的请求地址：<http://localhost:20001/service-provider/user/1>
 
 
 
 ## 面向服务的路由
 
-在刚才的路由规则中，我们把路径对应的服务地址写死了！如果同一服务有多个实例的话，这样做显然就不合理了。我们应该根据服务的名称，去Eureka注册中心查找 服务对应的所有实例列表，然后进行动态路由才对！
-
-对`springcloud-zuul`工程修改优化：
+在刚才的路由规则中，我们把路径对应的服务地址写死了！如果同一服务有多个实例的话，这样做显然就不合理了。我们应该根据服务的名称，去Eureka注册中心查找服务对应的所有实例列表，然后进行动态路由才对！
 
 ### 添加Eureka客户端依赖
 
@@ -159,7 +190,7 @@ zuul:
 
 
 
-### 添加Eureka配置，获取服务信息
+### Eureka客户端配置
 
 ```yaml
 eureka:
@@ -171,7 +202,7 @@ eureka:
 
 
 
-### 开启Eureka客户端发现功能
+### 开启Eureka客户端功能
 
 ```java
 @SpringBootApplication
@@ -188,9 +219,9 @@ public class SpringcloudZuulApplication {
 
 
 
-### 修改映射配置，通过服务名称获取
+### 修改路由规则
 
-因为已经有了Eureka客户端，我们可以从Eureka获取服务的地址信息，因此映射时无需指定IP地址，而是通过服务名称来访问，而且Zuul已经集成了Ribbon的负载均衡功能。
+因为已经有了Eureka客户端，我们可以从Eureka获取服务的地址信息，因此映射时 *无需指定IP地址，而是通过服务名称来访问* ，而且Zuul已经集成了Ribbon的负载均衡功能。
 
 ```yaml
 server:
@@ -203,7 +234,7 @@ zuul:
     service-provider: #这里是路由id，随意写（一般为服务名）
       path: /service-provider/** # 这里是映射路径
       serviceId: service-provider
-#     url: http://127.0.0.1:8081 # 映射路径对应的实际url地址
+     #url: http://127.0.0.1:8081 # 映射路径对应的实际url地址
 eureka:
   client:
     registry-fetch-interval-seconds: 5 # 获取服务列表的周期：5s
@@ -213,8 +244,6 @@ eureka:
 ```
 
 
-
-### 启动测试
 
 再次启动，这次Zuul进行代理时，会利用Ribbon进行负载均衡
 
@@ -226,10 +255,10 @@ eureka:
 
 在刚才的配置中，我们的规则是这样的：
 
-- `zuul.routes.<route>.path=/xxx/**`： 来指定映射路径。`<route>`是自定义的路由名
+- `zuul.routes.<route>.path=/xxx/**`： 来指定映射路径。`<route>` 是自定义的路由名
 - `zuul.routes.<route>.serviceId=service-provider`：来指定服务名。
 
-而大多数情况下，我们的`<route>`路由名称往往和服务名会写成一样的。因此Zuul就提供了一种简化的配置语法：`zuul.routes.<serviceId>=<path>`
+而大多数情况下，我们的 `<route>` 路由名称往往和服务名会写成一样的。因此Zuul就提供了一种简化的配置语法：`zuul.routes.<serviceId>=<path>`
 
 比方说上面我们关于service-provider的配置可以简化为一条：
 
@@ -250,8 +279,6 @@ eureka:
 
 ```
 
-省去了对服务名称的配置。
-
 重启访问测试：<http://localhost:20001/service-provider/user/1>
 
 
@@ -260,7 +287,8 @@ eureka:
 
 在使用Zuul的过程中，上面讲述的规则已经大大的简化了配置项。但是当服务较多时，配置也是比较繁琐的。因此Zuul就指定了默认的路由规则：
 
-- 默认情况下，一切服务的映射路径就是服务名本身。例如服务名为：`service-provider`，则默认的映射路径就是：`/service-provider/**`
+- 默认情况下，一切服务的映射路径就是服务名本身为前缀。
+- 例如服务名为：`service-provider`，则默认的映射路径就是：`/service-provider/**`
 
 也就是说，刚才的映射规则我们完全不配置也是OK的，不信就试试看。
 
@@ -300,7 +328,7 @@ zuul:
   prefix: /api # 添加路由前缀
 ```
 
-我们通过`zuul.prefix=/api`来指定了路由的前缀，这样在发起请求时，路径就要以/api开头。
+我们通过 `zuul.prefix=/api` 来指定了路由的前缀，这样在发起请求时，路径就要以/api开头。
 
 重启访问测试：<http://localhost:20001/api/service-provider/user/1>
 
@@ -329,7 +357,7 @@ public abstract ZuulFilter implements IZuulFilter{
 }
 ```
 
-- `shouldFilter`：返回一个`Boolean`值，判断该过滤器是否需要执行。返回true执行，返回false不执行。
+- `shouldFilter`：返回一个Boolean值，判断该过滤器是否需要执行。返回true执行，返回false不执行。
 - `run`：过滤器的具体业务逻辑。
 - `filterType`：返回字符串，代表过滤器的类型。包含以下4种：
   - `pre`：请求在被路由之前执行
@@ -362,7 +390,7 @@ public abstract ZuulFilter implements IZuulFilter{
 
 ### 使用场景
 
-场景非常多：
+
 
 - 请求鉴权：一般放在pre类型，如果发现没有访问权限，直接就拦截了
 - 异常处理：一般会在error类型和post类型过滤器中结合来处理。
@@ -413,7 +441,7 @@ public class LoginFilter extends ZuulFilter {
      */
     @Override
     public Object run() throws ZuulException {
-        // 获取zuul提供的上下文对象
+        // 获取zuul提供的上下文对象，RequestContext保存请求、响应、状态信息和数据，供ZuulFilters访问和共享
         RequestContext context = RequestContext.getCurrentContext();
         //获取request对象
         HttpServletRequest request = context.getRequest();
@@ -423,7 +451,7 @@ public class LoginFilter extends ZuulFilter {
 
         //判断是否存在token
         if (StringUtils.isNotBlank(token)) {
-            // 校验通过，把登陆信息放入上下文信息，继续向后执行
+            // 校验通过，把登陆信息放入上下文信息，继续向后执行，RequestContext继承自ConcurrentHashMap
             context.set("token","token");
         }else {
             // 过滤该请求，不对其进行路由

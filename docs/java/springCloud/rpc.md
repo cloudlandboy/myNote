@@ -4,11 +4,9 @@
 
 常见的远程调用方式有以下几种：
 
-- `RPC`：Remote Produce Call远程过程调用，类似的还有RMI。自定义数据格式，基于原生TCP通信，速度快，效率高。早期的webservice，现在热门的dubbo，都是RPC的典型
+- `RPC` (Remote Produce Call)：远程过程调用，类似的还有RMI。自定义数据格式，基于原生TCP通信，速度快，效率高。早期的webservice，现在热门的dubbo，都是RPC的典型
 
-- `Http`：http其实是一种网络传输协议，基于TCP，规定了数据传输的格式。现在客户端浏览器与服务端通信基本都是采用Http协议。也可以用来进行远程服务调用。缺点是消息封装臃肿。
-
-  现在热门的Rest风格，就可以通过http协议来实现。
+- `Http`：http其实是一种网络传输协议，基于TCP，规定了数据传输的格式。现在客户端浏览器与服务端通信基本都是采用Http协议。也可以用来进行远程服务调用。缺点是消息封装臃肿。现在热门的Rest风格，就可以通过http协议来实现。
 
 
 
@@ -39,8 +37,6 @@ RPC，即 Remote Procedure Call（远程过程调用），是一个计算机通�
 RPC调用流程图：
 
 ![1525568965976](https://cdn.tencentfs.clboy.cn/images/2021/20210911203215280.png)
-
-想要了解详细的RPC实现，给大家推荐一篇文章：[自己动手实现RPC](https://legacy.gitbook.com/book/huge0612/tour-of-rpc/details)
 
 
 
@@ -97,38 +93,17 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
 
 `HttpClient`是Apache公司的产品，是`Http Components`下的一个组件。
 
-### 特点
-
 - 基于标准、纯净的Java语言。实现了Http1.0和Http1.1
-- 以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）
+- 以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS,TRACE）
 - 支持HTTPS协议。
 - 通过Http代理建立透明的连接。
 - 自动处理Set-Cookie中的Cookie。
 
 
 
-### 使用
+### 提供服务
 
-#### 提供服务
-
-1. 创建数据库，运行sql脚本创建`tb_user`表，随便添加几条数据
-
-   ```sql
-   DROP TABLE IF EXISTS `tb_user`;
-   CREATE TABLE `tb_user` (
-     `id` bigint(20) NOT NULL AUTO_INCREMENT,
-     `username` varchar(50) NOT NULL COMMENT '用户名',
-     `password` varchar(32) NOT NULL COMMENT '密码，加密存储',
-     `phone` varchar(20) DEFAULT NULL COMMENT '注册手机号',
-     `created` datetime NOT NULL COMMENT '创建时间',
-     PRIMARY KEY (`id`),
-     UNIQUE KEY `username` (`username`) USING BTREE
-   ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='用户表';
-   ```
-
-2. 创建SpringBoot项目1 `httpClientService`用于提供服务
-
-   引入web场景和mysql驱动以及通用mapper场景
+1. 创建SpringBoot项目： `httpclient-service` 用于提供服务，以下是所需maven依赖：
 
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
@@ -139,35 +114,46 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
            <groupId>org.springframework.boot</groupId>
            <artifactId>spring-boot-starter-parent</artifactId>
            <version>2.2.1.RELEASE</version>
-           <relativePath/> <!-- lookup parent from repository -->
+           <relativePath/>
        </parent>
        <groupId>cn.clboy</groupId>
-       <artifactId>httpclientservice</artifactId>
-       <version>0.0.1-SNAPSHOT</version>
-       <name>httpclientservice</name>
-       <description>Demo project for Spring Boot</description>
-   
-       <properties>
-           <java.version>1.8</java.version>
-       </properties>
+       <artifactId>httpclient-service</artifactId>
+       <version>1.0.0</version>
+       <name>httpclient-service</name>
    
        <dependencies>
            <dependency>
                <groupId>org.springframework.boot</groupId>
                <artifactId>spring-boot-starter-web</artifactId>
            </dependency>
-   
            <dependency>
                <groupId>mysql</groupId>
                <artifactId>mysql-connector-java</artifactId>
                <scope>runtime</scope>
            </dependency>
-   
+           <!-- 通用mapper(和mybatisPlus类似) -->
            <dependency>
                <groupId>tk.mybatis</groupId>
                <artifactId>mapper-spring-boot-starter</artifactId>
                <version>2.1.5</version>
            </dependency>
+           <!-- 嵌入式数据库 -->
+           <dependency>
+               <groupId>com.h2database</groupId>
+               <artifactId>h2</artifactId>
+           </dependency>
+           <dependency>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-test</artifactId>
+               <scope>test</scope>
+               <exclusions>
+                   <exclusion>
+                       <groupId>org.junit.vintage</groupId>
+                       <artifactId>junit-vintage-engine</artifactId>
+                   </exclusion>
+               </exclusions>
+           </dependency>
+       </dependencies>
    
        <build>
            <plugins>
@@ -179,30 +165,52 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
        </build>
    
    </project>
-   
    ```
 
-   配置数据库连接信息
+
+2. 配置 [h2](http://www.h2database.com/) 数据库连接信息
 
    ```yaml
    spring:
      datasource:
-       url: jdbc:mysql://localhost:3306/leyoumall
+       url: jdbc:h2:mem:spring-cloud-started
        username: root
        password: root
-       driver-class-name: com.mysql.cj.jdbc.Driver
+       driver-class-name: org.h2.Driver
+     h2:
+       console:
+         enabled: true
    ```
 
-   
+3. 创建 `schema.sql` 和 `data.sql` 放到resources目录下，启动时自动初始化数据库和数据
 
-3. 创建`TbUser`实体类
+   - schema.sql
+
+     ```sql
+     DROP TABLE IF EXISTS `tb_user`;
+     CREATE TABLE `tb_user`
+     (
+         `id`       bigint(20)  NOT NULL AUTO_INCREMENT,
+         `username` varchar(50) NOT NULL COMMENT '用户名',
+         `password` varchar(32) NOT NULL COMMENT '密码，加密存储',
+         `phone`    varchar(20) DEFAULT NULL COMMENT '注册手机号',
+         `created`  datetime    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+         PRIMARY KEY (`id`),
+         UNIQUE KEY `username` (`username`)
+     );
+     ```
+
+   - data.sql
+
+     ```sql
+     insert into `tb_user`(username,password) values ('admin','e10adc3949ba59abbe56e057f20f883e');
+     insert into `tb_user`(username,password) values ('guest','e10adc3949ba59abbe56e057f20f883e');
+     insert into `tb_user`(username,password) values ('boss','e10adc3949ba59abbe56e057f20f883e');
+     ```
+
+4. 创建 `TbUser` 实体类
 
    ```java
-   package cn.clboy.httpclientservice.pojo;
-   
-   import javax.persistence.*;
-   import java.util.Date;
-   
    @Table(name = "tb_user")
    public class TbUser {
    
@@ -215,24 +223,19 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
        private Date created;
        
        //getter setter方法	......
-   
+   }
    ```
 
-4. 创建`Mapper`继承`通用mapper`，添加`@mapper`注解
+5. 创建 `Mapper` 继承通用mapper提供的 `Mapper` 接口 ，添加 `@mapper` 注解
 
    ```java
-   package cn.clboy.httpclientservice.Mapper;
-   
-   import cn.clboy.httpclientservice.pojo.TbUser;
-   import tk.mybatis.mapper.common.Mapper;
-   
    @org.apache.ibatis.annotations.Mapper
    public interface UserMapper extends Mapper<TbUser> {
    
    }
    ```
 
-5. 创建Controller
+6. 创建Controller
 
    ```java
    @RestController
@@ -254,13 +257,13 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
    }
    ```
 
-6. 访问：<http://localhost:8080/user>，访问成功下一步
+7. 直接在浏览器中访问：<http://localhost:8080/user> 确保接口能够正常调用再进行下一步
 
 
 
-#### 调用服务
+### 调用服务
 
-1. 创建`httpClientConsumer`项目调用`httpClientService`的服务
+1. 创建 `httpclient-consumer` 项目，其内部会调用 `httpclient-service` 服务中的接口
 
 2. 引入httpclient依赖
 
@@ -278,12 +281,12 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
    @SpringBootTest
    class HttpclientconsumerApplicationTests {
    
-       //1. 安装浏览器
+       //1. 用于进行http请求的客户端实例
        public CloseableHttpClient httpClient;
    
        @BeforeEach
        public void init() {
-           //2. 打开浏览器
+           //2. 创建默认客户端实例
            httpClient = HttpClients.createDefault();
        }
    
@@ -316,6 +319,8 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
    
    }
    ```
+   
+4. 这里我们只是使用测试类进行测试，如果 `httpclient-consumer` 也是一个spring boot web项目，需要调用别的服务时同样是使用httpClient，就和前端调用后端接口一样
 
 
 
@@ -323,7 +328,7 @@ Http协议：超文本传输协议，是一种应用层协议。规定了网络�
 
 HttpClient请求数据后是json字符串，需要我们自己把Json字符串反序列化为对象，我们可以使用Jackson工具来实现。
 
-`Jackson`是SpringMVC内置的json处理工具，其中有一个`ObjectMapper`类，可以方便的实现对json的处理：
+`Jackson` 是SpringMVC内置的json处理工具，其中有一个 `ObjectMapper` 类，可以方便的实现对json的处理：
 
 ### 对象转json
 
@@ -351,7 +356,7 @@ class HttpclientserviceApplicationTests {
 
 ### json转普通对象
 
-在服务调用项目中放一份User类，添加jackson的依赖
+在服务调用项目中也创建一个User类，只要属性一致就行
 
 ```java
 public class TbUser {
@@ -365,33 +370,37 @@ public class TbUser {
 }
 ```
 
+添加jackson的依赖
+
 ```xml
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.1</version>
-        </dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.10.1</version>
+</dependency>
 ```
 
+测试
+
 ```java
-    @Test
-    public void post() throws IOException {
-        
-        //......
+@Test
+public void post() throws IOException {
+    
+    //......
 
-        String response = httpClient.execute(postRequest, new BasicResponseHandler());
+    String response = httpClient.execute(postRequest, new BasicResponseHandler());
 
-        ObjectMapper mapper = new ObjectMapper();
-        TbUser tbUser = mapper.readValue(response, TbUser.class);
-        System.out.println(tbUser);
-    }
+    ObjectMapper mapper = new ObjectMapper();
+    TbUser tbUser = mapper.readValue(response, TbUser.class);
+    System.out.println(tbUser);
+}
 ```
 
 
 
 ### json转集合
 
-json转集合比较麻烦，因为你无法同时把集合的class和元素的class同时传递到一个参数。
+json转集合比较麻烦，因为你无法把集合的class和元素的class同时传递到一个参数。
 
 因此Jackson做了一个类型工厂，用来解决这个问题：
 
@@ -415,35 +424,33 @@ json转集合比较麻烦，因为你无法同时把集合的class和元素的cl
 
 当对象泛型关系复杂时，类型工厂也不好使了。这个时候Jackson提供了TypeReference来接收类型泛型，然后底层通过反射来获取泛型上的具体类型。实现数据转换。
 
-
-
 ```java
-    @Test
-    public void testJsonToMap() throws IOException {
-        Map<String, Object> map = new HashMap<>();
+@Test
+public void testJsonToMap() throws IOException {
+    Map<String, Object> map = new HashMap<>();
 
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<TbUser>> listTypeReference = new TypeReference<List<TbUser>>() {
-        };
+    ObjectMapper mapper = new ObjectMapper();
+    TypeReference<List<TbUser>> listTypeReference = new TypeReference<List<TbUser>>() {
+    };
 
-        //使用TypeReference，它是一个抽象类
-        List<TbUser> users = mapper.readValue(new URL("http://localhost:8080/user"), listTypeReference);
+    //使用TypeReference，它是一个抽象类
+    List<TbUser> users = mapper.readValue(new URL("http://localhost:8080/user"), listTypeReference);
 
-        for (TbUser user : users) {
-            map.put(user.getUsername(), user);
-        }
-
-        //序列化
-        String mapJson = mapper.writeValueAsString(map);
-        System.out.println(mapJson);
-
-        //反序列化，使用类型工厂
-        Map<String, Object> result = mapper.readValue(mapJson, mapper.getTypeFactory().constructMapType(HashMap.class, String.class, TbUser.class));
-
-
-        System.out.println(result);
-
+    for (TbUser user : users) {
+        map.put(user.getUsername(), user);
     }
+
+    //序列化
+    String mapJson = mapper.writeValueAsString(map);
+    System.out.println(mapJson);
+
+    //反序列化，使用类型工厂
+    Map<String, Object> result = mapper.readValue(mapJson, mapper.getTypeFactory().constructMapType(HashMap.class, String.class, TbUser.class));
+
+
+    System.out.println(result);
+
+}
 ```
 
 
@@ -473,14 +480,14 @@ Spring提供了一个RestTemplate模板工具类，对基于Http的客户端进�
 
 ```java
 @SpringBootApplication
-public class HttpclientconsumerApplication {
+public class HttpclientConsumerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HttpclientconsumerApplication.class, args);
     }
 
     @Bean
-    public RestTemplate resttemplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

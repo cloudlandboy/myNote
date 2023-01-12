@@ -7,6 +7,4 @@
   - [Hystrix](java/springCloud/hystrix.md)
   - [Feign](java/springCloud/feign.md)
   - [Zuul网关](java/springCloud/zuul.md)
-  - [SpringCloud思维导图](https://qiniu.clboy.cn/images/58dbf1ee4106e1cdac729cda874c892e.png)
-  - [源代码](https://github.com/cloudlandboy/SpringCloud-learning)
 

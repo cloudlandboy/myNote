@@ -33,7 +33,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 ## SpringCloud的版本
 
-因为Spring Cloud不同其他独立项目，它拥有很多子项目的大项目。所以它的版本是版本名+版本号 （如Angel.SR6）。  
+因为Spring Cloud不同其他独立项目，它是拥有很多子项目的大项目。所以它的版本是版本名+版本号 （如Angel.SR6）。  
 
 版本名：是伦敦的地铁名  
 
@@ -41,11 +41,16 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 所以 Edgware.SR3就是Edgware的第3个Release版本。  
 
-> [SpringCloud的版本和springboot版本对照表](https://spring.io/projects/spring-cloud#adding-spring-cloud-to-an-existing-spring-boot-application)
+如果现有一个 Spring Boot 应用程序，你想将 Spring Cloud 添加到该应用程序，第一步是确定你应该使用的 Spring Cloud 版本。您在应用程序中使用的 Spring Cloud 版本将取决于您使用的 Spring Boot 版本
+
+[SpringCloud的版本和SpringBoot版本对照表](https://spring.io/projects/spring-cloud#adding-spring-cloud-to-an-existing-spring-boot-application)
 
 ## 微服务场景模拟
 
-首先，我们需要模拟一个服务调用的场景，搭建两个工程：springcloud-service-provider（服务提供方）和springcloud-service-consumer（服务调用方）。方便后面学习微服务架构
+首先，我们需要模拟一个服务调用的场景，搭建两个工程：
+
+- spring-cloud-service-provider（服务提供方）
+- spring-cloud-service-consumer（服务调用方）
 
 服务提供方：使用mybatis操作数据库，实现对数据的增删改查；并对外提供rest接口服务。
 
@@ -57,7 +62,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 ### 服务提供方
 
-1. 创建项目命名为`springcloud-service-provider`，选择web场景和mysql驱动，添加通用mapper场景
+1. 创建命名为 `spring-cloud-service-provider` 的项目，选择web场景和嵌入式数据库h2，添加通用mapper依赖
 
    <details>
 
@@ -72,17 +77,12 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
            <groupId>org.springframework.boot</groupId>
            <artifactId>spring-boot-starter-parent</artifactId>
            <version>2.2.1.RELEASE</version>
-           <relativePath/> <!-- lookup parent from repository -->
+           <relativePath/>
        </parent>
        <groupId>cn.clboy</groupId>
-       <artifactId>springcloud-service-provider</artifactId>
-       <version>0.0.1-SNAPSHOT</version>
-       <name>springcloud-service-provider</name>
-       <description>Demo project for Spring Boot</description>
-   
-       <properties>
-           <java.version>1.8</java.version>
-       </properties>
+       <artifactId>spring-cloud-service-provider</artifactId>
+       <version>1.0.0</version>
+       <name>spring-cloud-service-provider</name>
    
        <dependencies>
            <dependency>
@@ -100,7 +100,10 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
                <artifactId>mapper-spring-boot-starter</artifactId>
                <version>2.1.5</version>
            </dependency>
-           
+           <dependency>
+               <groupId>com.h2database</groupId>
+               <artifactId>h2</artifactId>
+           </dependency>
        </dependencies>
    
        <build>
@@ -114,7 +117,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    
    </project>
    ```
-
+   
    </details>
 
 2. 配置数据库连接
@@ -122,10 +125,13 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    ```yaml
    spring:
      datasource:
-       url: jdbc:mysql://localhost:3306/leyoumall
+       url: jdbc:h2:mem:spring-cloud-started
        username: root
        password: root
-       driver-class-name: com.mysql.cj.jdbc.Driver
+       driver-class-name: org.h2.Driver
+     h2:
+       console:
+         enabled: true
    ```
 
 3. 将用户实体类添加到项目中
@@ -135,11 +141,6 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    ​    <summary>User.java</summary>
 
    ```java
-   package cn.clboy.httpclientservice.pojo;
-   
-   import javax.persistence.*;
-   import java.util.Date;
-   
    @Table(name = "tb_user")
    public class TbUser {
    
@@ -150,66 +151,23 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
        private String password;
        private String phone;
        private Date created;
-   
-       public Long getId() {
-           return id;
-       }
-   
-       public void setId(Long id) {
-           this.id = id;
-       }
-   
-       public String getUsername() {
-           return username;
-       }
-   
-       public void setUsername(String username) {
-           this.username = username;
-       }
-   
-       public String getPassword() {
-           return password;
-       }
-   
-       public void setPassword(String password) {
-           this.password = password;
-       }
-   
-       public String getPhone() {
-           return phone;
-       }
-   
-       public void setPhone(String phone) {
-           this.phone = phone;
-       }
-   
-       public Date getCreated() {
-           return created;
-       }
-   
-       public void setCreated(Date created) {
-           this.created = created;
-       }
+       
+       //... 省略 get set方法
    }
    ```
-
    
-
+   
+   
    </details>
-
-4. 添加`UserMapper`
+   
+4. 添加 `UserMapper`
 
    ```java
-   package cn.clboy.service.provider.mapper;
-   
-   import cn.clboy.service.provider.pojo.TbUser;
-   import tk.mybatis.mapper.common.Mapper;
-   
    public interface UserMapper extends Mapper<TbUser> {
    
    }
    ```
-
+   
 5. UserService
 
    <details>
@@ -268,8 +226,6 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    ​    <summary>启动类</summary>
 
    ```java
-   import tk.mybatis.spring.annotation.MapperScan;
-   
    @MapperScan("cn.clboy.service.provider.mapper")
    @SpringBootApplication
    public class SpringcloudServiceProviderApplication {
@@ -280,7 +236,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    
    }
    ```
-
+   
    </details>
 
 8. 访问：<http://localhost:8080/user/1>，一切正常接下来写服务消费方
@@ -289,9 +245,9 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 ### 服务消费方
 
-1. 创建工程，名为`springcloud-service-consumer`，只需要选择web场景即可
+1. 创建名为 `spring-cloud-service-consumer` 的项目，只需要选择web场景即可
 
-2. 把实体类复制一份过来，把不需要的注解删除掉
+2. 把实体类复制一份过来，把不需要的注解删除掉。只要用于远程调用结果反序列化接收
 
 3. 在启动类中向容器注入RestTemplate
 
@@ -329,7 +285,7 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
    }
    ```
 
-5. 修改端口号启动测试
+5. 修改端口号为81，然后启动测试
 
    ```yaml
    server:
@@ -342,8 +298,8 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 简单回顾一下，刚才我们写了什么：
 
-- springcloud-service-provider：一个提供根据id查询用户的微服务。
-- springcloud-service-consumer：一个服务调用者，通过RestTemplate远程调用springcloud-service-provider。
+- spring-cloud-service-provider：该微服务提供一个提供根据id查询用户的api。
+- spring-cloud-service-consumer：一个服务调用者，通过RestTemplate远程调用springcloud-service-provider。
 
 存在什么问题？
 
@@ -369,45 +325,49 @@ SpringCloud也是一样，它将现在非常流行的一些技术整合到一起
 
 ## Eureka注册中心
 
-### 认识Eureka
 
-首先我们来解决第一问题，服务的管理。
 
-> 问题分析
+首先我们来解决第一个问题，服务的管理。
 
-在刚才的案例中，springcloud-service-provider对外提供服务，需要对外暴露自己的地址。而consumer（调用者）需要记录服务提供者的地址。将来地址出现变更，还需要及时更新。这在服务较少的时候并不觉得有什么，但是在现在日益复杂的互联网环境，一个项目肯定会拆分出十几，甚至数十个微服务。此时如果还人为的管理地址，不仅开发困难，将来测试、发布上线都会非常麻烦，这与DevOps的思想是背道而驰的。
+*问题分析* ：
 
-> 网约车
+在刚才的案例中，spring-cloud-service-provider对外提供服务，需要对外暴露自己的地址。而consumer（调用者）需要记录服务提供者的地址。将来地址出现变更，还需要及时更新。这在服务较少的时候并不觉得有什么，但是在现在日益复杂的互联网环境，一个项目肯定会拆分出十几，甚至数十个微服务。此时如果还人为的管理地址，不仅开发困难，将来测试、发布上线都会非常麻烦，这与DevOps的思想是背道而驰的。
 
-这就好比是 网约车出现以前，人们出门叫车只能叫出租车。一些私家车想做出租却没有资格，被称为黑车。而很多人想要约车，但是无奈出租车太少，不方便。私家车很多却不敢拦，而且满大街的车，谁知道哪个才是愿意载人的。一个想要，一个愿意给，就是缺少引子，缺乏管理啊。
+*网约车* ：
 
-此时滴滴这样的网约车平台出现了，所有想载客的私家车全部到滴滴注册，记录你的车型（服务类型），身份信息（联系方式）。这样提供服务的私家车，在滴滴那里都能找到，一目了然。
+这就好比是 网约车出现以前，人们出门叫车只能叫出租车。一些私家车想跑出租却没有资格，被称为黑车。而很多人想要约车，但是无奈出租车太少，不方便。私家车很多却不敢拦，而且满大街的车，谁知道哪个才是愿意载人的。一个想要，一个愿意给，就是缺少引子，缺乏管理啊。
+
+此时滴滴这样的网约车平台出现了，所有想载客的私家车全部到滴滴注册，记录你的车型（服务类型），身份信息（联系方式）。这样，有哪些提供服务的私家车，在滴滴平台都能找到，一目了然。
 
 此时要叫车的人，只需要打开APP，输入你的目的地，选择车型（服务类型），滴滴自动安排一个符合需求的车到你面前，为你服务，完美！
 
-### Eureka做什么？
+*Eureka能做什么？*
 
 Eureka就好比是滴滴，负责管理、记录服务提供者的信息。服务调用者无需自己寻找服务，而是把自己的需求告诉Eureka，然后Eureka会把符合你需求的服务告诉你。
 
-同时，服务提供方与Eureka之间通过`心跳`机制进行监控，当某个服务提供方出现问题，Eureka自然会把它从服务列表中剔除。
+同时，服务提供方与Eureka之间通过 `心跳` 机制进行监控，当某个服务提供方出现问题，Eureka自然会把它从服务列表中剔除。
 
 这就实现了服务的自动注册、发现、状态监控。
 
-> 原理图
+原理图：
 
  ![1525597885059](https://cdn.tencentfs.clboy.cn/images/2021/20210911203221162.png)
 
 
 
-## 入门案例
-
 ### 搭建EurekaServer
 
-创建一个项目名为`springcloud-eureka-server`，启动一个`EurekaServer`：
+创建一个名为 `spring-cloud-eureka-server` 的项目，启动一个`EurekaServer`：
 
 #### 选择依赖
 
-EurekaServer-服务注册中心依赖，Eureka Discovery-服务提供方和服务消费方。因为，对于eureka来说：服务提供方和服务消费方都属于客户端，注意选择Springboot的版本，可以查看springcloud官网当前稳定版本兼容的springboot版本
+*Eureka Server* 是服务注册中心所需要的依赖，*Eureka Discovery Client* 是服务提供方和服务消费方所需要的依赖。
+
+对于注册中心来说：服务提供方和服务消费方都属于客户端
+
+而且 *Eureka Server* 依赖中也包含了client的相关依赖，它本身也可以视为一个client
+
+注意选择SpringBoot的版本，可以查看SpringCloud官网当前稳定版本兼容的SpringBoot版本
 
 ![1574680199268](https://cdn.tencentfs.clboy.cn/images/2021/20210911203241039.png)
 
@@ -433,9 +393,9 @@ EurekaServer-服务注册中心依赖，Eureka Discovery-服务提供方和服�
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.clboy</groupId>
-    <artifactId>springcloud-eureka-server</artifactId>
+    <artifactId>spring-cloud-eureka-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud-eureka-server</name>
+    <name>spring-cloud-eureka-server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -483,7 +443,7 @@ EurekaServer-服务注册中心依赖，Eureka Discovery-服务提供方和服�
 
 </details>
 
-#### application.yaml配置
+#### 配置文件
 
 ```yaml
 server:
@@ -494,18 +454,20 @@ spring:
     name: eureka-server
 eureka:
   client:
-    # 服务注册，是否将自己注册到Eureka服务中
+    # 指示此实例是否应将其信息注册到 eureka 服务器以供其他人发现。在某些情况下，您不希望发现您的实例，而只想发现其他实例
     # 此应用为注册中心，false：不向注册中心注册自己。不配置false启动会抛出一堆错误，不过不影响启动，就是看着闹心
     register-with-eureka: false
-    # 注册中心职责是维护服务实例，false：不检索服务。(因为这是一个单点的EurekaServer，不需要同步其它EurekaServer节点的数据，故设为false)
+    # 指示此客户端是否应从 eureka 服务器获取 eureka 注册信息
+    # (因为这是一个单点的EurekaServer，不需要同步其它EurekaServer节点的数据，故设为false)
     fetch-registry: false
     service-url:
       # EurekaServer的地址，现在是自己的地址，如果是集群，需要加上其它Server的地址。
+      # key的意思为区域(默认有个defaultZone)，值为该区域下的eureka服务器通信url，多个url用逗号分割
       defaultZone: http://127.0.0.1:${server.port}/eureka
 
 ```
 
-- `register-with-eureka`：被其它服务调用时需向Eureka注册
+- `register-with-eureka`：当自身提供给给其它服务调用时需向Eureka注册
 
 - `fetch-registry`：需要从Eureka中查找要调用的目标服务时需要设置为true
 
@@ -515,13 +477,9 @@ eureka:
 
 #### @EnableEurekaServer
 
-> 需要在启动类上用`@EnableEurekaServer`
->
-> 标识此服务为Eureka服务声明当前springboot应用是一个eureka服务中心
+需要在启动类上用 `@EnableEurekaServer` 注解
 
-
-
-修改引导类，在类上添加@EnableEurekaServer注解：
+声明当前SpringBoot应用是一个eureka服务中心
 
 ```java
 @SpringBootApplication
@@ -541,11 +499,13 @@ public class SpringcloudEurekaServerApplication {
 
 ### 注册服务到Eureka
 
-注册服务，就是在服务上添加Eureka的客户端依赖，客户端代码会自动把服务注册到EurekaServer中。
+在服务中添加Eureka的客户端依赖，客户端代码会自动把服务注册到EurekaServer中。
 
-创建项目，项目名为`springcloud-eureka-service-provider`，选择web场景和eureka客户端场景，添加mysql驱动和通用mapper依赖
+创建项目，项目名为 `spring-cloud-eureka-service-provider`，选择web场景和eureka客户端场景
 
 ![1574683898661](https://cdn.tencentfs.clboy.cn/images/2021/20210911203241453.png)
+
+添加嵌入式数据库h2和通用mapper依赖
 
 <details>
 
@@ -563,9 +523,9 @@ public class SpringcloudEurekaServerApplication {
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.clboy</groupId>
-    <artifactId>springcloud-eureka-service-provider</artifactId>
+    <artifactId>spring-cloud-eureka-service-provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud-eureka-service-provider</name>
+    <name>spring-cloud-eureka-service-provider</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -582,16 +542,14 @@ public class SpringcloudEurekaServerApplication {
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
         <dependency>
             <groupId>tk.mybatis</groupId>
@@ -629,46 +587,46 @@ public class SpringcloudEurekaServerApplication {
 
 </details>
 
-把之前`springcloud-service-provider`的TbUser实体类、Mapper接口、service、controller都复制到该项目中，将包名都修改正确
+把之前 `spring-cloud-service-provider` 中的TbUser实体类、Mapper接口、service、controller都复制到该项目中，将包名都修改正确
 
 #### 配置文件
 
 ```yaml
 server:
-  port: 8081
+  port: 8084
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/leyoumall
+    url: jdbc:h2:mem:spring-cloud-started
     username: root
     password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
   application:
-    # 应用名称，注册到eureka后的服务名称
     name: service-provider
+  h2:
+      console:
+        enabled: true
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:10001/eureka
   instance:
-    # spring.application.name
+    # 设置服务实例的id，相同的spring.application.name代表提供相同的服务，服务id应该在这组服务中唯一
     instance-id: ${spring.application.name}:${server.port}
 ```
 
 
 
-!> 这里我们添加了spring.application.name属性来指定应用名称，将来会作为`应用的id`使用。
+!> 这里我们添加了spring.application.name属性来指定应用名称，如果未指定注册到eureka的服务名称，默认会取该值
 
-> instance-id获取规则：
+> 默认instance-id获取规则：`ip地址:服务名称:启动端口`
 
 ![image-20210304000950711](https://cdn.tencentfs.clboy.cn/images/2021/20210911203246402.png)
 
+
+
 #### @EnableDiscoveryClient
 
-在引导类上开启Eureka客户端功能
-
-通过添加`@EnableDiscoveryClient`来开启Eureka客户端功能
+通过添加 `@EnableDiscoveryClient` 注解来开启Eureka客户端功能
 
 ```java
 @MapperScan(basePackages = "cn.clboy.springcloud.eureka.service.provider.mapper")
@@ -685,13 +643,15 @@ public class SpringcloudEurekaServiceProviderApplication {
 
 
 
-重启项目，访问[Eureka监控页面：http://127.0.0.1:10001](http://127.0.0.1:10001)查看
+启动项目，访问 [Eureka监控页面：http://127.0.0.1:10001](http://127.0.0.1:10001) 查看是否已经注册过去
 
 
 
 ### 从Eureka获取服务
 
-创建项目。项目名为`springcloud-eureka-service-consumer`，和服务提供项目类型，选择web场景和eureka客户端场景，将之前`springcloud-service-consumer`中的实体类、controller复制过来
+创建名为 `spring-cloud-eureka-service-consumer` 的项目，选择web场景和eureka客户端场景
+
+将之前`spring-cloud-service-consumer`中的实体类、controller复制过来
 
 <details>
 
@@ -709,9 +669,9 @@ public class SpringcloudEurekaServiceProviderApplication {
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.clboy</groupId>
-    <artifactId>springcloud-eureka-service-consumer</artifactId>
+    <artifactId>spring-cloud-eureka-service-consumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud-eureka-service-consumer</name>
+    <name>spring-cloud-eureka-service-consumer</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
