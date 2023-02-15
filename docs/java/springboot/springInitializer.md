@@ -1,4 +1,4 @@
-# 使用Spring Initializer快速创建Spring Boot项目
+# Spring Initializer创建项目
 
 IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目；
 

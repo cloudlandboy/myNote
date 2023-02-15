@@ -1,6 +1,6 @@
-# 参数验证-JSR303 <sup class="version-number">2.6.13</sup>
+# 参数验证-JSR303
 
-> java6里面推出了一种规范：`JSR-303`，JSR是`Java Specification Requests`的缩写，意思是Java 规范提案，又叫做Bean Validation
+> java6里面推出了一种规范：`JSR-303`，JSR是 `Java Specification Requests` 的缩写，意思是Java 规范提案，又叫做Bean Validation
 >
 > JSR 303是Java为bean `数据合法性校验` 提供的 `标准框架` 
 >
