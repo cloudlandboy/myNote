@@ -1,0 +1,3 @@
+- RabbitMQ<sup class="version-number">3.8.1</sup>
+  - [安装](java/mq/rabbitmq/install.md)
+  - [使用](java/mq/rabbitmq/starter.md)

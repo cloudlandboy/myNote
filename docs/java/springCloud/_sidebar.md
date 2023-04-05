@@ -7,4 +7,4 @@
   - [Hystrix](java/springCloud/hystrix.md)
   - [Feign](java/springCloud/feign.md)
   - [Zuul网关](java/springCloud/zuul.md)
-
+  - [Spring Cloud Alibaba](java/springCloud/alibaba/_sidebar.md)

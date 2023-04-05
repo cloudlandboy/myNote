@@ -1,3 +1,0 @@
-- RabbitMQ<sup class="version-number">3.8.1</sup>
-  - [rabbitmq的安装](java/rabbitmq/rabbitmq-install.md)
-  - [RabbitMQ和数据同步](java/rabbitmq/rabbitmq-data-sync.md)

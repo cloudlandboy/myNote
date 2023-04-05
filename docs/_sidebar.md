@@ -11,7 +11,7 @@
   - [解决跨域](java/cross_domain/_sidebar.md)
   - [实时消息推送](java/message_push/_sidebar.md)
   - [Elasticsearch](java/elasticsearch/_sidebar.md)
-  - [RabbitMQ](java/rabbitmq/_sidebar.md)
+  - [消息队列](java/mq/_sidebar.md)
   - [文件储存](java/storage/_sidebar)
   - [第三方支付](java/payment/_sidebar)
   - [模板引擎](java/template/_sidebar.md)

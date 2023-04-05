@@ -1,0 +1,3 @@
+- 消息队列
+  - [RabbitMQ](java/mq/rabbitmq/_sidebar.md)
+  - [RocketMQ](java/mq/rocketmq/_sidebar.md)

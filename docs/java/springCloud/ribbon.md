@@ -6,6 +6,12 @@
 
 一般这种情况下我们就需要编写负载均衡算法，在多个实例列表中进行选择。
 
+```java
+List<ServiceInstance> instances = discoveryClient.getInstances("service-provider");
+//从实例集合中随机取出一个
+ServiceInstance instance = instances.get(ThreadLocalRandom.current().nextInt(instances.size()));
+```
+
 不过Eureka中已经帮我们集成了负载均衡组件：Ribbon，简单修改代码即可使用。
 
 什么是Ribbon：
@@ -150,7 +156,7 @@ public RestTemplate restTemplate() {
 
 ## 负载均衡策略
 
-Ribbon默认的负载均衡策略是简单的轮询，我们可以测试一下：
+Ribbon默认的负载均衡策略是简单的 **轮询** ，我们可以测试一下：
 
 编写测试类，在刚才的源码中我们看到拦截中是使用 `RibbonLoadBalancerClient` 来进行负载均衡的，其中有一个 `choose` 方法，找到choose方法的接口方法，是这样介绍的：
 
@@ -165,8 +171,6 @@ public interface ServiceInstanceChooser {
 ```
 
 我们注入这个类的对象，然后对其测试：
-
-创建测试方法
 
 ```java
 @RunWith(SpringRunner.class)
@@ -192,29 +196,176 @@ public class SpringcloudEurekaServiceConsumerApplicationTests {
 
 ```
 
-运行后明显可以看出，就是轮询
+Ribbon中有个 `IRule` 接口用来为负载均衡器定义规则，其提供了以下几个实现
+
+| 实现类                      | 特点                                                         |
+| --------------------------- | ------------------------------------------------------------ |
+| `RetryRule`                 | 对选定的负载均衡策略机上重试机制，在一个配置时间段内当选择Server不成功，则一直尝试使用subRule的方式选择一个可用的server |
+| `RandomRule`                | 随机选择一个Server                                           |
+| `RoundRobinRule`            | 轮询选择，轮询index，选择index对应位置的Server               |
+| `BestAvailableRule`         | 选择一个最小的并发请求的Server，遂个考察Server，如果Server被tripped了，则跳过 |
+| `ZoneAvoidanceRule`         | 复合判断Server所在Zone的性能和Server的可用性选择Server，在没有Zone的环境下，类似于轮询 |
+| `ResponseTimeWeightedRule`  | 已废弃，作用同WeightedResponseTimeRule                       |
+| `WeightedResponseTimeRule`  | 根据响应时间加权，响应时间越长，权重越小，被选中的可能性越低 |
+| `AvailabilityFilteringRule` | 过滤掉一直连接失败的被标记为circuit tripped的后端Server，并过滤掉那些高并发的后端Server或者使用一个AvailabilityPredicate来包含过滤server的逻辑，其实就就是检查status里记录的各个Server的运行状态 |
 
 
 
 ## 修改负载均衡规则
 
-SpringBoot也帮我们提供了修改负载均衡规则的配置入口，在 `spring-cloud-eureka-service-consumer` 的配置文件中添加如下配置：
+
+
+### 修改全局规则
+
+#### 注册Bean
+
+只需要向spring容器中添加 `IRule` 类型的Bean即可
+
+```java
+@Bean
+public IRule rule(){
+    return new RandomRule();
+}
+```
+
+#### 注解方式
+
+创建配置类，不需要将该配置类注册到容器，否则就直接使用注册bean的方式了，用不到注解
+
+```java
+public class GlobalRibbonConfig {
+
+    @Bean
+    public IRule rule() {
+        return new VersionClusterRandomWeightRule();
+    }
+
+}
+```
+
+使用  `@RibbonClients` 注解指定默认配置
+
+```java
+@SpringBootApplication
+@EnableDiscoveryClient
+@RibbonClients(defaultConfiguration = GlobalRibbonConfig.class)
+public class SpringcloudEurekaServiceConsumerApplication {
+}
+```
+
+
+
+### 每个服务单独设置
+
+假如服务A需要调用B和C两个服务，现在需要在调用A的时候使用轮询的规则，调用B的时候使用随机的规则该如何指定
+
+#### 代码方式
+
+1. 要为这两个服务分别创建 ~~标记 `@Configuration`~~ 配置类，在配置类中注册规则
+
+   ```java
+   @Configuration
+   public class BServiceRibbonConfig {
+   
+       @Bean
+       public IRule BServiceRibbonRule(){
+           return new RoundRobinRule();
+       }
+   }
+   
+   
+   @Configuration
+   public class CServiceRibbonConfig {
+   
+       @Bean
+       public IRule CServiceRibbonRule() {
+           return new RandomRule();
+       }
+   }
+   ```
+
+   !> 需要注意的是这些配置类不能够被spring主上下文容器扫描到，否则会因为上下文重叠，第一个被扫描到的会被当成全局配置作用于所有服务，我们都知道springboot默认会扫描启动类所在包及其下所有子包，所以，可以在启动类上一级包下单独创建一个包存放这些配置类
+
+   
+
+   ?> 经过测试不需要添加 `@Configuration` 注解也能正常使用，反而添加了还要注意上下文重叠的坑
+
+   
+
+1. 在启动类上或者其他能被扫描到的配置类中使用注解为这些服务单独设置启用Ribbon的配置
+
+   ```java
+   @Configuration
+   @RibbonClients({
+           @RibbonClient(name = "B-service-name", configuration = BServiceRibbonConfig.class),
+           @RibbonClient(name = "C-service-name", configuration = CServiceRibbonConfig.class),
+   })
+   public class RibbonConfig {
+   }
+   ```
+
+   
+
+#### 配置文件方式
+
+代码方式是不是特别麻烦，好在可以通过配置文件配置，这样就简单多了
+
+*而且代码配置还有上下文重叠的问题，强烈建议如果没有特殊需求就使用配置文件方式配置*
 
 ```yaml
 service-provider:
   ribbon:
+  	# 修改为随机
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
 ```
 
-格式是：`{服务名称}.ribbon.NFLoadBalancerRuleClassName`，值就是IRule的实现类。
+格式是：`<服务名称>.ribbon.NFLoadBalancerRuleClassName`，值就是 `IRule` 的实现类全类名。
 
-负载均衡规则(IRule)有图中几个实现
+## 重点Bean
 
-![1574754059660](https://cdn.tencentfs.clboy.cn/images/2021/20210911203244205.png)
+下表是Spring Cloud Netflix默认为Ribbon提供的bean，如果要对Ribbon进行定制化可以参考这几个类
 
-再次测试，就变成随机的了
+| Bean类型                   | Bean名称                | 默认实现类名                   | 用途                                     |
+| -------------------------- | ----------------------- | ------------------------------ | ---------------------------------------- |
+| `IClientConfig`            | ribbonClientConfig      | DefaultClientConfigImpl        | 读取配置                                 |
+| `IRule`                    | ribbonRule              | ZoneAvoidanceRule              | 负载均衡规则                             |
+| `IPing`                    | ribbonPing              | DummyPing                      | 筛选掉ping不通的实例                     |
+| `ServerList<Server>`       | ribbonServerList        | ConfigurationBasedServerList   | 交给Ribbon的实例列表                     |
+| `ServerListFilter<Server>` | ribbonServerListFilter  | ZonePreferenceServerListFilter | 过滤掉不符合条件的实例                   |
+| `ILoadBalancer`            | ribbonLoadBalancer      | ZoneAwareLoadBalancer          | 负载均衡操作的接口                       |
+| `ServerListUpdater`        | ribbonServerListUpdater | PollingServerListUpdater       | 交给Ribbon的实例列表<br />如何更新的策略 |
+
+## 其他配置
+
+- `<服务名称>.ribbon.NFLoadBalancerClassName`: 负载均衡操作的接口 `ILoadBalancer` 实现类
+- `<服务名称>.ribbon.NFLoadBalancerRuleClassName`:  负载均衡规则 `IRule` 实现类
+- `<服务名称>.ribbon.NFLoadBalancerPingClassName`:  ping规则 `IPing` 实现类
+- `<服务名称>.ribbon.NIWSServerListClassName`: 获取服务器列表接口 `ServerList` 实现类
+- `<服务名称>.ribbon.NIWSServerListFilterClassName`:  过滤服务实例 `ServerListFilter` 实现类
+
+以上都是配置文件属性，通过代码配置就是在服务的单独配置类中注册相关类型的Bean
 
 
+
+## 饥饿加载
+
+有没有发现每次启动服务调用方后第一次访问内部调用其他微服务的接口会非常慢
+
+这是因为Ribbon默认懒加载，意味着只有在发起调用的时候才会去加载服务实例
+
+可以通过配置文件修改为饥饿加载
+
+```yaml
+ribbon:
+  eager-load:
+    # 开启饥饿加载
+    enabled: true
+    # 开启饥饿加载的服务名称
+    clients:
+      - 服务名称1
+      - 服务名称2
+      - 服务名称3
+```
 
 ## 重试机制
 

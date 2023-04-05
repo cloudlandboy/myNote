@@ -774,7 +774,7 @@ public class UserController {
 
     @Autowired
     /**
-     * eureka客户端，可以获取到eureka中服务的信息
+     * 服务发现客户端，可以获取到eureka中服务的信息
      */
     private DiscoveryClient discoveryClient;
 
