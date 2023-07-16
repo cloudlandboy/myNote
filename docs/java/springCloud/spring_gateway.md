@@ -6,6 +6,28 @@
 
 
 
+## 核心概念
+
+### 路由(Route)
+
+ spring Cloud Gateway的基础元素，可简单理解成一条转发的规则。
+
+路由的属性：ID、目标URL、Predicate集合以及Filter集合。
+
+
+
+### 谓词(Predicate)
+
+即 `java.util.function.Predicate` 接口, Spring Cloud Gateway 使用它实现路由的匹配条件
+
+
+
+### 过滤器(Filter)
+
+修改请求以及响应
+
+
+
 ## 创建项目
 
 在微服务项目中一般项目结构都是一个父工程下有多个子模块，如下：
@@ -80,4 +102,317 @@ gateway模块添加 `spring-cloud-starter-gateway` 的依赖
     </dependency>
 </dependencies>
 ```
+
+
+
+## 配置路由
+
+```yaml
+server:
+  port: 12004
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/**
+```
+
+这个id为baidu的路由会匹配所有路由，接着启动访问 `http://localhost:12004/s?wd=cloudlandboy`
+
+就会返回百度的搜索页结果
+
+
+
+## 路由谓词工厂
+
+Route Predicate Factories
+
+Spring Cloud Gateway 中内置了以下谓词工厂：
+
+
+
+### 时间相关
+
+- AfterRoutePredicateFactory
+
+  当且仅当请求时的时间在配置的时间之后时，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - After=2023-07-16T17:50:00.000+08:00[GMT+08:00]
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/**
+  ```
+
+  上面配置了两个路由，其中sougou使用的Path谓词且匹配所有路由也就是说任何情况它都匹配，而baidu使用的是After路由，只有当前时间是2023年7月16日17:50之后才会匹配，假设当前时间是17:49，启动网关访问会看到搜狗的界面，等到50之后再访问就会返回百度的界面。
+
+  从中也可以看到网关是按照配置的顺序进行匹配的
+
+- BeforeRoutePredicateFactory
+
+  当且仅当请求时的时间在配置的时间之前时，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Before=2023-07-16T17:50:00.000+08:00[GMT+08:00]
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/**
+  ```
+
+- BetweenRoutePredicateFactory
+
+  当且仅当请求时的时间在配置的时间之间时，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Between=2023-07-16T17:55:00.000+08:00[GMT+08:00],2023-07-16T17:58:00.000+08:00[GMT+08:00]
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/**
+  ```
+
+  
+
+?> 时间可使用 `System.out.println(ZonedDateTime.now());` 打印，然后即可看到时区
+
+时间格式的相关逻辑：
+
+- 默认时间格式：`org.springframework.format.support.DefaultFormattingConversionService#addDefaultFormatters`
+- 时间格式注册：`org.springframework.format.datetime.standard.DateTimeFormatterRegistrar#registerFormatters`
+
+
+
+### 请求头相关
+
+- HeaderRoutePredicateFactory
+
+  当且仅当请求带有指定的请求头，并且值符合配置的正则表达式时，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Header=Referer,.*clboy\.cn.*
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/**
+  ```
+
+  
+
+  点击访问携带Referer请求头 http://127.0.0.1:12004
+
+  直接在浏览器地址栏输入访问不带请求头
+
+- HostRoutePredicateFactory
+
+  当且仅当名为 [Host](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Host) 的请求头符合配置的任一pattern时，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Host=127.0.0.1:*,192.168.0.154:*
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/**
+  ```
+
+  baidu：http://127.0.0.1:12004
+
+  sougou：http://localhost:12004
+
+  
+
+
+
+### 请求相关
+
+- PathRoutePredicateFactory
+
+  当且仅当访问路径匹配配置的任一路径，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Path=/s,
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Path=/web,/sogou
+  ```
+
+  
+
+  baidu：http://127.0.0.1:12004/s?wd=bilibili
+
+  sougou：http://127.0.0.1:12004/web?query=bilibili
+
+- QueryRoutePredicateFactory
+
+  当且仅当访问请求携带指定查询参数(如果配置了值[且该查询参数任意值匹配配置的值正则表达式])，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Query=wd
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - Query=query,.*[\u4e00-\u9fa5].*
+  ```
+
+  
+
+  baidu：http://127.0.0.1:12004/s?wd=bilibili
+
+  sougou：http://127.0.0.1:12004/web?query=b站
+
+  sougou(有参数但是值不匹配)：http://127.0.0.1:12004/web?query=bilibili
+
+- MethodRoutePredicateFactory
+
+  当且仅当访问请求方式匹配任一配置的方式，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Method=POST,HEAD,DELETE
+  ```
+
+  
+
+- RemoteAddrRoutePredicateFactory
+
+  当且仅当请求ip匹配配置任一规则，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+            	# 请求IP是192.168.1.1/24网段
+              - RemoteAddr=192.168.1.1/24
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - RemoteAddr=127.0.0.1
+  ```
+
+  
+
+### cookie相关
+
+- CookieRoutePredicateFactory
+
+  当且仅当访问请求携带指定cookie(如果配置了值[且值匹配配置的正则表达式])，才会走该路由
+
+  ```yaml
+  spring:
+    cloud:
+      gateway:
+        routes:
+          - id: baidu
+            uri: https://www.baidu.com
+            predicates:
+              - Cookie=chocolate, ch.p
+          - id: sougou
+            uri: https://www.sogou.com/
+            predicates:
+              - RemoteAddr=127.0.0.1
+  ```
+
+  
+
+
+
+### 其他
+
+- ReadBodyRoutePredicateFactory
+
+- CloudFoundryRouteServiceRoutePredicateFactory
+
+- WeightRoutePredicateFactory
+
+- XForwardedRemoteAddrRoutePredicateFactory
+
+
+
+### 自定义
+
+由上面的内置谓词工厂可以看出，它们的类名都是以 `RoutePredicateFactory` 结尾，而且在配置文件中配置时都是写前半部分
+
+这是因为它们都实现了 `org.springframework.cloud.gateway.handler.predicate.RoutePredicateFactory` 接口
+
+
+
+
+
+## 过滤器工厂
+
+
+
+### 自定义
+
+
+
+## 全局过滤器
+
+
+
+## 过滤器执行顺序
 

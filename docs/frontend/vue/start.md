@@ -1,4 +1,4 @@
-# VUE入门
+# Vue2入门
 
 先聊一下前端开发模式的发展。
 
@@ -82,57 +82,79 @@ Git地址：https://github.com/vuejs
 
 ## Node和NPM
 
-NPM是Node提供的模块管理工具，可以非常方便的下载安装很多前端框架，包括Jquery、AngularJS、VueJs都有。为了后面学习方便，我们先安装node及NPM工具。
-
-> 参考：[npm的简单使用](frontend/node/npm001 ':target=_blank')
 
 
+### 安装node
 
-## 切换镜像
+Node.js是一个基于Chrome V8 JavaScript引擎的运行时环境，可以让您在服务器端使用JavaScript。它提供了许多内置模块，使您能够执行文件操作、网络通信等任务。
 
-npm默认的仓库地址是在国外网站，速度较慢，建议大家设置到淘宝镜像。但是切换镜像是比较麻烦的。推荐一款切换镜像的工具：nrm
+您可以在 [Node.js官方网站](https://nodejs.org) 上找到安装包，并按照说明进行安装
 
-我们首先安装nrm，这里`-g`代表全局安装。可能需要一点儿时间
+学习资源：官方网站提供了详细的文档，您可以在 [官方文档](https://nodejs.org/en/docs) 中找到示例代码和API参考
 
-安装成功后通过`nrm ls`命令查看npm的仓库列表,带`*`的就是当前选中的镜像仓库：
+npm是Node.js的软件包管理器，用于安装、更新和管理JavaScript库和工具。几乎所有Node.js项目都使用npm来管理其依赖项。
 
-![1575088264294](https://cdn.tencentfs.clboy.cn/images/2021/20210911203217014.png)
+当您安装Node.js时，npm也会自动安装。您可以通过在终端或命令提示符中运行 `npm -v` 命令来验证是否已成功安装npm。
 
 
 
-可以通过`nrm test 名称`来测试镜像源的速度，直接`nrm test`是测试所有的
+### npm的基本用法
 
-通过`nrm use 名称`来指定要使用的镜像源：
+- `npm init`：在项目文件夹中运行此命令可以创建一个新的 `package.json` 文件，其中包含有关您的项目的信息和依赖项
 
-![1575088869015](https://cdn.tencentfs.clboy.cn/images/2021/20210911203217437.png)
+  这个文件有点类似java中maven的pom文件
+
+- `npm install 包名`：此命令安装指定的包及其依赖的任何包，并且会将已经安装的包记录在 `package.json` 文件中
+
+  `npm install jquery` 安装jquery之后，在package.json的dependencies键名下就记录了安装的包以及安装的版本
+
+  ```json
+  {
+    "dependencies": {
+      "jquery": "^3.7.0"
+    }
+  }
+  ```
+
+  安装指定版本的包：`npm install 包名@版本号`
 
 
 
+## 使用cnpm
+
+npm默认的仓库地址是在国外网站，速度较慢，建议大家设置到淘宝镜像
+
+参考：[http://www.npmmirror.com/](http://www.npmmirror.com/)
+
+`npm install -g cnpm --registry=https://registry.npmmirror.com`
 
 
-## 安装vue
+
+## 安装Vue
 
 这里我们使用npm的方式
 
-1. 创建一个空文件夹`vue-learning`，然后打开命令行进入该文件夹
+1. 创建一个空文件夹 `Vue-learning` ，然后打开命令行进入该文件夹
 
-2. 使用 `npm init -y` 进行初始化
+2. 使用  `npm init -y`  进行初始化
 
 3. 安装Vue，输入命令：`npm install vue`
 
-   !>  **注意**，如果要安装的模块如果和当前文件夹名称一样会报错，比如vue-learning改名为vue，在执行**npm install vue**时就会报错
+   !>  **注意** ：如果要安装的模块和当前文件夹名称一样，在执行 `npm install vue` 时就会报错
 
    ![1575089772721](https://cdn.tencentfs.clboy.cn/images/2021/20210911203218224.png)
 
    
 
-   然后就会在hello-vue目录发现一个node_modules目录，并且在下面有一个vue目录。
+   然后就会在vue-learning目录下生产node_modules目录，并且在下面有一个vue目录。
 
-   node_modules是通过npm安装的所有模块的默认位置。
+   `node_modules` 是通过npm安装的所有模块的默认位置。
 
 
 
-## vue入门案例
+## 声明式渲染
+
+下面html代码中h2标签下的文本要显示一句话：xxx 非常帅。xxx是要根据数据动态渲染出来的
 
 ```html
 <body>
@@ -144,11 +166,17 @@ npm默认的仓库地址是在国外网站，速度较慢，建议大家设置�
 </body>
 ```
 
-h2中要输出一句话：xxx 非常帅。前面的xxx是要渲染的数据。
+先看一下通过原生js是怎么实现的
+
+```html
+<script>
+    document.querySelector('h2').innerText='刘德华，非常帅！！！'
+</script>
+```
 
 
 
-### vue声明式渲染
+接下来看一下，使用vue这种MVVM模式前端框架是怎么实现的
 
 ```html
 <body>
@@ -174,11 +202,11 @@ h2中要输出一句话：xxx 非常帅。前面的xxx是要渲染的数据。
 ```
 
 - 首先通过 new Vue()来创建Vue实例
-- 然后构造函数接收一个对象，对象中有一些属性：
-  - el：是element的缩写，通过id选中要渲染的页面元素，本例中是一个div
-  - data：数据，数据是一个对象，里面有很多属性，都可以渲染到视图中
+- 然后构造函数接收一个 **选项对象** ，对象中有一些属性：
+  - el：是element的缩写，可以是 CSS 选择器，也可以是一个 HTMLElement 实例
+  - data：数据对象，里面有很多属性，都可以渲染到视图中
     - name：这里我们指定了一个name属性
-- 页面中的`h2`元素中，我们通过{{name}}的方式，来渲染刚刚定义的name属性。
+- 在页面中 `h2` 元素中，首先我们使用 {{name}} 的方式，创建Vue实例后就被渲染成了name属性值。
 
 打开页面查看效果：
 
@@ -190,7 +218,11 @@ h2中要输出一句话：xxx 非常帅。前面的xxx是要渲染的数据。
 
 
 
-### 双向绑定
+这种双大括号的数据绑定形式叫做文本插值，又称 **Mustache** 语法
+
+
+
+## 双向绑定
 
 我们对刚才的案例进行简单修改：
 
@@ -228,82 +260,32 @@ h2中要输出一句话：xxx 非常帅。前面的xxx是要渲染的数据。
 
 
 - 我们在data添加了新的属性：`num`
-- 在页面中有一个`input`元素，通过`v-model`与`num`进行绑定。
-- 同时通过`{{num}}`在页面输出
+- 在页面中有一个 `input` 元素，通过 `v-model` 属性与 `num` 进行绑定。
+- 同时通过 `{{num}}` 在页面输出
 
 我们可以观察到，输入框的变化引起了data中的num的变化，同时页面输出也跟着变化。
 
 - input与num绑定，input的value值变化，影响到了data中的num值
-- 页面`{{num}}`与数据num绑定，因此num值变化，引起了页面效果变化。
+- 页面 `{{num}}` 与数据num绑定，因此num值变化，引起了页面效果变化。
 
 没有任何dom操作，这就是双向绑定的魅力。
 
 
 
-!> 注意，这个input要放在#app里面
+!> 注意，input必须是#app元素的子孙元素
 
 
 
-### 浏览器插件的安装
+## 浏览器插件的安装
 
-- [获取Chrome扩展程序](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) (需要科学上网，不信你百度Google Helper)
+**Vue.js devtools**
+
+- [获取Chrome扩展程序](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) (需要科学上网)
 - [获取Firefox插件](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
 
 
 
-!> 安装完重启浏览器
-
-
-
-### 事件处理
-
-我们在页面添加一个按钮，做到点击按钮时候让num自增1
-
-```html
-    <body>
-
-        <div id="app">
-            <!-- 可以修改num -->
-            <p>
-                    <input type="text" v-model="num">
-            </p>
-            <p>
-                <button v-on:click="num++">是兄弟就来砍我</button>
-            </p>
-            <h2> {{name}}，非常帅！！！有{{num}}位女神为他着迷。</h2>
-        </div>
-    </body>
-```
-
-
-
-![20191130184347](https://cdn.tencentfs.clboy.cn/images/2021/20210911203222595.gif)
-
-
-
-
-
-## Vue实例
-
-> 创建Vue实例
-
-每个 Vue 应用都是通过用 `Vue` 函数创建一个新的 **Vue 实例**开始的：
-
-```javascript
-var vm = new Vue({
-  // 选项
-})
-```
-
-在构造函数中传入一个对象，并且在对象中声明各种Vue需要的数据和方法，包括：
-
-- el
-- data
-- methods
-
-等等
-
-接下来我们一 一介绍。
+!> 安装完可能需要重启浏览器
 
 
 
@@ -329,13 +311,13 @@ var vm = new Vue({
 })
 ```
 
-这样，Vue就可以基于id为`app`的div元素作为模板进行渲染了。在这个div范围以外的部分是无法使用vue特性的。
+这样，Vue就可以基于id为 `app` 的div元素作为模板进行渲染了。在这个div范围以外的部分是无法使用Vue特性的。
 
 
 
-## 数据
+## data数据对象
 
-当Vue实例被创建时，它会尝试获取在data中定义的所有属性，用于视图的渲染，并且监视data中的属性变化，当data发生改变，所有相关的视图都将重新渲染，这就是“响应式“系统。
+当Vue实例被创建时，它会尝试获取在data中定义的所有属性，用于视图的渲染，并且监视data中的属性变化，当data发生改变，所有相关的视图都将重新渲染，这就是 **响应式** 系统。
 
 html：
 
@@ -361,48 +343,70 @@ var vm = new Vue({
 
 
 
+Vue 会递归地把 data 的 property 转换为 getter/setter，从而让 data 的 property 能够响应数据变化
+
+这句话的意思是：
+
+- 在 `data` 对象中声明的属性将被Vue实例化过程中的观察者功能所劫持。这意味着Vue会为 `data` 对象的每个属性创建一个getter和setter函数。
+
+- 当你访问`data`的属性时，Vue会使用getter函数来获取属性的值，并且在属性值发生改变时使用setter函数来更新值。这种方式使得Vue能够跟踪和响应属性的变化，从而实现了数据绑定和响应式更新的能力。
+- 递归地转换意味着Vue会遍历`data`对象的所有属性，包括嵌套对象和数组中的属性，并为它们创建相应的getter和setter函数。这样，当你在组件中访问任何一个属性时，无论是直接属性还是嵌套属性，Vue都能够正确地捕捉到属性的变化并进行相应的更新。
+- 这种数据属性转换为getter和setter的机制是Vue实现其响应式系统的关键所在，它使得Vue能够轻松地追踪数据的变化，并在数据发生改变时自动更新相关的视图。
+
+实例创建之后，可以通过  `实例对象名(vm).$data` 访问原始数据对象。Vue 实例也代理了 data 对象上所有的属性，因此访问 vm.a 等价于访问 vm.$data.a
+
+
+
 ## 方法和this
 
-Vue实例中除了可以定义data属性，也可以定义方法，并且在Vue实例的作用范围内使用。
+Vue实例中除了可以定义数据对象(data属性)，也可以定义方法(methods属性)
 
-html：
+并且在Vue实例的作用范围内使用(可以直接通过实例对象访问这些方法)，`vm.methodName()`
+
+方法中的 `this` 自动绑定为 Vue 实例
 
 ```html
 <div id="app">
-            <!-- ..... -->
-            <p>
-                <button v-on:click="num++">是兄弟就来砍我</button>
-                <button v-on:click="add">一刀999</button>
-            </p>
-            <h2> {{name}}，非常帅！！！有{{num}}位女神为他着迷。</h2>
+    <!-- ..... -->
+    <p>
+        <button v-on:click="num++">是兄弟就来砍我</button>
+        <button v-on:click="add">一刀999</button>
+    </p>
+    <h2> {{name}}，非常帅！！！有{{num}}位女神为他着迷。</h2>
 </div>
+
+<!-- 引入vue -->
+<script src="node_modules/vue/dist/vue.js"></script>
+
+<script>
+    // 创建vue实例
+    var app = new Vue({
+        el: "#app", // el即element，该vue实例要渲染的页面元素
+        data: { // 渲染页面需要的数据
+            name: "刘德华",
+            num: 1
+        },
+        methods: {
+            add() {
+                this.num += 999;
+                console.log(this);
+            }
+        },
+    });
+</script>
 ```
 
-js：
+这里的 `v-on:click` 属性我们会在后面进行学习，这里你就把它看做html原生的 `onclick` 属性，为其绑定了一个点击事件
 
-```js
-        // 创建vue实例
-        var app = new Vue({
-            el: "#app", // el即element，该vue实例要渲染的页面元素
-            data: { // 渲染页面需要的数据
-                name: "刘德华",
-                num: 1
-            },
-            methods: {
-                add() {
-                    this.num += 999;
-                    console.log(this);
-                }
-            },
-        });
-```
 ![1575111368671](https://cdn.tencentfs.clboy.cn/images/2021/20210911203219165.png)
 
 
 
-## 生命周期钩子
+!> 注意：**不应该使用箭头函数来定义 method 函数**  ( 例如 `add: () => this.num++` ) 。理由是箭头函数绑定了父级作用域的上下文，所以 `this` 将不会指向 Vue 实例，`this.num`  将是 undefined。
 
-### 生命周期
+
+
+## 生命周期
 
 每个 Vue 实例在被创建时都要经过一系列的初始化过程 ：创建实例，装载模板，渲染模板等等。Vue为生命周期中的每个状态都设置了钩子函数（监听函数）。每当Vue实例处于不同的生命周期时，对应的函数就会被触发调用。
 
@@ -410,12 +414,14 @@ js：
 
 ![Vue life cycle](https://cdn.tencentfs.clboy.cn/images/2021/20210911203224870.png)
 
-### 钩子函数
+
+
+## 钩子函数
 
 - `beforeCreated`：我们在用Vue时都要进行实例化，因此，该函数就是在Vue实例化时调用，也可以将他理解为初始化函数比较方便一点，在Vue1.0时，这个函数的名字就是init。 
 - `created`：在创建实例之后进行调用。 
 - `beforeMount`：页面加载完成，没有渲染。如：此时页面还是{{name}}
-- `mounted`：我们可以将他理解为原生js中的window.onload=function({.,.}),或许大家也在用jquery，所以也可以理解为jquery中的$(document).ready(function(){….})，他的功能就是：在dom文档渲染完毕之后将要执行的函数，该函数在Vue1.0版本中名字为compiled。 此时页面中的{{name}}已被渲染成刘德华
+- `mounted`：我们可以将他理解为原生js中的 `window.onload=function({...})` ,或许大家也在用jquery，所以也可以理解为jquery中的`$(document).ready(function(){…})` ，他的功能就是：在dom文档渲染完毕之后将要执行的函数，该函数在Vue1.0版本中名字为compiled。 此时页面中的 {{name}} 文本插值已被渲染成刘德华
 - `beforeDestroy`：该函数将在销毁实例前进行调用 。
 - `destroyed`：改函数将在销毁实例时进行调用。
 - `beforeUpdate`：组件更新之前。
@@ -423,28 +429,28 @@ js：
 
 
 
-例如：created代表在vue实例创建后；
+例如：created代表在Vue实例创建后；
 
 我们可以在Vue中定义一个created函数，代表这个时期的钩子函数：
 
 ```javascript
-        // 创建vue实例
-        var app = new Vue({
-            el: "#app", // el即element，该vue实例要渲染的页面元素
-            created() {
-                this.num=520
-            },
-            data: { // 渲染页面需要的数据
-                name: "刘德华",
-                num: 1
-            },
-            methods: {
-                add() {
-                    this.num += 999;
-                    console.log(this);
-                }
-            },
-        });
+// 创建vue实例
+var app = new Vue({
+    el: "#app", // el即element，该vue实例要渲染的页面元素
+    created() {
+        this.num=520
+    },
+    data: { // 渲染页面需要的数据
+        name: "刘德华",
+        num: 1
+    },
+    methods: {
+        add() {
+            this.num += 999;
+            console.log(this);
+        }
+    },
+});
 ```
 
 刷新页面就是520，data中定义的1就会被覆盖
@@ -455,15 +461,59 @@ js：
 
 什么是指令？
 
-指令 (Directives) 是带有 `v-` 前缀的特殊特性。指令特性的预期值是：**单个 JavaScript 表达式**。指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。 
+指令 (Directives) 在Vue中是指是带有 `v-` 前缀的特殊html标签属性。
 
-例如我们在入门案例中的v-on，代表绑定事件。
+指令的属性值应该为一个 JavaScript 表达式
 
-### 插值表达式
+指令的职责是：当表达式的值改变时，将其产生的连带影响，响应式地更新 DOM 
 
-#### 花括号
+例如上面案例中的v-on指令，代表绑定事件。
 
-> `{{表达式}}`
+[Vue 提供的内置指令列表](https://cn.vuejs.org/api/built-in-directives.html)
+
+
+
+### 指令参数
+
+某些指令会需要一个 **参数** ，在指令名后通过一个冒号隔开做标识
+
+如之前绑定事件时使用的 `v-on:click=方法名` ，这里的参数是要监听的事件名称(click)
+
+
+
+
+
+### 指令修饰符
+
+修饰符是以点开头的特殊后缀，表明指令需要以一些特殊的方式被绑定
+
+例如 `.prevent` 修饰符会告知 `v-on` 指令对触发的事件调用 `event.preventDefault()`
+
+------
+
+*帮你回忆*：
+
+<small> `event.preventDefault()` 是JavaScript中的一个方法，它用于阻止事件的默认行为。
+
+当事件被触发时，浏览器通常会执行一些默认的操作，例如点击链接会跳转到链接的URL，提交表单会刷新页面等。
+
+调用该方法可以取消这些默认行为。
+
+当事件处理程序中调用该方法时，它会告诉浏览器不要执行该事件的默认操作。
+
+这可以用于在特定情况下自定义或修改事件的行为。常见的用例包括：
+
+1. 阻止表单提交：在表单的提交事件中，使用该方法可以阻止表单的默认提交行为，从而允许使用JavaScript来执行自定义的表单处理逻辑，例如进行表单验证或异步提交。
+2. 阻止链接跳转：在链接的点击事件中，使用该方法可以阻止链接的默认跳转行为，从而在单页应用程序中实现路由导航或执行其他自定义操作。
+3. 阻止键盘按键的默认行为：在键盘事件处理程序中，使用该方法可以阻止某些按键的默认行为，例如阻止回车键提交表单或阻止空格键滚动页面。
+
+需要注意的是，该方法只会阻止事件的默认行为，不会阻止事件的传播（冒泡）或其他事件处理程序的执行。如果需要同时阻止事件传播，可以使用 `event.stopPropagation()` 方法。</small>
+
+
+
+## 文本插值
+
+上面我们已经提到过，文本差值格式为：`{{表达式}}`
 
 
 
@@ -475,8 +525,6 @@ js：
 
 
 
-html：
-
 ```html
 <ul>
     <li>{{name}}</li>
@@ -486,38 +534,38 @@ html：
         <li>{{var sex='男'}}</li> 
     -->
 </ul>
+
+<script>
+	// 创建vue实例
+	var app = new Vue({
+	    el: "#app", // el即element，该vue实例要渲染的页面元素
+	    created() {
+	        this.num = 520
+	    },
+	    data: { // 渲染页面需要的数据
+	        name: "刘德华",
+	        num: 1
+	    },
+	    methods: {
+	        add() {
+	            this.num += 999;
+	            console.log(this);
+	        },
+	        getAge() {
+	            return 2019 - 1961 + 1;
+	        }
+	    },
+	});
+</script>
 ```
 
-js：
 
-```javscript
-// 创建vue实例
-var app = new Vue({
-    el: "#app", // el即element，该vue实例要渲染的页面元素
-    created() {
-        this.num = 520
-    },
-    data: { // 渲染页面需要的数据
-        name: "刘德华",
-        num: 1
-    },
-    methods: {
-        add() {
-            this.num += 999;
-            console.log(this);
-        },
-        getAge() {
-            return 2019 - 1961 + 1;
-        }
-    },
-});
-```
 
 ![1575113990082](https://cdn.tencentfs.clboy.cn/images/2021/20210911203219447.png)
 
-#### 插值闪烁现象
+### 插值闪烁现象
 
-使用{{}}方式在网速较慢时会出现问题。在数据未加载完成时，页面会显示出原始的`{{}}`，加载完毕后才显示正确数据，我们称为插值闪烁。
+使用在网速较慢时会出现问题。在数据未加载完成时，页面会显示出原始的`{{}}`，加载完毕后才显示正确数据，我们称为插值闪烁。
 
 我们将网速调慢一些，然后试试看刚才的案例：
 
@@ -529,11 +577,9 @@ var app = new Vue({
 
 
 
-#### v-text和v-html
+## v-text和v-html
 
-使用v-text和v-html指令来替代`{{}}`
-
-说明：
+Vue还提供了v-text和v-html两个指令来替代 `{{}}` 
 
 - v-text：将数据输出到元素内部，如果输出的数据有HTML代码，会作为普通文本输出
 - v-html：将数据输出到元素内部，如果输出的数据有HTML代码，会被渲染
@@ -557,15 +603,17 @@ data: { // 渲染页面需要的数据
 }
 ```
 
-刷新页面，效果如下，并且不会出现插值闪烁，当没有数据时，会显示空白。
+刷新页面，效果如下：可以看到使用指令的方式不会出现插值闪烁，当没有数据时，只会显示空白，因为它们在渲染之前是存在于html标签属性中的
 
 ![20191130195120](https://cdn.tencentfs.clboy.cn/images/2021/20210911203223175.gif)
 
 
 
-### v-model
+## v-model
 
-刚才的v-text和v-html可以看做是单向绑定，数据影响了视图渲染，但是反过来就不行。接下来学习的v-model是双向绑定，视图（View）和模型（Model）之间会互相影响。
+刚才的v-text和v-html可以看做是单向绑定，数据影响了视图渲染，但是反过来就不行。
+
+接下来学习的 `v-model` 指令是双向绑定，视图（View）和模型（Model）之间会互相影响。
 
 既然是双向绑定，一定是在视图中可以修改数据，这样就限定了视图的元素类型。目前v-model的可使用元素有：
 
@@ -580,7 +628,7 @@ data: { // 渲染页面需要的数据
 
 
 
-> checkbox案例
+**checkbox案例**：
 
 html：
 
@@ -620,7 +668,9 @@ data: { // 渲染页面需要的数据
 
 ![1575115628345](https://cdn.tencentfs.clboy.cn/images/2021/20210911203220017.png)
 
-### v-on
+
+
+## v-on
 
 v-on指令用于给页面元素绑定事件。
 
@@ -639,18 +689,18 @@ v-on指令用于给页面元素绑定事件。
 </p>
 ```
 
-另外，事件绑定可以简写，例如`v-on:click='add'`可以简写为`@click='add'`
+另外，事件绑定可以简写，例如 `v-on:click='add'` 可以简写为 `@click='add'`
 
 
 
 #### 事件修饰符
 
-在事件处理程序中调用 `event.preventDefault()` 或 `event.stopPropagation()` 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+在事件处理程序中调用  `event.preventDefault()`  或 `event.stopPropagation()` 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
 
 为了解决这个问题，Vue.js 为 `v-on` 提供了**事件修饰符**。修饰符是由点开头的指令后缀来表示的。
 
 - `.stop` ：阻止事件冒泡到父元素
-- `.prevent`：阻止默认事件发生*
+- `.prevent`：阻止默认事件发生
 - `.capture`：使用事件捕获模式
 - `.self`：只有元素自身触发事件才执行。（冒泡或捕获的都不执行）
 - `.once`：只执行一次
@@ -735,7 +785,7 @@ methods: {
 
 #### 自定义按键修饰符别名
 
-你还可以通过全局 `config.keyCodes` 对象[自定义按键修饰符别名](https://cn.vuejs.org/v2/api/#keyCodes)：
+你还可以通过全局 `config.keyCodes` 对象 [自定义按键修饰符别名](https://cn.vuejs.org/v2/api/#keyCodes)：
 
 ```
 // 可以使用 `v-on:keyup.f1`
@@ -746,26 +796,20 @@ Vue.config.keyCodes.f1 = 112
 
 
 
-### v-for
+## v-for
 
-遍历数据渲染页面是非常常用的需求，Vue中通过v-for指令来实现。
+遍历数据渲染页面是非常常用的需求，Vue中通过 `v-for` 指令来实现。
 
-#### 遍历数组
 
-> 语法：
+
+### 遍历数组
 
 ``` vue
 v-for="item in items"
 ```
 
-- items：要遍历的数组，需要在vue的data中定义好。
+- items：要遍历的数组，需要在Vue的data中定义好。
 - item：迭代得到的数组元素的别名
-
-
-
-> 案例
-
-html：
 
 ```html
 <div id="app">
@@ -796,63 +840,55 @@ html：
         </div>
     </div>
 </div>
+
+<script>
+    const year = new Date().getFullYear();
+    // 创建vue实例
+    var app = new Vue({
+        el: "#app", // el即element，该vue实例要渲染的页面元素
+        data: { // 渲染页面需要的数据
+            name: "刘德华",
+            num: 1,
+            hello: '<span style="color:red">hello,大家好！我是华仔</span>',
+            language: [],
+            goddess: [
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/87863ad4c4d6e93a.jpg', name: '翁美玲', gender: '女', age: year - 1959 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeetTe.jpg', name: '蓝洁瑛', gender: '女', age: year - 1963 + 1 },
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/655f90ac240f8d26.jpg', name: '周慧敏', gender: '女', age: year - 1967 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeBlt.jpg', name: '关之琳', gender: '女', age: year - 1962 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeRYj.jpg', name: '邱淑贞', gender: '女', age: year - 1968 + 1 },
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/c889f7b09a6478ed.jpeg', name: '林青霞', gender: '女', age: year - 1954 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeTmT.jpg', name: '李若彤', gender: '女', age: year - 1967 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeerOf.jpg', name: '王祖贤', gender: '女', age: year - 1967 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeWfs.jpg', name: '张柏芝', gender: '女', age: year - 1980 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeecTg.jpg', name: '张曼玉', gender: '女', age: year - 1964 + 1 },
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/0821807f09267a9b.jpg', name: '蔡少芬', gender: '女', age: year - 1973 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qee560.jpg', name: '温碧霞', gender: '女', age: year - 1966 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeUFH.jpg', name: '万绮雯', gender: '女', age: year - 1970 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeaYd.jpg', name: '钟欣潼', gender: '女', age: year - 1981 + 1 },
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/32c501866339e345.png', name: '周秀娜', gender: '女', age: year - 1985 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qee4lq.jpg', name: '杨紫', gender: '女', age: year - 1992 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qee70U.png', name: '郑爽', gender: '女', age: year - 1991 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qee2kQ.jpg', name: '唐嫣', gender: '女', age: year - 1983 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeH7F.jpg', name: '佟丽娅', gender: '女', age: year - 1983 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeeIXV.jpg', name: '舒畅', gender: '女', age: year - 1987 + 1 },
+                    { image: 'https://ftp.bmp.ovh/imgs/2019/12/22c88e047a214210.jpg', name: '杨幂', gender: '女', age: year - 1986 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qeehpn.jpg', name: '刘亦菲', gender: '女', age: year - 1987 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/Qelv5T.jpg', name: '韩雪', gender: '女', age: year - 1983 + 1 },
+                    { image: 'https://s2.ax1x.com/2019/12/01/QeedfA.jpg', name: '宋祖儿', gender: '女', age: year - 1998 + 1 },
+                ]
+        }
+    });
+</script>
 ```
 
-<details>
-
-<summary>js</summary>
-
-```javascript
-const year = new Date().getFullYear();
-// 创建vue实例
-var app = new Vue({
-    el: "#app", // el即element，该vue实例要渲染的页面元素
-    data: { // 渲染页面需要的数据
-        name: "刘德华",
-        num: 1,
-        hello: '<span style="color:red">hello,大家好！我是华仔</span>',
-        language: [],
-        goddess: [
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/87863ad4c4d6e93a.jpg', name: '翁美玲', gender: '女', age: year - 1959 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeetTe.jpg', name: '蓝洁瑛', gender: '女', age: year - 1963 + 1 },
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/655f90ac240f8d26.jpg', name: '周慧敏', gender: '女', age: year - 1967 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeBlt.jpg', name: '关之琳', gender: '女', age: year - 1962 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeRYj.jpg', name: '邱淑贞', gender: '女', age: year - 1968 + 1 },
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/c889f7b09a6478ed.jpeg', name: '林青霞', gender: '女', age: year - 1954 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeTmT.jpg', name: '李若彤', gender: '女', age: year - 1967 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeerOf.jpg', name: '王祖贤', gender: '女', age: year - 1967 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeWfs.jpg', name: '张柏芝', gender: '女', age: year - 1980 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeecTg.jpg', name: '张曼玉', gender: '女', age: year - 1964 + 1 },
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/0821807f09267a9b.jpg', name: '蔡少芬', gender: '女', age: year - 1973 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qee560.jpg', name: '温碧霞', gender: '女', age: year - 1966 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeUFH.jpg', name: '万绮雯', gender: '女', age: year - 1970 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeaYd.jpg', name: '钟欣潼', gender: '女', age: year - 1981 + 1 },
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/32c501866339e345.png', name: '周秀娜', gender: '女', age: year - 1985 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qee4lq.jpg', name: '杨紫', gender: '女', age: year - 1992 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qee70U.png', name: '郑爽', gender: '女', age: year - 1991 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qee2kQ.jpg', name: '唐嫣', gender: '女', age: year - 1983 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeH7F.jpg', name: '佟丽娅', gender: '女', age: year - 1983 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeeIXV.jpg', name: '舒畅', gender: '女', age: year - 1987 + 1 },
-                { image: 'https://ftp.bmp.ovh/imgs/2019/12/22c88e047a214210.jpg', name: '杨幂', gender: '女', age: year - 1986 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qeehpn.jpg', name: '刘亦菲', gender: '女', age: year - 1987 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/Qelv5T.jpg', name: '韩雪', gender: '女', age: year - 1983 + 1 },
-                { image: 'https://s2.ax1x.com/2019/12/01/QeedfA.jpg', name: '宋祖儿', gender: '女', age: year - 1998 + 1 },
-            ]
-    }
-});
-```
-
-</details>
 
 
 
 
+### 获取数组下标
 
-#### 数组角标
-
-在遍历的过程中，如果我们需要知道数组角标，可以指定第二个参数：
-
-> 语法
+在遍历的过程中，如果我们需要知道当前item在数组中的下标，可以指定第二个参数：
 
 ``` vue
 v-for="(item,index) in items"
@@ -880,17 +916,13 @@ v-for="(item,index) in items"
 
 
 
-
-
 效果：[遍历演示](frontend/vue/vfor.html ':ignore')
 
 
 
-#### 遍历对象
+### 遍历对象
 
 v-for除了可以迭代数组，也可以迭代对象。语法基本类似
-
-> 语法：
 
 ```javascript
 v-for="value in object"
@@ -904,9 +936,17 @@ v-for="(value,key,index) in object"
 
 
 
-#### key
+### 纯数字遍历
 
-当 Vue.js 用 `v-for` 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。 
+```html
+<span v-for="i in 10">{{i}}</span>
+```
+
+
+
+### key
+
+当 Vue.js 用 `v-for` 正在更新已渲染过的元素列表时，它默认用 “就地复用” 策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。 
 
 这个功能可以有效的提高渲染的效率。
 
@@ -915,21 +955,25 @@ v-for="(value,key,index) in object"
 示例：
 
 ```html
-<div class="col-md-3" v-for="(user,index) in goddess" :key=index style="text-align: center;" >
+<div class="col-md-3" v-for="(user,index) in goddess" :key="user.name" style="text-align: center;" >
 ```
 
-- 这里使用了一个特殊语法：`:key=""` 我们后面会讲到，它可以让你读取vue中的属性，并赋值给key属性
-- 这里我们绑定的key是数组的索引，应该是唯一的
+- 这里使用了一个特殊语法：`:key=""` 它可以让你读取vue中的属性，并赋值给key属性
+- 这里我们绑定的key是女神的名称，就目前数据来看名称是唯一的
 
 
 
-### v-if和v-show
+[用 key 管理可复用的元素](https://v2.cn.vuejs.org/v2/guide/conditional.html#%E7%94%A8-key-%E7%AE%A1%E7%90%86%E5%8F%AF%E5%A4%8D%E7%94%A8%E7%9A%84%E5%85%83%E7%B4%A0)
+
+
+
+## v-if和v-show
 
 
 
 v-if，顾名思义，条件判断。当得到结果为true时，所在的元素才会被渲染。
 
-> 语法：`v-if="布尔表达式"`，`v-show="布尔表达式"`
+语法：`v-if="变量名|布尔表达式"`，`v-show="变量名|布尔表达式"`
 
 
 
@@ -953,7 +997,7 @@ js：
 
 
 
-#### 与v-for结合
+### 与v-for结合
 
 当v-if和v-for出现在一起时，v-for优先级更高。也就是说，会先遍历，再判断条件。
 
@@ -967,9 +1011,9 @@ js：
 
 
 
-#### v-else和v-else-if
+### v-else和v-else-if
 
-你可以使用 `v-else` 指令来表示 `v-if` 的“else 块”：
+你可以使用 `v-else` 指令来表示 `v-if` 的 else 块：
 
 ```html
 <button @click="num=Math.random()">点击生成随机数</button>
@@ -983,9 +1027,9 @@ js：
 
 `v-else` 元素也必须紧跟在带 `v-if` 或者 `v-else-if` 的元素的后面，否则它将不会被识别。
 
-错误示例：
 
-<del>
+
+*错误示例：*
 
 ```html
 <button @click="num=Math.random()">点击生成随机数</button>
@@ -996,13 +1040,11 @@ js：
 <p v-else>小于0.5</p>
 ```
 
-</del>
 
 
+## v-bind
 
-### v-bind
-
-html属性不能使用双大括号形式绑定，只能使用v-bind指令。
+v-bind指令可能动态地为html标签绑定一个或多个属性
 
 上面在遍历显示女神时，图片的src属性就用的是v-bind
 
@@ -1016,13 +1058,9 @@ html属性不能使用双大括号形式绑定，只能使用v-bind指令。
 
 
 
-#### 绑定class样式
-
-> 数组语法
+### 绑定class样式
 
 我们可以借助于`v-bind`指令来实现：
-
-HTML：
 
 ```html
 <div id="app">
@@ -1048,15 +1086,13 @@ HTML：
 
 
 
-> 对象语法
-
 我们可以传给 `v-bind:class` 一个对象，以动态地切换 class：
 
 ```html
 <div v-bind:class="{ active: isActive }"></div>
 ```
 
-上面的语法表示 `active` 这个 **class 存在与否将取决于数据属性 `isActive`** 的 [truthiness](https://developer.mozilla.org/zh-CN/docs/Glossary/Truthy)（所有的值都是真实的，除了false,0,“”,null,undefined和NaN）。
+上面的语法表示 `active` 这个 **class 存在与否将取决于数据属性 `isActive`** 的 [truthiness](https://developer.mozilla.org/zh-CN/docs/Glossary/Truthy) ，被定义为 [假值](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy) 以外的任何值都为真值。（即所有除 `false`、`0`、`-0`、`0n`、`""`、`null`、`undefined` 和 `NaN` 以外的皆为真值）。
 
 你可以在对象中传入更多属性来动态切换多个 class。此外，`v-bind:class` 指令也可以与普通的 class 属性共存。如下模板:
 
@@ -1065,10 +1101,10 @@ HTML：
 </div>
 ```
 
-和如下 data：
+如下 data：
 
-```js
-data: {
+```json
+{
   isActive: true,
   hasError: false
 }
@@ -1084,7 +1120,7 @@ active样式和text-danger样式的存在与否，取决于isActive和hasError�
 
 
 
-#### 绑定style样式
+### 绑定style样式
 
 > 数组语法
 
@@ -1134,15 +1170,7 @@ data: {
 
 
 
-#### 简写
-
-> 例
-
-`v-bind:属性名`可以简写为`:属性名`
-
-
-
-### 计算属性
+## 计算属性
 
 在插值表达式中使用js表达式是非常方便的，而且也经常被用到。
 
@@ -1167,39 +1195,35 @@ data:{
 
 Vue中提供了计算属性，来替代复杂的表达式：
 
-```javascript
-var vm = new Vue({
-    el:"#app",
-    data:{
-        birthday:880905600000 // 毫秒值
-    },
-    computed:{
-        birth(){// 计算属性本质是一个方法，但是必须返回结果
-            const d = new Date(this.birthday);
-            return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay();
-        }
-    }
-})
-```
-
-html：
-
 ```html
-<h2>计算属性</h2>
-<p>生日为：{{birth}}</p>
+<h1>您的生日是：{{birth}}</h1>
+
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            birthday:880905600000 // 毫秒值
+        },
+        computed:{
+            birth(){
+                // 计算属性本质是一个方法，但是必须返回结果
+                const d = new Date(this.birthday);
+                return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay();
+            }
+        }
+    })
+</script>
 ```
 
+我们可以将同一函数定义为一个方法而不是一个计算属性。两种方式的最终结果会完全相同。
+
+然而，不同的是 **计算属性是基于它们的依赖进行缓存的** 。计算属性只有在它的相关依赖发生改变时才会重新求值。这就意味着只要 `birthday` 还没有发生改变，多次访问 `birthday` 计算属性会立即返回之前的计算结果，而不必再次执行函数。 
 
 
-我们可以将同一函数定义为一个方法而不是一个计算属性。两种方式的最终结果确实是完全相同的。然而，不同的是**计算属性是基于它们的依赖进行缓存的**。计算属性只有在它的相关依赖发生改变时才会重新求值。这就意味着只要`birthday`还没有发生改变，多次访问 `birthday` 计算属性会立即返回之前的计算结果，而不必再次执行函数。 
 
+## watch
 
-
-### watch
-
-watch可以让我们监控一个值的变化。从而做出相应的反应。
-
-示例：
+watch可以让我们监控一个值的变化
 
 ```html
 <div id="app">
@@ -1225,13 +1249,15 @@ watch可以让我们监控一个值的变化。从而做出相应的反应。
 
 ![20191201193624](https://cdn.tencentfs.clboy.cn/images/2021/20210911203223741.gif)
 
+
+
 ## 组件化
 
 在大型应用开发的时候，页面可以划分成很多部分。往往不同的页面，也会有相同的部分。例如可能会有相同的头部导航。
 
 但是如果每个页面都独自开发，这无疑增加了我们开发的成本。所以我们会把页面的不同部分拆分成独立的组件，然后在不同页面就可以共享这些组件，避免重复开发。
 
-在vue里，所有的vue实例都是组件
+在Vue里，所有的Vue实例都是组件
 
 
 
@@ -1239,10 +1265,10 @@ watch可以让我们监控一个值的变化。从而做出相应的反应。
 
 我们通过Vue的component方法来定义一个全局组件。
 
-我们创建`part.js`文件，文件内容：
+我们创建 `part.js` 文件，文件内容：
 
 ```js
-// 定义全局组件，两个参数：1，组件名称。2，组件参数
+// 定义全局组件，两个参数：1，组件名称。2，组件参数对象
 Vue.component("common", {
     template: `
         <button @click="add">点了我 {{count}} 次</button>
@@ -1260,7 +1286,7 @@ Vue.component("common", {
 })
 ```
 
-然后在页面引入该js，注意在引入vue的后面
+然后在页面引入该js，注意在引入Vue的后面
 
 ```html
 <!-- 引入vue -->
@@ -1278,12 +1304,10 @@ Vue.component("common", {
 ```
 
 - 组件其实也是一个Vue实例，因此它在定义时也会接收：data、methods、生命周期函数等
-- 不同的是组件不会与页面的元素绑定，否则就无法复用了，因此没有el属性。
+- 不同的是，组件不会与页面的元素绑定，否则就无法复用了，因此没有el属性。
 - 但是组件渲染需要html模板，所以增加了template属性，值就是HTML模板
-- 全局组件定义完毕，任何vue实例都可以直接在HTML中通过组件名称来使用组件了。
+- 全局组件定义完毕，任何Vue实例都可以直接在HTML中通过组件名称来使用组件了。
 - data必须是一个函数，不再是一个对象，在该函数中返回数据对象。
-
-
 
 ### 组件的复用
 
@@ -1313,7 +1337,7 @@ data: {
 }
 ```
 
-取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例的data都是由函数返回的全新对象
 
 ```js
 data: function () {
@@ -1333,61 +1357,58 @@ data: function () {
 
 因此，对于一些并不频繁使用的组件，我们会采用局部注册。
 
-我们先在外部定义一个对象，结构与创建全局组件时传递的第二个参数一致
-
 然后在Vue中使用它：
 
 ```javascript
-    <script>
-        const year = new Date().getFullYear();
-        const localPart = {
-            template: '<button @click="add">点了我 {{count}} 次</button>',
-            data() {
-                return {
-                    count: 0
-                }
-            },
-            methods: {
-                add() {
-                    this.count++
-                }
-            }
-        };
-        // 创建vue实例
-        var app = new Vue({
-            el: "#app", // el即element，该vue实例要渲染的页面元素
-            components: {
-                localPart: localPart // 将定义的对象注册为组件
-            }
-        });
+const year = new Date().getFullYear();
+const localPart = {
+    template: '<button @click="add">点了我 {{count}} 次</button>',
+    data() {
+        return {
+            count: 0
+        }
+    },
+    methods: {
+        add() {
+            this.count++
+        }
+    }
+};
+// 创建vue实例
+var app = new Vue({
+    el: "#app", // el即element，该vue实例要渲染的页面元素
+    components: {
+        localPart: localPart // 将定义的对象注册为组件
+    }
+});
 ```
 
 
 
-- components就是当前vue对象子组件集合。
+- components属性就是当前Vue对象子组件集合。
   - 其key就是子组件名称
-  - 其值就是组件对象名
+  - 其值就是组件选项对象
 - 效果与刚才的全局注册是类似的，不同的是，这个组件只能在当前的Vue实例中使用
 
 
 
-然后刷新页面，发现神么也没！！！
+然后刷新页面，却发现组件并没有正确显示
 
-![9150e4e5gy1fygz1imng5j205905fwed](http://ww1.sinaimg.cn/large/9150e4e5gy1fygz1imng5j205905fwed.jpg)
+来，我们F12看一下页面元素，发现直接显示了名为 `localPart` 的标签，这个貌似是组件名，但是全部是小写
 
-来，我们F12试一试，看到了什么，我的P是大大的P，这个p是小p，原来是大小写的问题，html渲染时会转为小写
+ 原来是大小写的问题，html渲染时会转为小写
 
 ![1575202218857](https://cdn.tencentfs.clboy.cn/images/2021/20210911203220319.png)
 
-> 解决方法：使用驼峰命名
 
-改标签
+
+改标签，不使用驼峰命名，不同单词使用 `-` 分隔
 
 ```html
 <local-part></local-part>
 ```
 
-或者直接改注册组件名
+或者直接改注册组件名，使用小写
 
 ```javascript
 components: {
@@ -1401,9 +1422,9 @@ components: {
 
 !> 组件模板(template)只能有一个顶级标签
 
-> 错误示范：
+> *错误示范*：
 
-<del>
+
 
 ```javascript
     template: `
@@ -1411,8 +1432,6 @@ components: {
 			<p>哈哈哈哈</p>
     `,
 ```
-
-</del>
 
 > 正确写法，使用一个标签包裹起来
 
@@ -1445,10 +1464,10 @@ components: {
 
 ### props（父向子传递）
 
-1. 父组件使用子组件时，自定义属性（属性名任意，属性值为要传递的数据）
-2. 子组件通过props接收父组件数据，通过自定义属性的属性名
+1. 在使用子组件时，可以自定义属性（属性名任意，属性值为要传递的数据）
+2. 子组件通过props选项接收父组件数据，props为数组类型时，每一项为要接收的属性名
 
-> 例，修改开始的全局组件
+
 
 在使用组件的时候给组件传递message参数
 
@@ -1492,6 +1511,10 @@ Vue.component("common", {
 
 ![1575204773127](https://cdn.tencentfs.clboy.cn/images/2021/20210911203220636.png)
 
+一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。在上述模板中，你会发现我们能够在组件实例中访问这个值，就像访问 `data` 中的值一样。
+
+
+
 ### props验证
 
 我们定义一个局部组件，并接收复杂数据：
@@ -1512,16 +1535,17 @@ const userList = {
 };
 ```
 
-- 这个子组件可以对 items 进行迭代，并输出到页面。
-- props：定义需要从父组件中接收的属性
-  - users：是要接收的属性名称
-    - type：限定父组件传递来的必须是数组
-    - default：默认值
-    - required：是否必须
+这个子组件可以对 users 数组进行迭代，并输出到页面。
+
+props：定义需要从父组件中接收的属性，值为对象类型，对象的key为要接收的属性名称，值为对即将传递过来的属性值的约束
+- users：是要接收的属性名称
+  - type：限定父组件传递来的必须是数组
+  - default：默认值
+  - required：是否必须
 
 **当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。** 
 
-我们在父组件中使用它，我们把在学习 [v-for](#v-for)时定义的女神数组传过去：
+我们在父组件中使用它，我们把在学习  [v-for](#v-for) 时定义的女神数组传过去：
 
 ```javascript
 components: {
@@ -1536,7 +1560,7 @@ components: {
 </div>
 ```
 
-
+上面自定义属性以冒号开头，也就是说使用了 `v-bind` 指令，这属于动态传递参数
 
 测试将参数改为非数组类型
 
@@ -1586,7 +1610,7 @@ components: {
 
 
 
-### 子向父的通信：$emit
+### 子向父的通信($emit)
 
 来看这样的一个案例：
 
@@ -1598,13 +1622,14 @@ components: {
 </div>
 <script src="./node_modules/vue/dist/vue.js"></script>
 <script type="text/javascript">
-        const testPart = {// 子组件，定义了两个按钮，点击数字num会加或减
+   		// 子组件，定义了两个按钮，点击数字num会加或减
+        const testPart = {
         template: '\
         <div>\
             <button @click="num++">加</button>  \
             <button @click="num--">减</button>  \
         </div>',
-        props: ['num']// count是从父组件获取的。
+        props: ['num']
     };
     var app = new Vue({
         el:"#app",
@@ -1627,7 +1652,7 @@ components: {
 
 ![1575207152210](https://cdn.tencentfs.clboy.cn/images/2021/20210911203220927.png)
 
-子组件接收到父组件属性后，默认是不允许修改的。怎么办？
+子组件接收到传递过来的属性后，默认是不允许修改的。怎么办？
 
 既然只有父组件能修改，那么加和减的操作一定是放在父组件：
 
@@ -1650,7 +1675,7 @@ var app = new Vue({
 
 但是，点击按钮是在子组件中，那就是说需要子组件来调用父组件的函数，怎么做？
 
-我们可以**通过v-on指令将父组件的函数绑定到子组件**上：
+我们可以 **通过v-on指令将父组件的函数绑定到子组件** 上：
 
 ```html
 <!--使用子组件的时候，传递事件到子组件中-->
@@ -1678,7 +1703,7 @@ const testPart = {// 子组件，定义了两个按钮，点击数字num会加�
 };
 ```
 
-vue提供了一个内置的this.$emit()函数，用来调用父组件绑定的函数，可以传递参数
+Vue提供了一个内置的this.$emit()函数，用来调用父组件绑定的函数，可以传递参数
 
 > this.$emit('函数名',参数......)
 
@@ -1686,7 +1711,9 @@ vue提供了一个内置的this.$emit()函数，用来调用父组件绑定的�
 
 ![20191201215008](https://cdn.tencentfs.clboy.cn/images/2021/20210911203224324.gif)
 
-## 路由vue-router
+
+
+## 路由Vue-router
 
 ### 场景模拟
 
@@ -1832,7 +1859,7 @@ const registerForm = {
 
 
 
-### vue-router简介和安装
+### vue-router
 
 使用vue-router和vue可以非常方便的实现 复杂单页应用的动态路由功能。
 
@@ -1852,8 +1879,6 @@ const registerForm = {
 ```
 
 
-
-### 快速入门
 
 新建vue-router对象，并且指定路由规则：
 

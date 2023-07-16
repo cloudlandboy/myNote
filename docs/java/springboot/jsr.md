@@ -110,6 +110,10 @@ public class UserDTO {
 
 
 
+## @Valid注解
+
+在Spring Boot中，`@Valid`注解是用于在方法参数、方法返回值或方法参数的字段上执行验证的注解。它是JSR-303（Bean验证）规范的一部分，用于验证输入参数的有效性。
+
 ```java
 @RestController
 @RequestMapping("/users")
@@ -647,6 +651,79 @@ public class UserDTO{
 ```
 
 
+
+## 非controller类中使用
+
+大部分情况下的校验都是在contrller中进行的，一般都是在contrller方法参数上使用 `@Validated` 或 `@Valid` 注解表明需要校验 
+
+[@Validated和@Valid区别](https://blog.csdn.net/qq_27680317/article/details/79970590)
+
+有些时候可能要在其他地方进行校验，必须Service相互调用时，在service层校验方法入参、项目启动时校验配置类属性注入，这个时候就要使用
+
+`@Validated` 注解，将该注解标注在类上，就如同 `@Transactional` 注解一样，springboot会为这些方法进行切面处理
+
+
+
+**属性配置类中使用**
+
+```java
+@Data
+@Validated
+@ConfigurationProperties(prefix = "xxx")
+public class XxxApiProperties {
+
+    /**
+     * 网关
+     */
+    @Size(max = 64,message = "网关长度不能超过1")
+    private String gateway;
+}
+```
+
+
+
+**Service相互调用使用**
+
+1. 需要再类上添加 `@Validated` 注解
+
+2. 在方法参数上必须使用 `@Valid` 注解，使用 `@Validated` 无效
+
+   ```java
+   @Service
+   @Validated
+   public class UserService {
+   
+       public void saveUser(@Valid UserDTO dto) {
+           System.out.println("save user success");
+       }
+   }
+   
+   
+   /**
+    * 用户服务测试
+    *
+    * @author clboy
+    * @date 2023/06/05 16:24:12
+    */
+   @SpringBootTest
+   class UserServiceTest {
+   
+       @Autowired
+       private UserService userService;
+   
+       @Test
+       public void test() {
+           UserDTO dto = new UserDTO();
+           dto.setProvince("1");
+           dto.setUsername("张三");
+           dto.setGender("1");
+           dto.setAge(15);
+           userService.saveUser(dto);
+       }
+   }
+   ```
+
+   
 
 
 
