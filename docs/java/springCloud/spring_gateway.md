@@ -398,6 +398,64 @@ Spring Cloud Gateway 中内置了以下谓词工厂：
 
 这是因为它们都实现了 `org.springframework.cloud.gateway.handler.predicate.RoutePredicateFactory` 接口
 
+```java
+public interface RoutePredicateFactory<C> extends ShortcutConfigurable, Configurable<C> {
+
+	Predicate<ServerWebExchange> apply(C config);
+
+}
+```
+
+接口的泛型表示配置类，可以是任意类型
+
+假设现在有这样一个需求：某个路由限制只有6:00~23:00这段时间内可以访问
+
+也就是说要实现一个类似BetweenRoutePredicateFactory的谓词工厂
+
+1. 首先创建一个类实现 `RoutePredicateFactory` 接口，由于spring cloud gateway提供了一个抽象类，我们可以继承它
+
+   ```java
+   package cn.clboy.scg.gateway.predicate;
+   
+   import lombok.Data;
+   import org.springframework.cloud.gateway.handler.predicate.AbstractRoutePredicateFactory;
+   import org.springframework.web.server.ServerWebExchange;
+   
+   import java.time.LocalTime;
+   import java.util.function.Predicate;
+   
+   public class TimeBetweenRoutePredicateFactory extends AbstractRoutePredicateFactory<TimeBetweenRoutePredicateFactory.Config> {
+   
+   
+       public TimeBetweenRoutePredicateFactory() {
+           super(Config.class);
+       }
+   
+       @Override
+       public Predicate<ServerWebExchange> apply(Config config) {
+           return () -> {
+               LocalTime now = LocalTime.now();
+               return now.isAfter(config.getStart()) && now.isBefore(config.getEnd());
+           };
+       }
+   
+       @Data
+       public static class Config {
+           private LocalTime start;
+           private LocalTime end;
+       }
+   }
+   
+   ```
+
+2. 然后将实例对象注入的spring容器中，可以使用 `@Component` 、 `@Bean` 等注解方式
+
+3. 
+
+   
+
+
+
 
 
 
