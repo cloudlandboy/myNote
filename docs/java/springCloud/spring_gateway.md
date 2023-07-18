@@ -3,6 +3,8 @@
 > spring cloud gatewa 是spring cloud 的第二代网关(第一代是zull)
 >
 > 基于Netty、reactor及Webflux构建，由于它不是Servlet编程模型，所以不能在Servlet容器下工作，也不能构建成war包
+>
+> 参考：https://www.itmuch.com/spring-cloud-gateway/route-predicate-factory/
 
 
 
@@ -450,27 +452,539 @@ public interface RoutePredicateFactory<C> extends ShortcutConfigurable, Configur
 
 2. 然后将实例对象注入的spring容器中，可以使用 `@Component` 、 `@Bean` 等注解方式
 
-3. 
+3. 配置文件
+
+   ```yaml
+   spring:
+     cloud:
+       gateway:
+         routes:
+           - id: baidu
+             uri: https://www.baidu.com
+             predicates:
+               - name: TimeBetween
+                 args:
+                   start: "06:00"
+                   end: "23:00"
+   ```
+
+   这样配置后会发现启动报错，报错内容是无法将字符串转换为 `LocalTime`
+
+   因为默认的格式不是 `HH:mm:ss` ，我们可以使用注解指定格式
+
+   ```java
+   @Data
+   public static class Config {
+   
+       @DateTimeFormat(pattern = "HH:mm")
+       private LocalTime start;
+   
+       @DateTimeFormat(pattern = "HH:mm")
+       private LocalTime end;
+   }
+   ```
+
+   也可以配置全局日期和时间格式 ，参考：
+
+   https://docs.spring.io/spring-framework/docs/5.3.27/reference/html/core.html#format-configuring-formatting-globaldatetimeformat
+
+   
+
+4. 要像其他谓词工厂一样配置在一行，需要实现接口的 `shortcutFieldOrder` 方法指定参数顺序
+
+   ```yaml
+   spring:
+     cloud:
+       gateway:
+         routes:
+           - id: baidu
+             uri: https://www.baidu.com
+             predicates:
+               - TimeBetween=22:00,23:00
+   ```
+
+   
+
+   ```java
+   @Component
+   public class TimeBetweenRoutePredicateFactory extends AbstractRoutePredicateFactory<TimeBetweenRoutePredicateFactory.Config> {
+   
+       //...
+       
+       @Override
+       public List<String> shortcutFieldOrder() {
+           return Arrays.asList("start", "end");
+       }
+       
+       //...
+   }
+   ```
 
    
 
 
 
+## 路由到微服务
+
+前面我们都是路由到第三方网站作测试，如果要路由到微服务，则uri写成这个格式：`lb://服务id`
+
+引入注册中心 `nacos` 和负载均衡 `loadbalancer` 组件
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-gateway</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+    </dependency>
+</dependencies>
+```
+
+```yaml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:12008
+    gateway:
+      routes:
+        - id: serviceA
+          uri: lb://service-a
+          predicates:
+            - Path=/**
+  application:
+    name: gateway
+```
 
 
 
 
-## 过滤器工厂
+
+## 路由过滤器工厂
+
+路由过滤器中可以对请求和响应作一些修改，spring cloud gateway的路由过滤器工厂需要实现 `GatewayFilterFactory<C> ` 接口，和谓词工厂类似，泛型是配置类，其还提供了 `AbstractGatewayFilterFactory` 、`AbstractNameValueGatewayFilterFactory` 抽象类供使用
+
+spring cloud gateway内置了很多路由过滤器工厂，具体可参考 [官方文档](https://docs.spring.io/spring-cloud-gateway/docs/3.1.8/reference/html/#gatewayfilter-factories) ，这里只拿几个举例
 
 
 
-### 自定义
+### AddRequestHeaderGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: add_request_header_route
+        uri: https://example.org
+        filters:
+        - AddRequestHeader=X-Request-Foo, Bar
+```
+
+为原始请求添加名为 `X-Request-Foo` ，值为 `Bar` 的请求头。
+
+### AddRequestParameterGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: add_request_parameter_route
+        uri: https://example.org
+        filters:
+        - AddRequestParameter=foo, bar
+```
+
+为原始请求添加请求参数 `foo=bar`
+
+
+
+### AddResponseHeaderGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: add_response_header_route
+        uri: https://example.org
+        filters:
+        - AddResponseHeader=X-Response-Foo, Bar
+```
+
+添加名为 `X-Request-Foo` ，值为 `Bar` 的响应头。
+
+
+
+
+
+### PrefixPathGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefixpath_route
+        uri: https://example.org
+        filters:
+        - PrefixPath=/mypath
+```
+
+为匹配的路由添加前缀。例如：访问`${GATEWAY_URL}/hello` 会转发到`https://example.org/mypath/hello` 。
+
+
+
+
+
+### StripPrefixGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: nameRoot
+        uri: http://nameservice
+        predicates:
+        - Path=/name/**
+        filters:
+        - StripPrefix=2
+```
+
+数字表示要截断的路径的数量。如上配置，如果请求的路径为 `/name/bar/foo` ，则路径会修改为`/foo` ，也就是会截断2个路径。
+
+
+
+### RequestSizeGatewayFilterFactory
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: request_size_route
+      uri: http://localhost:8080/upload
+      predicates:
+      - Path=/upload
+      filters:
+      - name: RequestSize
+        args:
+          # 单位字节
+          maxSize: 5000000
+```
+
+为后端服务设置收到的最大请求包大小。如果请求大小超过设置的值，则返回 `413 Payload Too Large` 。默认值是5M
+
+
+
+### Default Filters
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      default-filters:
+      - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+      - PrefixPath=/httpbin
+```
+
+如果你想为所有路由添加过滤器，可使用该属性。
+
+
+
+
+
+### 过滤器生命周期
+
+pre：Gateway转发请求之前
+
+post：Gateway转发请求之后
+
+
+
+### 核心API
+
+- 修改request：exchange.getRequest().mutate().xxx
+- 修改exchange：exchange.mutate().xxx
+- 传递给下一个过滤器处理：chain.filter(exchange)
+- 拿到响应：exchange.getResponse()
+
+
+
+### 自定义过滤器工厂
+
+实现一个打印请求及响应的一些信息
+
+```java
+@Slf4j
+@Component
+public class PrintLogGatewayFilterFactory extends AbstractNameValueGatewayFilterFactory {
+
+    @Override
+    public GatewayFilter apply(NameValueConfig config) {
+        return (exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
+            log.info("请求路径：{}，查询参数：{}", request.getPath(), request.getQueryParams());
+
+            //等待请求完成再打印响应信息
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                log.info("响应contentType，{}", exchange.getResponse().getHeaders().getContentType());
+            }));
+        };
+    }
+}
+```
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/**
+          filters:
+            - PrintLog=a,b
+```
+
+
 
 
 
 ## 全局过滤器
 
+全局过滤器需要实现 `org.springframework.cloud.gateway.filter.GlobalFilter` 接口
+
+`GlobalFilter` 会作用于所有路由
+
+当请求到来时，`Filtering Web Handler` 处理器会添加所有 `GlobalFilter` 实例和匹配的 `GatewayFilter` 实例到过滤器链中。
+
+过滤器链会使用 `org.springframework.core.Ordered` 注解所指定的顺序，进行排序。Spring Cloud Gateway区分了过滤器逻辑执行的 `pre` 和 `post` 阶段，所以优先级高的过滤器将会在pre阶段最先执行，优先级最低的过滤器则在post阶段最后执行。
+
+?-> 数值越小越靠前执行
+
+示例代码：
+
+```
+@Bean
+@Order(-1)
+public GlobalFilter a() {
+    return (exchange, chain) -> {
+        log.info("first pre filter");
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            log.info("third post filter");
+        }));
+    };
+}
+
+@Bean
+@Order(0)
+public GlobalFilter b() {
+    return (exchange, chain) -> {
+        log.info("second pre filter");
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            log.info("second post filter");
+        }));
+    };
+}
+
+@Bean
+@Order(1)
+public GlobalFilter c() {
+    return (exchange, chain) -> {
+        log.info("third pre filter");
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            log.info("first post filter");
+        }));
+    };
+}
+```
+
+执行结果：
+
+```
+first pre filter
+second pre filter
+third pre filter
+first post filter
+second post filter
+third post filter
+```
+
+### ForwardRoutingFilter
+
+`ForwardRoutingFilter` 会查看exchange的属性 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 的值（一个URI），如果该值l的scheme是 `forward`，比如：`forward://localendpoint`，则它会使用Spirng的`DispatcherHandler` 处理该请求。请求URL的路径部分，会被forward URL中的路径覆盖。未修改的原始URL，会被追加到 `ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR` 属性中。
+
+?-> 这段文档太学术了，讲解了`ForwardRoutingFilter` 的实现原理，对使用者来说，意义不大；对使用者来说，只要知道这个Filter是用来做本地forward就OK了。如对原理感兴趣的，建议直接研究源码，源码比官方文档好理解。
+
+
+
+### ReactiveLoadBalancerClientFilter
+
+`ReactiveLoadBalancerClientFilter` 会查看exchange的属性 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 的值（一个URI），如果该值的scheme是 `lb`，比如：`lb://myservice` ，它将会使用Spring Cloud的`LoadBalancerClient` 来将 `myservice` 解析成实际的host和port，并替换掉 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 的内容。原始地址会追加到 `ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR` 中。该过滤器还会查看 `ServerWebExchangeUtils.GATEWAY_SCHEME_PREFIX_ATTR` 属性，如果发现该属性的值是 `lb` ，也会执行相同逻辑。
+
+示例：
+
+```
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: myRoute
+        uri: lb://service
+        predicates:
+        - Path=/service/**
+```
+
+> 默认情况下，如果无法在 `LoadBalancer` 找到指定服务的实例，那么会返回503（对应如上的例子，找不到service实例，就返回503）；可使用 `spring.cloud.gateway.loadbalancer.use404=true` 让其返回404。
+
+> `LoadBalancer` 返回的 `ServiceInstance` 的 `isSecure` 的值，会覆盖请求的scheme。举个例子，如果请求打到Gateway上使用的是 `HTTPS` ，但 `ServiceInstance` 的 `isSecure` 是false，那么下游收到的则是HTTP请求，反之亦然。然而，如果该路由指定了 `GATEWAY_SCHEME_PREFIX_ATTR` 属性，那么前缀将会被剥离，并且路由URL中的scheme会覆盖 `ServiceInstance` 的配置
+
+
+
+### NettyRoutingFilter
+
+如果 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 的值的scheme是 `http` 或 `https` ，则运行Netty Routing Filter 。它使用Netty `HttpClient` 向下游发送代理请求。获得的响应将放在exchange的 `ServerWebExchangeUtils.CLIENT_RESPONSE_ATTR` 属性中，以便在后面的filter中使用。（有一个实验性的过滤器： `WebClientHttpRoutingFilter` 可实现相同功能，但无需Netty）
+
+### NettyWriteResponseFilter
+
+如果exchange中的 `ServerWebExchangeUtils.CLIENT_RESPONSE_ATTR` 属性中有 `HttpClientResponse` ，则运行 `NettyWriteResponseFilter` 。该过滤器在所有其他过滤器执行完成后执行，并将代理响应协会网关的客户端侧。（有一个实验性的过滤器： `WebClientWriteResponseFilter` 可实现相同功能，但无需Netty）
+
+### RouteToRequestUrl Filter
+
+如果exchange中的 `ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR` 属性中有一个 `Route` 对象，则运行 `RouteToRequestUrlFilter` 。它根据请求URI创建一个新URI，但会使用该 `Route` 对象的URI属性进行更新。新URI放到exchange的 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 属性中。
+
+如果URI具有scheme前缀，例如 `lb:ws://serviceid` ，该 `lb` scheme将从URI中剥离，并放到 `ServerWebExchangeUtils.GATEWAY_SCHEME_PREFIX_ATTR` 中，方便后面的过滤器使用。
+
+### WebsocketRoutingFilter
+
+如果exchange中的 `ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR` 属性的值的scheme是 `ws`或者 `wss` ，则运行Websocket Routing Filter。它底层使用Spring Web Socket将Websocket请求转发到下游。
+
+可为URI添加 `lb` 前缀实现负载均衡，例如 `lb:ws://serviceid` 。
+
+> 如果你使用 [SockJS](https://github.com/sockjs) 所谓普通http的后备，则应配置正常的HTTP路由以及Websocket路由。
+
+```
+spring:
+  cloud:
+    gateway:
+      routes:
+      # SockJS route
+      - id: websocket_sockjs_route
+        uri: http://localhost:3001
+        predicates:
+        - Path=/websocket/info/**
+      # Normwal Websocket route
+      - id: websocket_route
+        uri: ws://localhost:3001
+        predicates:
+        - Path=/websocket/**
+```
+
+### GatewayMetricsFilter
+
+要启用Gateway Metrics，需添加 `spring-boot-starter-actuator` 依赖。然后，只要`spring.cloud.gateway.metrics.enabled` 的值不是false，就会运行Gateway Metrics Filter。此过滤器添加名为 `gateway.requests` 的时序度量（timer metric），其中包含以下标记：
+
+- `routeId`：路由ID
+- `routeUri`：API将路由到的URI
+- `outcome`：由 [HttpStatus.Series](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.Series.html) 分类
+- `status`：返回给客户端的Http Status
+- `httpStatusCode`：返回给客户端的请求的Http Status
+- `httpMethod`：请求所使用的Http方法
+
+这些指标暴露在 `/actuator/metrics/gateway.requests` 端点中，并且可以轻松与Prometheus整合，从而创建一个 [Grafana](https://cloud.spring.io/spring-cloud-gateway/reference/html/images/gateway-grafana-dashboard.jpeg) [dashboard](https://cloud.spring.io/spring-cloud-gateway/reference/html/gateway-grafana-dashboard.json) 。
+
+### Marking An Exchange As Routed
+
+在网关路由 `ServerWebExchange` 后，它将通过在exchange添加一个 `gatewayAlreadyRouted` 属性，从而将exchange标记为 `routed` 。一旦请求被标记为 `routed` ，其他路由过滤器将不会再次路由请求，而是直接跳过。您可以使用便捷方法将exchange标记为 `routed` ，或检查exchange是否是 `routed` 。
+
+- `ServerWebExchangeUtils.isAlreadyRouted` 检查是否已被路由
+- `ServerWebExchangeUtils.setAlreadyRouted` 设置routed状态
+
+?-> 简单来说，就是网关通过 `gatewayAlreadyRouted` 属性表示这个请求已经转发过了，而无需其他过滤器重复路由。从而防止重复的路由操作。
+
 
 
 ## 过滤器执行顺序
 
+全局过滤器根据order排序，值越小越先执行
+
+路由过滤器也有order，默认order值为配置的顺序从1开始递增
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/**
+          filters:
+            - AddRequestParameter=a,b # 1
+            - PrintLog=a,b # 2
+            - AddRequestHeader=a,b # 3
+```
+
+也可以创建过滤器时使用 `OrderedGatewayFilter` 包装
+
+```java
+@Slf4j
+@Component
+public class PrintLogGatewayFilterFactory extends AbstractNameValueGatewayFilterFactory {
+
+    @Override
+    public GatewayFilter apply(NameValueConfig config) {
+        return new OrderedGatewayFilter((exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
+            log.info("请求路径：{}，查询参数：{}", request.getPath(), request.getQueryParams());
+
+            //等待请求完成再打印响应信息
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                log.info("响应contentType，{}", exchange.getResponse().getHeaders().getContentType());
+            }));
+        }, 1);
+    }
+}
+```
+
+当配置了 default filters 时拥有相同排序值的default-filters会先执行
+
+```yaml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: server-addr:127.0.0.1:12008
+        username: nacos
+        password: nacos
+    gateway:
+      routes:
+        - id: baidu
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/**
+          filters:
+            - AddRequestParameter=a,b # 1
+            - PrintLog=a,b # 2
+            - AddRequestHeader=a,b # 3
+      default-filters:
+        - SetRequestHeader=x,y # 1
+        - AddResponseHeader=x,y # 2
+```
+
+以上的执行顺序：SetRequestHeader>AddRequestParameter>AddResponseHeader>>PrintLog>AddRequestHeader
