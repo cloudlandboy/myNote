@@ -8,6 +8,7 @@
   - [Spring Boot](java/springboot/_sidebar.md)
   - [Spring Cloud](java/springCloud/_sidebar.md)
   - [Spring Security](java/spring_security/_sidebar.md)
+  - [spring5底层原理](java/spring5_source_code/_sidebar.md)
   - [解决跨域](java/cross_domain/_sidebar.md)
   - [实时消息推送](java/message_push/_sidebar.md)
   - [Elasticsearch](java/elasticsearch/_sidebar.md)
