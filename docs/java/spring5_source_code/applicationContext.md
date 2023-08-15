@@ -494,3 +494,164 @@ order值越小，优先级越大，就排在更前面
 
 
 
+### ClassPathXml容器
+
+> `ClassPathXmlApplicationContext` ： 基于 classpath 下 xml 格式的配置文件来创建
+
+```java
+public class ApplicationContextDemo {
+
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = 
+            new ClassPathXmlApplicationContext("applicationContextDemo.xml");
+        for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+            System.out.println("Bean定义：" + beanDefinitionName);
+        }
+        System.out.println(context.getBean(Bean2.class).getBean1());
+    }
+
+    static class Bean1 {
+    }
+
+    @Data
+    static class Bean2 {
+        private Bean1 bean1;
+    }
+}
+```
+
+*applicationContextDemo.xml*
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="bean1" class="cn.clboy.springboot.starter.demo.b.ApplicationContextDemo.Bean1"/>
+
+    <bean id="bean2" class="cn.clboy.springboot.starter.demo.b.ApplicationContextDemo.Bean2">
+        <property name="bean1" ref="bean1" />
+    </bean>
+
+</beans>
+```
+
+
+
+
+
+### FileSystemXml容器
+
+> `FileSystemXmlApplicationContext` ：基于磁盘路径下 xml 格式的配置文件来创建
+
+```java
+// 使用相对路径时，相对于模块所在目录
+FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext("磁盘路径");
+```
+
+
+
+### AnnotationConfig容器
+
+> `AnnotationConfigApplicationContext` ：基于注解配置的方式来创建
+
+```java
+private static void testAnnotationConfigApplicationContext() {
+    AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(Config.class);
+    for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+        System.out.println("Bean定义：" + beanDefinitionName);
+    }
+    System.out.println(context.getBean(Bean2.class).getBean1());
+}
+
+@Configuration
+static class Config {
+    @Bean
+    public Bean1 bean1() {
+        return new Bean1();
+    }
+
+    @Bean
+    public Bean2 bean2(Bean1 bean1) {
+        Bean2 bean2 = new Bean2();
+        bean2.setBean1(bean1);
+        return bean2;
+    }
+}
+```
+
+运行后你会发现这个容器会自动调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors()` 方法注册后置处理器
+
+基于xml方式的配置要手动注册这些后置处理器
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- ... -->
+    
+    <context:annotation-config/>
+
+</beans>
+```
+
+
+
+### AnnotationConfigWeb容器
+
+> `AnnotationConfigServletWebServerApplicationContext` ：基于注解配置的web环境容器
+
+```java
+private static void testAnnotationConfigServletWebServerApplicationContext() {
+    AnnotationConfigServletWebServerApplicationContext context =
+            new AnnotationConfigServletWebServerApplicationContext(WebConfig.class);
+    for (String name : context.getBeanDefinitionNames()) {
+        System.out.println(name);
+    }
+}
+
+@Configuration
+static class WebConfig {
+
+    /**
+     * 提供内嵌的 Web 容器
+     */
+    @Bean
+    public ServletWebServerFactory servletWebServerFactory() {
+        return new TomcatServletWebServerFactory();
+    }
+
+    /**
+     * 添加dispatcherServlet
+     */
+    @Bean
+    public DispatcherServlet dispatcherServlet() {
+        return new DispatcherServlet();
+    }
+
+    /**
+     * 将 DispatcherServlet 注册到 Tomcat 服务器
+     */
+    @Bean
+    public DispatcherServletRegistrationBean registrationBean(DispatcherServlet dispatcherServlet) {
+        return new DispatcherServletRegistrationBean(dispatcherServlet, "/");
+    }
+
+    /**
+     * 添加一个Controller 如果bean名称以'/'开头，会将bean的名称作为访问路径
+     */
+    @Bean("/hello")
+    public Controller controller1() {
+        return (request, response) -> {
+            response.getWriter().print("hello");
+            return null;
+        };
+    }
+}
+```
+
