@@ -124,7 +124,7 @@ public class BeanPostProcessApplication {
 
 运行测试代码后，控制台并没有输出Bean1各个生命周期阶段的日志打印，也就是说 `Bean1` 中使用的注解并没有生效
 
-首先，在调用 `refresh` 方法之前像容器中添加 `AutowiredAnnotationBeanPostProcessor` 使 `@Autowired` 注解生效
+首先，在调用 `refresh` 方法之前向容器中添加 `AutowiredAnnotationBeanPostProcessor` 使 `@Autowired` 注解生效
 
 ```java
 context.registerBean(AutowiredAnnotationBeanPostProcessor.class);
@@ -723,5 +723,294 @@ public static void main(String[] args) {
     }
     context.close();
 }
+```
+
+
+
+## Aware接口
+
+spring内置了一些  `Aware ` 类型的接口，这些接口用于在对象创建和初始化过程中注入额外信息，常见的如：
+
+- `BeanNameAware` ：实现这个接口可以让一个 bean 获取到它在 Spring 容器中定义的名字
+- `BeanFactoryAware` ：实现这个接口可以获取到当前Bean所在的 BeanFactory 的引用
+- `ApplicationContextAware` ：实现这个接口可以获取到ApplicationContext 容器
+- `EmbeddedValueResolverAware` ：可以获取到一个 EmbeddedValueResolver 对象的引用，用于解析 `${}` 占位符
+- `MessageSourceAware` ：实现这个接口可以获取到 MessageSource 对象的引用，从而可以方便地获取国际化消息
+
+
+
+```java
+public class AwareTestApp {
+
+    public static void main(String[] args) {
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.registerBean(AwareTestBean.class);
+        context.refresh();
+        context.close();
+    }
+
+    @Slf4j
+    static class AwareTestBean implements BeanNameAware, BeanFactoryAware,
+            ApplicationContextAware, EmbeddedValueResolverAware, MessageSourceAware {
+                
+        private final AtomicInteger step = new AtomicInteger(0);
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            log.info("{}. beanFactory：{}", step.incrementAndGet(), beanFactory);
+        }
+
+        @Override
+        public void setBeanName(String name) {
+            log.info("{}. beanName：{}", step.incrementAndGet(), name);
+        }
+
+        @Override
+        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+            log.info("{}. applicationContext：{}", step.incrementAndGet(), applicationContext);
+        }
+
+        @Override
+        public void setEmbeddedValueResolver(StringValueResolver resolver) {
+            log.info("{}. embeddedValueResolver java.home：{}", step.incrementAndGet(),
+                    resolver.resolveStringValue("${java.home}"));
+        }
+
+        @Override
+        public void setMessageSource(MessageSource messageSource) {
+            log.info("{}. messageSource：{}", step.incrementAndGet(), messageSource);
+        }
+    }
+}
+```
+
+
+
+
+
+## InitializingBean接口
+
+接口是 Spring 框架中的一个回调接口，用于在 bean 实例创建并且属性设置完成后执行一些自定义的初始化逻辑。
+
+通过实现 `InitializingBean` 接口，你可以确保在 bean 的属性都被设置好后，执行一些初始化操作
+
+```java
+static class AwareTestBean implements BeanNameAware, BeanFactoryAware,
+        ApplicationContextAware, EmbeddedValueResolverAware, 
+        MessageSourceAware, InitializingBean {
+   
+	//......
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("{}. InitializingBean.afterPropertiesSet", step.incrementAndGet());
+    }
+}
+```
+
+通过日志输出也可以看到：*当同时实现 `Aware` 接口和 `InitializingBean` 接口时，会先执行 `Aware` 类型接口*
+
+
+
+## DisposableBean接口
+
+ 与 `InitializingBean` 相对应，`DisposableBean` 接口定义了一个方法 `destroy()`，在 bean 销毁之前会被 Spring 容器调用。
+
+你可以在这个方法中执行资源释放、关闭连接等操作
+
+```java
+@Override
+public void destroy() throws Exception {
+	log.info("{}. DisposableBean.destroy", step.incrementAndGet());
+}
+```
+
+
+
+## 接口VS注解
+
+上面所讲的 `Aware` 类型接口的功能可以使用 `@Autowired` 注解实现
+
+`InitializingBean` 和 `DisposableBean` 接口的功能也可以使用 `@PostConstruct` 和 `@PreDestroy` 注解实现
+
+为什么还要使用接口呢？
+
+综合前文所知注解的解析需要使用 Bean 后置处理器，属于拓展功能，而这些接口属于内置功能，不加任何拓展 Spring 就能识别。
+
+在某些情况下，拓展功能会失效，而内置的接口功能不会失效，因此 Spring 框架内部的类常用内置注入和初始化
+
+
+
+### 配置类@Autowired失效
+
+在某些情况下，尽管容器中存在必要的后置处理器，但 @Autowired 和 @PostConstruct 等注解也会失效。
+
+下面这段代码演示的是正常没有失效的情况
+
+```java
+@SpringBootApplication
+public class AutowiredInvalidTestApp {
+
+    public static void main(String[] args) {
+        GenericApplicationContext context = new GenericApplicationContext();
+        AnnotationConfigUtils.registerAnnotationConfigProcessors(context);
+        context.registerBean(Config.class);
+        context.refresh();
+        context.close();
+    }
+
+    @Slf4j
+    @Configuration
+    static class Config {
+        private final AtomicInteger step = new AtomicInteger(0);
+
+        @Autowired
+        public void autowiredMessageSource(MessageSource messageSource) {
+            log.info("{}. Autowired messageSource：{}", step.incrementAndGet(), messageSource);
+        }
+
+        @PostConstruct
+        public void postConstruct() {
+            log.info("{}. postConstruct", step.incrementAndGet());
+        }
+
+        @PreDestroy
+        public void preDestroy() {
+            log.info("{}. preDestroy", step.incrementAndGet());
+        }
+    }
+}
+```
+
+上面代码运行后三个方法都执行了，接下来，我们给配置类添加一个 @Bean方法向容器中注入 `BeanFactoryPostProcessor` 类型实例
+
+```java
+@Bean
+public BeanFactoryPostProcessor bfPostProcessor() {
+    return beanFactory -> {
+        for (String name : beanFactory.getBeanDefinitionNames()) {
+            log.info("=====> {}", name);
+        }
+    };
+}
+```
+
+再运行代码，你会发现之前那三个方法一个都没有执行。
+
+对于 `context.refresh()` 方法来说，它主要按照以下顺序干了三件事：
+
+1. 执行 BeanFactory 后置处理器；
+2. 添加 Bean 后置处理器；
+3. 创建和初始化单例对象。
+
+
+
+当配置类不包含 BeanFactoryPostProcessor 时，初始化流程如下图：
+
+![image-20230818134759124](https://cdn.tencentfs.clboy.cn/images/image-20230818134759124.png)
+
+`BeanFactoryPostProcessor` 会在类创建和初始化之前执行
+
+但配置类中定义了返回值类型为 `BeanFactoryPostProcessor` 的 `@Bean` 方法
+
+要想调用这个方法获取 `BeanFactoryPostProcessor` 就必须先创建配置类对象
+
+这就会导致该配置类在 `BeanPostProcessor` 还没有准备好之前就被初始化了，自然无法解析配置类中的 `@Autowired` 等注解
+
+初始化流程就变成了下图所示：
+
+![image-20230818135942824](https://cdn.tencentfs.clboy.cn/images/image-20230818135942824.png)
+
+但是由上面的两个流程图可以看出，不管什么时候 `Aware` 、`InitializingBean` 这些接口都会被调用
+
+```java
+@Slf4j
+@Configuration
+static class Config implements MessageSourceAware, InitializingBean, DisposableBean {
+
+    //......
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        log.info("{}. MessageSourceAware {}", step.incrementAndGet(), messageSource);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("{}. InitializingBean", step.incrementAndGet());
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        log.info("{}. DisposableBean", step.incrementAndGet());
+    }
+
+}
+```
+
+
+
+### 初始化销毁执行顺序
+
+初始化和销毁 Bean 的实现有三种：
+
+1. 依赖于后置处理器提供的拓展功能：`@PostConstruct` 、`@PreDestroy` 注解
+2. 相关接口的功能：`InitializingBean` 、`DisposableBean`
+3. 使用 `@Bean` 注解中的属性进行指定
+
+当同时存在以上三种方式时，它们的执行顺序也将按照上述顺序进行执行。
+
+```java
+@Configuration
+public class InitDestroyOrderApp {
+
+    public static void main(String[] args) {
+        GenericApplicationContext context = new GenericApplicationContext();
+        AnnotationConfigUtils.registerAnnotationConfigProcessors(context);
+        context.registerBean(InitDestroyOrderApp.class);
+        context.refresh();
+        context.close();
+    }
+
+    @Bean(initMethod = "initMethod", destroyMethod = "destroyMethod")
+    public TestBean testBean() {
+        return new TestBean();
+    }
+
+    @Slf4j
+    static class TestBean implements InitializingBean, DisposableBean {
+        private final AtomicInteger step = new AtomicInteger(0);
+
+        @PostConstruct
+        public void postConstruct() {
+            log.info("{}. postConstruct", step.incrementAndGet());
+        }
+
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            log.info("{}. InitializingBean", step.incrementAndGet());
+        }
+
+        public void initMethod() {
+            log.info("{}. initMethod", step.incrementAndGet());
+        }
+
+        @PreDestroy
+        public void preDestroy() {
+            log.info("{}. preDestroy", step.incrementAndGet());
+        }
+
+        @Override
+        public void destroy() throws Exception {
+            log.info("{}. DisposableBean", step.incrementAndGet());
+        }
+
+        public void destroyMethod() {
+            log.info("{}. destroyMethod", step.incrementAndGet());
+        }
+
+    }
+}
+
 ```
 
