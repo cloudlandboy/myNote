@@ -978,3 +978,1221 @@ public static void main(String[] args) {
 }
 ```
 
+
+
+## Spring Aop
+
+
+
+### Advisor
+
+切面有 `aspect` 和 `advisor` 两个概念
+
+aspect 是多组通知（advice）和切点（pointcut）的组合，也是实际编码时使用的
+
+```java
+@Aspect
+public class TestAspect {
+
+    @Before(value = "execution(* cn.clboy.xxx.echo())")
+    public void before() {
+        System.out.println("before......");
+    }
+
+    @AfterReturning(value = "execution(* cn.clboy.xxx.echo())")
+    public void after() {
+        System.out.println("after......");
+    }
+}
+```
+
+advisor 则是更细粒度的切面，仅包含一个通知和切点，aspect 在生效之前会被拆解成多个 advisor
+
+
+
+### 创建代理
+
+
+
+Spring 中对切点、通知、切面的抽象如下：
+
+![image-20230823103413872](https://cdn.tencentfs.clboy.cn/images/image-20230823103413872.png)
+
+- 切点(Pointcut)：其典型实现是 `AspectJExpressionPointcut`
+- 通知(Advice)：其典型子类接口为 `MethodInterceptor` ，表示环绕通知
+- 切面(Advisor)：仅包含一个切点和通知
+
+
+
+通过以下四步创建切面和代理：
+
+1. 备好切点
+
+   切点通过接口 `org.springframework.aop.Pointcut` 来表示：
+
+   Pointcut 接口有很多实现类，比如：
+
+   - `AnnotationMatchingPointcut` ：通过注解进行匹配
+   - `AspectJExpressionPointcut` ：通过 AspectJ 表达式进行匹配
+
+2. 备好通知
+
+   通知通过接口 `org.aopalliance.aop.Advice` 来表示
+
+   其中最重要的子接口 `org.aopalliance.intercept.MethodInterceptor` 这个接口实现的通知属于环绕通知
+
+   ```java
+   @FunctionalInterface
+   public interface MethodInterceptor extends Interceptor {
+   	@Nullable
+   	Object invoke(@Nonnull MethodInvocation invocation) throws Throwable;
+   }
+   ```
+
+3. 备好切面
+
+   切面通过接口 `org.springframework.aop.Advisor` 来表示
+
+   在此选择 `DefaultPointcutAdvisor` ，创建这种切面时，需要传递一个切点和通知
+
+   ```java
+   public DefaultPointcutAdvisor(Pointcut pointcut, Advice advice) {
+       this.pointcut = pointcut;
+       setAdvice(advice);
+   }
+   ```
+
+4. 创建代理
+
+   最后创建代理对象时，无需显式实现 JDK 动态代理或 CGLib 动态代理，Spring 提供了名为 ProxyFactory 的工厂，其内部通过不同的情况选择不同的代理实现，更方便地创建代理对象
+
+   ```java
+   public class AdvisorTest {
+   
+       interface I1 {
+           void foo();
+   
+           void bar();
+       }
+   
+       static class Target1 implements I1 {
+   
+           @Override
+           public void foo() {
+               System.out.println("target1 foo");
+           }
+   
+           @Override
+           public void bar() {
+               System.out.println("target1 bar");
+           }
+       }
+   
+       public static void main(String[] args) {
+           //1. 准备切入点
+           AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+           pointcut.setExpression("execution(* foo())");
+           //2. 准备通知
+           Advice advice = (MethodInterceptor) invocation -> {
+               System.out.println("before......");
+               Object returnVal = invocation.proceed();
+               System.out.println("after......");
+               return returnVal;
+           };
+           //3. 准备切面
+           Advisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+   
+           //创建代理
+           ProxyFactory factory = new ProxyFactory();
+           factory.setTarget(new Target1());
+           factory.addAdvisor(advisor);
+           I1 proxy = (I1) factory.getProxy();
+           proxy.foo();
+           proxy.bar();
+           System.out.println(proxy.getClass()); 
+       }
+   }
+   ```
+
+   
+
+运行代码，控制台最终输出：
+
+```
+before......
+target1 foo
+after......
+target1 bar
+class x.xx.AdvisorTest$Target1$$EnhancerBySpringCGLIB$$c30c1ce
+```
+
+从代理对象类名可以看出使用的是CGLIB代理
+
+Spring 是根据什么信息来选择不同的动态代理实现呢？
+
+ProxyFactory中可以通过 `setProxyTargetClass` 方法设置为 `true` 来指定使用CGLIB代理
+
+```java
+factory.setProxyTargetClass(true);
+```
+
+默认值为false，当值为false时，spring是这样判断的：
+
+- 目标对象所在类实现了接口时，选择 JDK 动态代理
+- 标对象所在类未实现接口时，选择 CGLib 动态代理
+
+但是 `Target1` 明明实现了接口，但还是选择 CGLIB 的原因是因为创建代理时没有告诉spring要代理的接口，Spring 认为其并未实现接口。
+
+```java
+factory.setInterfaces(Target1.class.getInterfaces());
+```
+
+修改代码后控制台输出：
+
+```
+before......
+target1 foo
+after......
+target1 bar
+class x.xx.$Proxy0
+```
+
+
+
+### 切点匹配
+
+如何判断一个方法与切点表达式是否匹配呢？
+
+`AspectJExpressionPointcut` 实现了 `MethodMatcher` 接口
+
+```java
+public interface MethodMatcher {
+
+	boolean matches(Method method, Class<?> targetClass);
+
+	// ......
+}
+```
+
+因此我们可以直接调用 `matches` 来判断一个方法是否与该切点匹配
+
+```java
+public static void main(String[] args) {
+    AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+    pointcut.setExpression("execution(* foo())");
+
+    for (Method method : Target1.class.getDeclaredMethods()) {
+        System.out.print(method.getName() + "：");
+        System.out.println(pointcut.matches(method, Target1.class));
+    }
+}
+```
+
+但是，当使用注解表达式的时候，这个匹配方法就有一定的局限性，它只能匹配方法自身上是否有指定的注解
+
+```java
+pointcut.setExpression("@annotation(org.springframework.transaction.annotation.Transactional)");
+```
+
+在spring中 `@Transactional` 不仅可以标在方法上，还能标在类上，甚至接口上
+
+```java
+public class AdvisorTest {
+
+    @Transactional
+    interface I1 {
+        void foo();
+
+        void bar();
+    }
+
+    static class Target1 implements I1 {
+
+        @Override
+        public void foo() {
+            System.out.println("target1 foo");
+        }
+
+        @Override
+        public void bar() {
+            System.out.println("target1 bar");
+        }
+    }
+
+    @Transactional
+    static class Target2 {
+        public void foo() {
+            System.out.println("target2 foo");
+        }
+
+        public void bar() {
+            System.out.println("target2 bar");
+        }
+    }
+
+    public static void main(String[] args) {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("@annotation(org.springframework.transaction.annotation.Transactional)");
+
+        for (Method method : Target1.class.getDeclaredMethods()) {
+            System.out.print(method.getName() + "：");
+            System.out.println(pointcut.matches(method, Target1.class));
+        }
+        System.out.println("=================================>");
+        for (Method method : Target2.class.getDeclaredMethods()) {
+            System.out.print(method.getName() + "：");
+            System.out.println(pointcut.matches(method, Target2.class));
+        }
+    }
+}
+
+```
+
+运行后结果全都是false，那spring对 `@Transactional` 是怎么匹配的呢？
+
+在底层 @Transactional 注解的匹配使用到了 `StaticMethodMatcherPointcut` 
+
+模拟代码：
+
+```java
+public static void main(String[] args) {
+    MethodMatcher matcher = new StaticMethodMatcherPointcut() {
+        @Override
+        public boolean matches(Method method, Class<?> targetClass) {
+            //检查方法上是否有注解
+            MergedAnnotations annotations = MergedAnnotations.from(method);
+            if (annotations.isPresent(Transactional.class)) {
+                return true;
+            }
+            //检查类或者超类是否有注解
+            annotations = MergedAnnotations.from(targetClass, MergedAnnotations.SearchStrategy.TYPE_HIERARCHY);
+            return annotations.isPresent(Transactional.class);
+        }
+    };
+
+    for (Method method : Target1.class.getDeclaredMethods()) {
+        System.out.print(method.getName() + "：");
+        System.out.println(matcher.matches(method, Target1.class));
+    }
+    System.out.println("=================================>");
+    for (Method method : Target2.class.getDeclaredMethods()) {
+        System.out.print(method.getName() + "：");
+        System.out.println(matcher.matches(method, Target2.class));
+    }
+}
+```
+
+
+
+### 自动创建代理
+
+在spring中我们将标注 `@Aspect` 注解的类注入到容器中，在运行时就会帮我们生成代理，接下来就探究一下它是如何来创建的
+
+上文讲过，切面有 `aspect` (高级切面) 和 `advisor`  (低级切面) 两个概念
+
+spring在创建代理时会将高级切面转为低级切面
+
+我们准备如下几个类：
+
+```java
+public class AutoProxyCreatorTest {
+
+    static class Target1 {
+        public void foo() {
+            System.out.println("target1 foo");
+        }
+    }
+
+    static class Target2 {
+        public void bar() {
+            System.out.println("target2 bar");
+        }
+    }
+
+    /**
+     * 高级切面
+     */
+    @Aspect
+    static class TestAspect {
+        @Before("execution(* foo())")
+        public void before() {
+            System.out.println("testAspect before...");
+        }
+
+        @After("execution(* foo())")
+        public void after() {
+            System.out.println("testAspect after...");
+        }
+    }
+
+
+    @Configuration
+    static class Config {
+
+        @Bean
+        public Advice testAdvice() {
+            return (MethodInterceptor) invocation -> {
+                System.out.println("testAdvice before...");
+                Object result = invocation.proceed();
+                System.out.println("testAdvice after...");
+                return result;
+            };
+        }
+
+        /**
+         * 低级切面，由一个切点和一个通知组成
+         */
+        @Bean
+        public Advisor testAdvisor(Advice testAdvice) {
+            AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+            pointcut.setExpression("execution(* foo())");
+            return new DefaultPointcutAdvisor(pointcut, testAdvice);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.registerBean("testAspect", TestAspect.class);
+        context.registerBean("config", Config.class);
+        context.registerBean(ConfigurationClassPostProcessor.class);
+        context.refresh();
+        for (String name : context.getBeanDefinitionNames()) {
+            System.out.println(name);
+        }
+        context.close();
+    }
+
+}
+```
+
+运行代码后输出：
+
+```
+testAspect
+config
+org.springframework.context.annotation.ConfigurationClassPostProcessor
+testAdvice
+testAdvisor
+```
+
+现在容器中有一个高级切面 `testAspect` 和 低级切面 `testAdvisor`
+
+spring是如何知道这些切面的呢？
+
+spring中有一个名为 `AnnotationAwareAspectJAutoProxyCreator` 的Bean后置处理器，这个后置处理器会从容器中找到所有切面
+
+这个类中的两个重要方法：
+
+- `findEligibleAdvisors()` ：位于父类 AbstractAdvisorAutoProxyCreator 中，用于找到符合条件的切面类。低级切面直接添加，高级切面转换为低级切面再添加。
+- `wrapIfNecessary()` ：位于父类 AbstractAutoProxyCreator 中，用于将有资格被代理的 Bean 进行包装，即创建代理对象。
+
+由于这两个方法都是 `protected` ，不好直接测试，解决方法有三种
+
+1. 自己写一个子类去继承它
+
+2. 使用反射
+
+3. 测试类所在包名定义和它所在包名一致
+
+   ```
+   org.springframework.aop.framework.autoproxy
+   ```
+
+
+
+#### findEligibleAdvisors
+
+该方法接收两个参数：
+
+- `beanClass` ：寻找匹配切面的class
+- `beanName` ：当前代理 bean 的名称
+
+返回值是所有匹配的切面
+
+```java
+public static void main(String[] args) {
+    GenericApplicationContext context = new GenericApplicationContext();
+    context.registerBean("testAspect", TestAspect.class);
+    context.registerBean("config", Config.class);
+    context.registerBean(ConfigurationClassPostProcessor.class);
+    context.refresh();
+    AnnotationAwareAspectJAutoProxyCreator creator = new AnnotationAwareAspectJAutoProxyCreator();
+    creator.setBeanFactory(context.getBeanFactory());
+    List<Advisor> advisors = creator.findEligibleAdvisors(Target1.class, "target1");
+    for (Advisor advisor : advisors) {
+        System.out.println(advisor);
+    }
+    context.close();
+}
+```
+
+运行代码后输出：
+
+```
+org.springframework.aop.interceptor.ExposeInvocationInterceptor.ADVISOR
+org.springframework.aop.support.DefaultPointcutAdvisor: pointcut [AspectJExpressionPointcut: () execution(* foo())]; advice [org.springframework.aop.framework.autoproxy.AutoProxyCreatorTest$Config$$Lambda$44/1131040331@c0c2f8d]
+InstantiationModelAwarePointcutAdvisor: expression [execution(* foo())]; advice method [public void org.springframework.aop.framework.autoproxy.AutoProxyCreatorTest$TestAspect.before()]; perClauseKind=SINGLETON
+InstantiationModelAwarePointcutAdvisor: expression [execution(* foo())]; advice method [public void org.springframework.aop.framework.autoproxy.AutoProxyCreatorTest$TestAspect.after()]; perClauseKind=SINGLETON
+```
+
+打印出 4 个匹配 Target1 的切面信息，其中：
+
+- 第一个切面 ExposeInvocationInterceptor.ADVISOR 是 Spring 为每个代理对象都会添加的切面；
+- 第二个切面 DefaultPointcutAdvisor 是自行编写的低级切面；
+- 第三个和第四个切面 InstantiationModelAwarePointcutAdvisor 是由高级切面转换得到的两个低级切面。
+
+
+
+#### wrapIfNecessary
+
+wrapIfNecessary() 方法内部调用了 findEligibleAdvisors() 方法，若 findEligibleAdvisors() 方法返回的集合不为空，则表示需要创建代理对象。
+
+如果需要创建对象，wrapIfNecessary() 方法返回的是代理对象，否则仍然是原对象。
+
+wrapIfNecessary() 方法接收三个参数：
+
+- `bean` ：原始 Bean 实例
+- `beanName` ：Bean 的名称
+- `cacheKey` ：用于元数据访问的缓存 key
+
+```java
+Object target1 = creator.wrapIfNecessary(new Target1(), "target1", "target1");
+System.out.println(target1.getClass());
+Object target2 = creator.wrapIfNecessary(new Target2(), "target2", "target2");
+System.out.println(target2.getClass());
+```
+
+输入结果：
+
+```
+class org.springframework.aop.framework.autoproxy.AutoProxyCreatorTest$Target1$$EnhancerBySpringCGLIB$$747bec66
+class org.springframework.aop.framework.autoproxy.AutoProxyCreatorTest$Targe
+```
+
+
+
+#### 切面顺序控制
+
+我们拿到代理对象后调用代理方法，看一下两个切面的执行顺序
+
+```java
+Target1 target1 = (Target1) creator.wrapIfNecessary(new Target1(), "target1", "target1");
+target1.foo();
+```
+
+输出：
+
+```
+testAdvice before...
+testAspect before...
+target1 foo
+testAspect after...
+testAdvice after...
+```
+
+可以看到是Advisor切面优先级更高先执行
+
+对于 `@Aspect` 注解的切面可以使用 `@order` 注解或实现 `Ordered` 接口来指定排序值
+
+对于 `@Bean` 方法 不支持 `@order` 注解，只能是实现 `Ordered` 接口
+
+```java
+@Aspect
+@Order(0)
+static class TestAspect{
+	// ......
+}
+
+@Bean
+public Advisor testAdvisor(Advice testAdvice) {
+    AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+    pointcut.setExpression("execution(* foo())");
+    DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, testAdvice);
+    //DefaultPointcutAdvisor 实现了 Ordered 注解
+    advisor.setOrder(1);
+    return advisor;
+}
+```
+
+输出：
+
+```
+testAspect before...
+testAdvice before...
+target1 foo
+testAdvice after...
+testAspect after...
+```
+
+
+
+
+
+#### 代理创建时机
+
+现有如下测试类：
+
+```java
+public class AutoProxyCreatorOccasionTest {
+
+    static class Bean1 {
+
+        public Bean1() {
+            System.out.println("Bean1()");
+        }
+
+        @PostConstruct
+        public void init() {
+            System.out.println("Bean1 init");
+        }
+
+        public void foo() {
+            System.out.println("bean1 foo");
+        }
+    }
+
+    static class Bean2 {
+        public Bean2() {
+            System.out.println("Bean2()");
+        }
+
+        @Autowired
+        public void setBean1(Bean1 bean1) {
+            System.out.println("Autowired bean1：" + bean1.getClass());
+        }
+
+
+        @PostConstruct
+        public void init() {
+            System.out.println("Bean2 init");
+        }
+    }
+
+    @Aspect
+    static class TestAspect {
+        @Before("execution(* foo())")
+        public void before() {
+            System.out.println("testAspect before...");
+        }
+
+        @After("execution(* foo())")
+        public void after() {
+            System.out.println("testAspect after...");
+        }
+    }
+
+    public static void main(String[] args) {
+        LoggingSystem.get(AutoProxyCreatorOccasionTest.class.getClassLoader())
+                .setLogLevel("org.springframework.aop.aspectj", LogLevel.TRACE);
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.registerBean("testAspect", TestAspect.class);
+        context.registerBean("bean1", Bean1.class);
+        context.registerBean("bean2", Bean2.class);
+        context.registerBean(ConfigurationClassPostProcessor.class);
+        context.registerBean(AutowiredAnnotationBeanPostProcessor.class);
+        context.registerBean(CommonAnnotationBeanPostProcessor.class);
+        context.registerBean(AnnotationAwareAspectJAutoProxyCreator.class);
+        context.refresh();
+        context.close();
+    }
+
+}
+```
+
+输出结果：
+
+```
+Bean1()
+Bean1 init
+[main] TRACE org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator - Creating implicit proxy for bean 'bean1' with 0 common interceptors and 3 specific interceptors
+[main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'bean2'
+Bean2()
+Autowired bean1：class org.springframework.aop.framework.autoproxy.AutoProxyCreatorOccasionTest$Bean1$$EnhancerBySpringCGLIB$$23f27ea9
+Bean2 init
+```
+
+从日志中可以看出代理对象是在初始化之后创建的
+
+创建 ->  依赖注入 -> 初始化 -> 创建代理对象
+
+如果是循环依赖呢，给Bean1也注入Bean2
+
+```java
+@Autowired
+public void setBean2(Bean2 bean2){
+    System.out.println("Autowired bean2：" + bean2.getClass());
+}
+```
+
+日志输出：
+
+```
+Bean1()
+[main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'bean2'
+Bean2()
+[main] TRACE org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator - Creating implicit proxy for bean 'bean1' with 0 common interceptors and 3 specific interceptors
+Autowired bean1：class org.springframework.aop.framework.autoproxy.AutoProxyCreatorOccasionTest$Bean1$$EnhancerBySpringCGLIB$$b956a7ce
+Bean2 init
+Autowired bean2：class org.springframework.aop.framework.autoproxy.AutoProxyCreatorOccasionTest$Bean2
+Bean1 init
+```
+
+1. 创建Bean1  -> 发现依赖Bean2
+2.  创建Bean2 -> 发现依赖Bean1-> 创建Bean1代理对象然后注入 -> Bean2初始化
+3.  Bean1依赖注入 -> Bean1初始化
+
+总结：
+
+- 无循环依赖时：在 Bean 初始化阶段之后创建；
+- 有循环依赖时：在 Bean 实例化后、依赖注入之前创建，并将代理对象暂存于二级缓存。
+
+
+
+Bean 的依赖注入阶段和初始化阶段不应该被增强，仍应被施加于原始对象
+
+
+
+#### 高级切面转低级
+
+spring在创建代理的时候会将高级切面转为低级切面，统一放到 `List<Advisor>` 集合中
+
+高级切面中与通知类型相关的常用注解有 5 个：
+
+- `@Before` ：前置通知
+- `@AfterReturning` ：后置通知
+- `@AfterThrowing` ：异常通知
+- `@After` ：最终通知
+- `@Around` ：环绕通知
+
+下面是模拟解析 `@Before` 注解的代码：
+
+```java
+public class AspectConvertTest {
+
+    @Aspect
+    static class TestAspect {
+
+        @Before("execution(* foo())")
+        public void before() {
+            System.out.println("testAspect before...");
+        }
+
+        @After("execution(* foo())")
+        public void after() {
+            System.out.println("testAspect after...");
+        }
+
+        @AfterReturning(value = "execution(* foo())")
+        public void afterReturning() {
+            System.out.println("afterReturning");
+        }
+
+        @AfterThrowing(value = "execution(* foo())")
+        public void afterThrowing() {
+            System.out.println("afterThrowing");
+        }
+
+        @Around(value = "execution(* foo())")
+        public Object around(ProceedingJoinPoint pjp) throws Throwable {
+            try {
+                System.out.println("around...before");
+                return pjp.proceed();
+            } finally {
+                System.out.println("around...after");
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        List<Advisor> advisors = new ArrayList<>();
+        //提供 Aspect切面实例 的工厂，就是用于获取标注@Aspect注解类的实例，后续反射调用切面中的方法
+        AspectInstanceFactory factory = new SingletonAspectInstanceFactory(new TestAspect());
+        for (Method method : TestAspect.class.getDeclaredMethods()) {
+            Before before = method.getAnnotation(Before.class);
+            if (before != null) {
+                //转换切点
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(before.value());
+                //创建通知，前置通知对应的通知类是 AspectJMethodBeforeAdvice
+                AspectJMethodBeforeAdvice advice = new AspectJMethodBeforeAdvice(method, pointcut, factory);
+                //创建切面
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            }
+        }
+
+        advisors.forEach(System.out::println);
+    }
+}
+```
+
+
+
+通知相关注解与原始通知类对应关系如下：
+
+| 注解              | 对应的原始通知类              |
+| ----------------- | ----------------------------- |
+| `@Before`         | `AspectJMethodBeforeAdvice`   |
+| `@AfterReturning` | `AspectJAfterReturningAdvice` |
+| `@AfterThrowing`  | `AspectJAfterThrowingAdvice`  |
+| `@After`          | `AspectJAfterAdvice`          |
+| `@Around`         | `AspectJAroundAdvice`         |
+
+​	
+
+#### 统一转成环绕通知
+
+通知相关注解都对应一个原始通知类，在 Spring 底层会将这些通知转换成环绕通知 MethodInterceptor。
+
+如果原始通知类本就实现了 MethodInterceptor 接口，则无需转换。
+
+
+
+| 原始通知类                    | 是否已实现MethodInterceptor |
+| ----------------------------- | --------------------------- |
+| `AspectJMethodBeforeAdvice`   | ❌                           |
+| `AspectJAfterReturningAdvice` | ❌                           |
+| `AspectJAfterThrowingAdvice`  | ✅                           |
+| `AspectJAfterAdvice`          | ✅                           |
+| `AspectJAroundAdvice`         | ✅                           |
+
+使用 ProxyFactory 创建代理对象后，调用代理对象方法时会经过一系列通知方法（before/after/...）
+
+```java
+Advice advice = new MethodInterceptor() {
+    @Override
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.println("before......");
+        Object returnVal = invocation.proceed();
+        System.out.println("after......");
+        return returnVal;
+    }
+};
+```
+
+ 项目中切面往往不止一个 `List<Advisor>` ，它们一个套一个地被调用，因此需要一个调用链对象，即 `MethodInvocation`
+
+![image-20230824112737784](https://cdn.tencentfs.clboy.cn/images/image-20230824112737784.png)
+
+由上图可知，环绕通知最适合作为 advice，而且这种调用方法是不是很像servlet中的过滤器调用 `chain.doFilter(req,res)`
+
+这种设计就是责任链模式
+
+而统一转换成环绕通知的形式，体现了设计模式中的适配器模式：
+
+ `proxyFactory.getInterceptorsAndDynamicInterceptionAdvice()` 方法可将其他通知统一转换为 MethodInterceptor 环绕通知：
+
+| 注解              | 原始通知类                    | 适配器                        | MethodInterceptor类型通知         |
+| ----------------- | ----------------------------- | ----------------------------- | --------------------------------- |
+| `@Before`         | `AspectJMethodBeforeAdvice`   | `MethodBeforeAdviceAdapter`   | `MethodBeforeAdviceInterceptor`   |
+| `@AfterReturning` | `AspectJAfterReturningAdvice` | `AspectJAfterReturningAdvice` | `AfterReturningAdviceInterceptor` |
+
+我们将其他注解也转换成低级切面测试
+
+```java
+public class AspectConvertTest {
+
+    // ...... 省略 TestAspect 代码
+    
+    static class Target {
+        public void foo() {
+            System.out.println("target foo");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        List<Advisor> advisors = new ArrayList<>();
+        AspectInstanceFactory factory = new SingletonAspectInstanceFactory(new TestAspect());
+        for (Method method : TestAspect.class.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Before.class)) {
+                Before before = method.getAnnotation(Before.class);
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(before.value());
+                AspectJMethodBeforeAdvice advice = new AspectJMethodBeforeAdvice(method, pointcut, factory);
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            } else if (method.isAnnotationPresent(After.class)) {
+                After after = method.getAnnotation(After.class);
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(after.value());
+                AspectJAfterAdvice advice = new AspectJAfterAdvice(method, pointcut, factory);
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            } else if (method.isAnnotationPresent(AfterReturning.class)) {
+                AfterReturning afterReturning = method.getAnnotation(AfterReturning.class);
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(afterReturning.value());
+                AspectJAfterReturningAdvice advice = new AspectJAfterReturningAdvice(method, pointcut, factory);
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            } else if (method.isAnnotationPresent(AfterThrowing.class)) {
+                AfterThrowing afterThrowing = method.getAnnotation(AfterThrowing.class);
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(afterThrowing.value());
+                AspectJAfterThrowingAdvice advice = new AspectJAfterThrowingAdvice(method, pointcut, factory);
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            } else if (method.isAnnotationPresent(Around.class)) {
+                Around around = method.getAnnotation(Around.class);
+                AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+                pointcut.setExpression(around.value());
+                AspectJAroundAdvice advice = new AspectJAroundAdvice(method, pointcut, factory);
+                DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, advice);
+                advisors.add(advisor);
+            }
+
+        }
+
+        Target target = new Target();
+        ProxyFactory proxyFactory = new ProxyFactory();
+        proxyFactory.setTarget(target);
+        proxyFactory.addAdvisors(advisors);
+        Method method = Target.class.getMethod("foo");
+        List<Object> advices = proxyFactory.getInterceptorsAndDynamicInterceptionAdvice(method, Target.class);
+        advices.forEach(System.out::println);
+    }
+}
+```
+
+输出结果：
+
+```
+org.springframework.aop.aspectj.AspectJAfterAdvice: ......
+org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor@1e127982
+org.springframework.aop.aspectj.AspectJAfterThrowingAdvice: ......
+org.springframework.aop.aspectj.AspectJAroundAdvice: ......
+org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor@60c6f5b
+```
+
+可以看到没有实现 `MethodInterceptor` 接口的通知类型被转换了
+
+前置通知 `AspectJMethodBeforeAdvice` 被转换为 `MethodBeforeAdviceInterceptor`
+
+后置通知 `AspectJAfterReturningAdvice`  被转换为 `AfterReturningAdviceInterceptor`
+
+其他通知类型已经实现了 `MethodInterceptor` 接口保持不变
+
+
+
+#### MethodInvocation
+
+在环绕通知 `MethodInterceptor` 接口的 `invoke`  方法中，通知的调用链路是由 `MethodInvocation` 对象来完成的
+
+这个调用链对象中存放了所有经过转换得到的环绕通知和目标方法。
+
+MethodInvocation 是一个接口，其最根本的实现是 `ReflectiveMethodInvocation`
+
+构建 ReflectiveMethodInvocation 对象需要 6 个参数：
+
+- `proxy` ：代理对象
+- `target` ：目标对象
+- `method` ：目标对象中的方法对象
+- `arguments` ：调用目标对象中的方法需要的参数
+- `targetClass` ：目标对象的 Class 对象
+- `interceptorsAndDynamicMethodMatchers` ：转换得到的环绕通知列表
+
+由于 `ReflectiveMethodInvocation` 的构造方法是 `protected` ，我们创建一个类去继承它，方便测试
+
+```java
+static class ReflectiveMethodInvocationExt extends ReflectiveMethodInvocation{
+    protected ReflectiveMethodInvocationExt(Object proxy, Object target, Method method, Object[] arguments, Class<?> targetClass, List<Object> interceptorsAndDynamicMethodMatchers) {
+        super(proxy, target, method, arguments, targetClass, interceptorsAndDynamicMethodMatchers);
+    }
+}
+
+
+public static void main(String[] args) throws Throwable {
+    List<Advisor> advisors = new ArrayList<>();
+
+    // ...... 
+
+    Target target = new Target();
+    ProxyFactory proxyFactory = new ProxyFactory();
+    proxyFactory.setTarget(target);
+    proxyFactory.addAdvisors(advisors);
+    Method method = Target.class.getMethod("foo");
+    Object proxy = proxyFactory.getProxy();
+    List<Object> advices = proxyFactory.getInterceptorsAndDynamicInterceptionAdvice(method, Target.class);
+    MethodInvocation invocation = new ReflectiveMethodInvocationExt(proxy, target, method, new Object[0], Target.class, advices);
+    invocation.proceed();
+}
+```
+
+运行代码后会抛出错误，错误信息如下：
+
+```
+Exception in thread "main" java.lang.IllegalStateException: No MethodInvocation found: Check that an AOP invocation is in progress and that the ExposeInvocationInterceptor is upfront in the interceptor chain. Specifically, note that advices with order HIGHEST_PRECEDENCE will execute before ExposeInvocationInterceptor! In addition, ExposeInvocationInterceptor and ExposeInvocationInterceptor.currentInvocation() must be invoked from the same thread.
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.currentInvocation(ExposeInvocationInterceptor.java:74)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.getJoinPointMatch(AbstractAspectJAdvice.java:658)
+	at org.springframework.aop.aspectj.AspectJAfterAdvice.invoke(AspectJAfterAdvice.java:52)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.autoproxy.AspectConvertTest.main(AspectConvertTest.java:121)
+```
+
+错误是从 `ExposeInvocationInterceptor` 的 静态方法 `currentInvocation()` 方法中抛出来的
+
+这个方法的内部就是从 `ThreadLocal` 中获取 `MethodInvocation`
+
+结果获取到的是null就抛出异常了
+
+翻看 `ExposeInvocationInterceptor` 源码，将 `MethodInvocation` 设置到 ThreadLocal 的方法是 `invoke(MethodInvocation mi)`
+
+怎么看这个方法那么熟悉，仔细看它实现了 `MethodInterceptor` 接口，原来它也是一个环绕通知
+
+直接将这个切面添加到切面集合的头部，让它最先执行，它就会把 `MethodInvocation` 放到 ThreadLocal 中
+
+```java
+Target target = new Target();
+ProxyFactory proxyFactory = new ProxyFactory();
+proxyFactory.setTarget(target);
+proxyFactory.addAdvisors(ExposeInvocationInterceptor.ADVISOR);
+proxyFactory.addAdvisors(advisors);
+Method method = Target.class.getMethod("foo");
+Object proxy = proxyFactory.getProxy();
+List<Object> advices = proxyFactory.getInterceptorsAndDynamicInterceptionAdvice(method, Target.class);
+```
+
+再运行就不会报错了
+
+
+
+#### 模拟实现调用链
+
+```java
+public class MockMethodInvocationTest {
+    
+    @RequiredArgsConstructor
+    static class MockMethodInvocation implements MethodInvocation {
+        private final Object target;
+        private final Method method;
+        private final Object[] args;
+        private final List<MethodInterceptor> interceptors;
+        private int currentIndex = 0;
+
+
+        @Override
+        public Method getMethod() {
+            return method;
+        }
+
+        @Override
+        public Object[] getArguments() {
+            return args;
+        }
+
+        @Override
+        public Object proceed() throws Throwable {
+            if (currentIndex == interceptors.size()) {
+                //执行目标方法
+                return method.invoke(target, args);
+            }
+            // 逐一调用通知
+            MethodInterceptor interceptor = interceptors.get(currentIndex++);
+            // 递归操作交给通知类 invocation.proceed()
+            return interceptor.invoke(this);
+        }
+
+        @Override
+        public Object getThis() {
+            return target;
+        }
+
+        @Override
+        public AccessibleObject getStaticPart() {
+            return method;
+        }
+    }
+
+    public static void main(String[] args) throws Throwable {
+        AspectConvertTest.Target target = new AspectConvertTest.Target();
+        Method method = AspectConvertTest.Target.class.getMethod("foo");
+
+        MethodInterceptor advice1 = invocation -> {
+            System.out.println("advice1.before......");
+            Object returnVal = invocation.proceed();
+            System.out.println("advice1.after......");
+            return returnVal;
+        };
+
+        MethodInterceptor advice2 = invocation -> {
+            System.out.println("advice2.before......");
+            Object returnVal = invocation.proceed();
+            System.out.println("advice2.after......");
+            return returnVal;
+        };
+
+
+        List<MethodInterceptor> interceptors = new ArrayList<>(2);
+        interceptors.add(advice1);
+        interceptors.add(advice2);
+        MockMethodInvocation invocation = new MockMethodInvocation(target, method, args, interceptors);
+        invocation.proceed();
+    }
+
+}
+```
+
+
+
+#### 动态通知调用
+
+什么是动态通知？
+
+就是指通知方法需要获取额外的参数，比如注解信息、目标方法参数信息
+
+```java
+public class DynamicAdviceTest {
+
+    @Target({ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface TestAnno {
+        String value();
+    }
+
+    @Aspect
+    static class TestAspect {
+
+        /**
+         * 静态通知
+         */
+        @Before(value = "execution(* foo(..))")
+        public void before1() {
+            System.out.println("before1......");
+        }
+
+        /**
+         * 动态通知
+         */
+        @Before(value = "execution(* foo(..)) && args(age)")
+        public void before2(int age) {
+            System.out.println("before2......" + age);
+        }
+
+        /**
+         * 动态通知
+         */
+        @After(value = "@annotation(anno)")
+        public void after(TestAnno anno) {
+            System.out.println("after......" + anno.value());
+        }
+
+    }
+
+    static class TestTarget {
+
+        @TestAnno(value = "666")
+        public String foo(int age) {
+            System.out.println("target.foo()，age：" + age);
+            return "hello world";
+        }
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.registerBean("testAspect", TestAspect.class);
+        context.refresh();
+        AnnotationAwareAspectJAutoProxyCreator creator = new AnnotationAwareAspectJAutoProxyCreator();
+        creator.setBeanFactory(context.getBeanFactory());
+        List<Advisor> advisors = creator.findEligibleAdvisors(TestTarget.class, "testTarget");
+
+        TestTarget target = new TestTarget();
+        ProxyFactory factory = new ProxyFactory();
+        factory.setTarget(target);
+        factory.addAdvisors(advisors);
+
+
+        Method fooMethod = TestTarget.class.getMethod("foo", int.class);
+        List<Object> advices = factory.getInterceptorsAndDynamicInterceptionAdvice(fooMethod, TestTarget.class);
+        for (Object advice : advices) {
+            System.out.println(advice);
+        }
+
+    }
+
+}
+```
+
+运行代码，输出结果：
+
+```
+org.springframework.aop.interceptor.ExposeInvocationInterceptor@1725dc0f
+org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor@3911c2a7
+org.springframework.aop.framework.InterceptorAndDynamicMethodMatcher@4ac3c60d
+org.springframework.aop.framework.InterceptorAndDynamicMethodMatcher@4facf68f
+```
+
+第一个 ExposeInvocationInterceptor 对象是 Spring 添加的环绕通知，用于将 `MethodInterceptor` 放入 `ThreadLocal`
+
+第二次 MethodBeforeAdviceInterceptor 对象是 `@Before` 注解正常转换后的低级切面
+
+后两个 `InterceptorAndDynamicMethodMatcher` 从名称上，似乎是动态通知
+
+```java
+class InterceptorAndDynamicMethodMatcher {
+
+	final MethodInterceptor interceptor;
+
+	final MethodMatcher methodMatcher;
+
+	public InterceptorAndDynamicMethodMatcher(MethodInterceptor interceptor, MethodMatcher methodMatcher) {
+		this.interceptor = interceptor;
+		this.methodMatcher = methodMatcher;
+	}
+
+}
+```
+
+但是这个类并没有实现 `MethodInterceptor` 而是在内部持有 `MethodInterceptor` 实例和一个 `MethodMatcher` 方法匹配器实例
+
+在 [切点匹配](#切点匹配) 章节中讲过 `AspectJExpressionPointcut` 实现了 `MethodMatcher` 接口，最终这个 `MethodMatcher` 就是切点对象
+
+`MethodMatcher` 中有两个匹配方法，之前我们用的都是静态方法匹配
+
+```java
+/**
+ * 静态方法匹配
+ */
+boolean matches(Method method, Class<?> targetClass);
+
+/**
+ * 运行时动态方法匹配
+ */
+boolean matches(Method method, Class<?> targetClass, Object... args);
+```
+
+`ReflectiveMethodInvocation` 的 `proceed` 在代码中判断通知是否是 `InterceptorAndDynamicMethodMatcher` 类型
+
+```java
+public Object proceed() throws Throwable {
+    if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+        return invokeJoinpoint();
+    }
+
+    Object interceptorOrInterceptionAdvice =
+        this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+    if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
+        InterceptorAndDynamicMethodMatcher dm =
+            (InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
+        Class<?> targetClass = (this.targetClass != null ? this.targetClass : this.method.getDeclaringClass());
+        if (dm.methodMatcher.matches(this.method, targetClass, this.arguments)) {
+            return dm.interceptor.invoke(this);
+        }
+        else {
+            return proceed();
+        }
+    }
+    else {
+        return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
+    }
+}
+```
+
+?> 动态通知调用需要切点信息，需要对参数进行匹配和绑定，复杂程度高，性能比静态通知调用低。
+
+
+
+
+
