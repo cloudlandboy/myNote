@@ -22,7 +22,7 @@ spring:
 
 这个时候就需要一个配置管理中心去统一管理配置，所有微服务都是从这个配置中心拉取配置，架构图就演变成了这样：
 
-![image-20230825111722256](assets/image-20230825111722256.png)
+![image-20230825111722256](https://cdn.tencentfs.clboy.cn/images/image-20230825111722256.png)
 
 
 
@@ -180,21 +180,150 @@ spring:
 
 
 
-
-
-
-
-
-
-
-
 ## 配置属性动态刷新
 
-## 应用的配置共享
+要想做到在nacos中修改配置后，应用程序在不重启的情况下也能及时更新，应该怎么配置？
 
-## 引导上下文
+对于 `@ConfigurationProperties` 注解标注的配置类，默认会动态刷新
+
+对于通过 `@value` 注解注入的属性，需要在持有类上添加  `@RefreshScope` 注解
+
+```java
+@RefreshScope
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/test")
+public class TestController {
+
+    @Value("${test.value}")
+    private String value;
+
+    @GetMapping("/value")
+    private String testValue() {
+        return this.value;
+    }
+    
+   //......
+
+}
+```
+
+启动后，你会发现获取的值永远为null，原因：
+
+!> 注解的proxyMode默认值是ScopedProxyMode.TARGET_CLASS，也就是说代理模式使用的是CGLIB方式。<br/>如果@RefreshScope使用在 `@Controller` 或其他会被spring使用CGLIB代理的类上就会出问题。<br/>原因是@RefreshScope默认使用CGLIB代理，而目标类又是被CGLIB代理过的，这样就被代理了两次，第二次也就是@RefreshScope代理的时候会出现属性丢失的问题
+
+解决方法：
+
+```java
+@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+```
+
+
+
+## 配置共享
+
+
+
+### 不同环境
+
+项目启动时，可以通过启动日志查看nacos加载了哪些配置，在启动日志中搜索 *Located property source*
+
+```
+Located property source: [BootstrapPropertySource {name='bootstrapProperties-service-a-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-service-a.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-service-a,DEFAULT_GROUP'}]
+```
+
+可以看出默认情况下加载以下配置：
+
+- `应用名-环境标识.后缀名`
+- `应用名.后缀名`
+- `应用名`
+
+所以，不同环境的共享配置可以放到 `应用名.后缀名` 的配置中
+
+
+
+### 不同应用
+
+nacos提供了 `shared-configs` 和 `extension-configs` 两个配置项来添加额外的配置
+
+```yaml
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-a
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        shared-configs:
+          - data-id: love.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+        extension-configs:
+          - data-id: test.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+```
+
+
+
+### spring.config.import
+
+上文已经说过springboot >= 2.4.0版本，已经不使用bootstrap.yml作为启动配置文件了
+
+使用spring.config.import来共享配置就更简单了
+
+```yaml
+# application.yml (不能是bootstrap.yml)
+spring:
+  cloud:
+    nacos:
+      config:
+        group: DEFAULT_GROUP
+        server-addr: localhost:8848
+  config:
+    import:
+      - optional:nacos:test.yml  # 监听 DEFAULT_GROUP:test.yml
+      - optional:nacos:test01.yml?group=group_01 # 覆盖默认 group, 监听 group_01:test01.yml
+      - optional:nacos:test02.yml?group=group_02&refreshEnabled=false # 不开启动态刷新
+      - nacos:test03.yml # 在拉取nacos配置异常时会快速失败, 会导致 spring 容器启动失败
+```
+
+参考：[pull#2349](https://github.com/alibaba/spring-cloud-alibaba/pull/2349 ':target=_blank')
+
+
 
 ## 数据持久化
 
 
 
+默认情况下，nacos存储数据的目录如下：
+
+服务发现组件：
+
+- ~/nacos/naming
+
+配置服务器
+
+- 配置数据：nacos安装目录/data/derby-data
+- 快照等：~/nacos/config
+
+如何改为mysql数据库：
+
+1. 将 `nacos安装目录/conf/mysql-schema.sql` 导入到数据库中
+
+2. 修改 `conf/application.properties` ，添加如下内容：
+
+   ```properties
+   spring.datasource.platform=mysql
+   db.num=1
+   db.url.0=jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+   db.user.0=数据库用户名
+   db.password.0=数据库密码
+   ```
+
+   
