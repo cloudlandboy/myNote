@@ -78,7 +78,7 @@ npm install sync-post-commit -g
 - [x] halo ( 1.x版本 )
 - [x] csdn
 - [x] 语雀
-- [ ] 印象笔记 (TODO)
+- [x] 印象笔记 (支持代码高亮)
 - [ ] 博客园 (TODO)
 - [ ] 简书 (TODO)
 
