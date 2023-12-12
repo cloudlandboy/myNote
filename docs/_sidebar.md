@@ -22,9 +22,8 @@
 - 版本控制
   - [Git](vcs/git/_sidebar.md)
 - **前端**
-  - [node](/frontend/node/md/_sidebar.md)
-  - [ECMAScript](frontend/ecmascript/_sidebar.md)
-  - [VUE入门](frontend/vue/_sidebar.md)
+  - [NodeJS](/frontend/node/md/_sidebar.md)
+  - [Vue](frontend/vue/_sidebar.md)
 - **综合**
   
   - [思维导图](common/minds/_sidebar.md)
