@@ -11,6 +11,7 @@
     - [线程安全](java/basic/thread/004.md)
     - [等待唤醒机制](java/basic/thread/005.md)
     - [happenBefore,volitale,dcl](java/basic/thread/006.md)
+    - [线程池](/java/basic/thread/pool.md)
   - IO与NIO
     - [NIO](java/basic/IO/nio.md)
     - [NIO.2](java/basic/IO/nio2.md)
