@@ -22,4 +22,7 @@
   - [SQL练习-01](mysql/practice01.md)
   - [SQL练习-02](mysql/practice02.md)
   - [SQL练习-03(取两表不同数据)](mysql/practice03.md)
+  - [存储引擎](mysql/storage_engine.md)
+  - [索引](mysql/index.md)
+  - [SQL优化](mysql/sql_optimization.md)
 
